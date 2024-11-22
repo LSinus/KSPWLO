@@ -1,5 +1,5 @@
-arlib
-frontend/env
-frontend/cache
-build
+/arlib
+/frontend/env
+/frontend/cache
+/backend/build
 prova.*
