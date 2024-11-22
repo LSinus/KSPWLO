@@ -1,0 +1,56 @@
+[
+{
+  "directory": "/Users/leonardo/Documents/dev/ProgettoIngInf/backend/build",
+  "command": "/opt/homebrew/opt/llvm/bin/clang++ -DBOOST_GRAPH_DYN_LINK -DBOOST_GRAPH_NO_LIB -I/Users/leonardo/Documents/dev/ProgettoIngInf/backend/external/arlib/include -isystem /opt/homebrew/include -g -std=gnu++17 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk -std=c++17 -o CMakeFiles/main.dir/main.cpp.o -c /Users/leonardo/Documents/dev/ProgettoIngInf/backend/main.cpp",
+  "file": "/Users/leonardo/Documents/dev/ProgettoIngInf/backend/main.cpp",
+  "output": "CMakeFiles/main.dir/main.cpp.o"
+},
+{
+  "directory": "/Users/leonardo/Documents/dev/ProgettoIngInf/backend/build",
+  "command": "/opt/homebrew/opt/llvm/bin/clang++ -DBOOST_GRAPH_DYN_LINK -DBOOST_GRAPH_NO_LIB -I/Users/leonardo/Documents/dev/ProgettoIngInf/backend/external/arlib/include -isystem /opt/homebrew/include -g -std=gnu++17 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk -std=c++17 -o CMakeFiles/main.dir/engine.cpp.o -c /Users/leonardo/Documents/dev/ProgettoIngInf/backend/engine.cpp",
+  "file": "/Users/leonardo/Documents/dev/ProgettoIngInf/backend/engine.cpp",
+  "output": "CMakeFiles/main.dir/engine.cpp.o"
+},
+{
+  "directory": "/Users/leonardo/Documents/dev/ProgettoIngInf/backend/build",
+  "command": "/opt/homebrew/opt/llvm/bin/clang++ -DBOOST_GRAPH_DYN_LINK -DBOOST_GRAPH_NO_LIB -I/Users/leonardo/Documents/dev/ProgettoIngInf/backend/external/arlib/include -isystem /opt/homebrew/include -g -std=gnu++17 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk -std=c++17 -o CMakeFiles/main.dir/network.cpp.o -c /Users/leonardo/Documents/dev/ProgettoIngInf/backend/network.cpp",
+  "file": "/Users/leonardo/Documents/dev/ProgettoIngInf/backend/network.cpp",
+  "output": "CMakeFiles/main.dir/network.cpp.o"
+},
+{
+  "directory": "/Users/leonardo/Documents/dev/ProgettoIngInf/backend/build",
+  "command": "/opt/homebrew/opt/llvm/bin/clang++ -DBOOST_GRAPH_DYN_LINK -DBOOST_GRAPH_NO_LIB -I/Users/leonardo/Documents/dev/ProgettoIngInf/backend/external/arlib/include -isystem /opt/homebrew/include -g -std=gnu++17 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk -std=c++17 -o CMakeFiles/main.dir/message.cpp.o -c /Users/leonardo/Documents/dev/ProgettoIngInf/backend/message.cpp",
+  "file": "/Users/leonardo/Documents/dev/ProgettoIngInf/backend/message.cpp",
+  "output": "CMakeFiles/main.dir/message.cpp.o"
+},
+{
+  "directory": "/Users/leonardo/Documents/dev/ProgettoIngInf/backend/build",
+  "command": "/opt/homebrew/opt/llvm/bin/clang++ -DBOOST_GRAPH_DYN_LINK -DBOOST_GRAPH_NO_LIB -I/Users/leonardo/Documents/dev/ProgettoIngInf/backend/external/arlib/include -isystem /opt/homebrew/include -g -std=gnu++17 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk -std=c++17 -o CMakeFiles/main.dir/utils.cpp.o -c /Users/leonardo/Documents/dev/ProgettoIngInf/backend/utils.cpp",
+  "file": "/Users/leonardo/Documents/dev/ProgettoIngInf/backend/utils.cpp",
+  "output": "CMakeFiles/main.dir/utils.cpp.o"
+},
+{
+  "directory": "/Users/leonardo/Documents/dev/ProgettoIngInf/backend/build/external/arlib",
+  "command": "/opt/homebrew/opt/llvm/bin/clang++ -DBOOST_GRAPH_DYN_LINK -DBOOST_GRAPH_NO_LIB -I/Users/leonardo/Documents/dev/ProgettoIngInf/backend/external/arlib/include -isystem /opt/homebrew/include -g -std=gnu++17 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk -std=c++17 -o CMakeFiles/arlib.dir/src/arlib/details/esx_impl.cpp.o -c /Users/leonardo/Documents/dev/ProgettoIngInf/backend/external/arlib/src/arlib/details/esx_impl.cpp",
+  "file": "/Users/leonardo/Documents/dev/ProgettoIngInf/backend/external/arlib/src/arlib/details/esx_impl.cpp",
+  "output": "external/arlib/CMakeFiles/arlib.dir/src/arlib/details/esx_impl.cpp.o"
+},
+{
+  "directory": "/Users/leonardo/Documents/dev/ProgettoIngInf/backend/build/external/arlib",
+  "command": "/opt/homebrew/opt/llvm/bin/clang++ -DBOOST_GRAPH_DYN_LINK -DBOOST_GRAPH_NO_LIB -I/Users/leonardo/Documents/dev/ProgettoIngInf/backend/external/arlib/include -isystem /opt/homebrew/include -g -std=gnu++17 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk -std=c++17 -o CMakeFiles/arlib.dir/src/arlib/graph_utils.cpp.o -c /Users/leonardo/Documents/dev/ProgettoIngInf/backend/external/arlib/src/arlib/graph_utils.cpp",
+  "file": "/Users/leonardo/Documents/dev/ProgettoIngInf/backend/external/arlib/src/arlib/graph_utils.cpp",
+  "output": "external/arlib/CMakeFiles/arlib.dir/src/arlib/graph_utils.cpp.o"
+},
+{
+  "directory": "/Users/leonardo/Documents/dev/ProgettoIngInf/backend/build/external/arlib/examples",
+  "command": "/opt/homebrew/opt/llvm/bin/clang++ -DBOOST_GRAPH_DYN_LINK -DBOOST_GRAPH_NO_LIB -I/Users/leonardo/Documents/dev/ProgettoIngInf/backend/external/arlib/include -isystem /opt/homebrew/include -g -std=gnu++17 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk -std=c++17 -o CMakeFiles/getting_started.dir/src/getting_started.cpp.o -c /Users/leonardo/Documents/dev/ProgettoIngInf/backend/external/arlib/examples/src/getting_started.cpp",
+  "file": "/Users/leonardo/Documents/dev/ProgettoIngInf/backend/external/arlib/examples/src/getting_started.cpp",
+  "output": "external/arlib/examples/CMakeFiles/getting_started.dir/src/getting_started.cpp.o"
+},
+{
+  "directory": "/Users/leonardo/Documents/dev/ProgettoIngInf/backend/build/external/arlib/examples",
+  "command": "/opt/homebrew/opt/llvm/bin/clang++ -DBOOST_GRAPH_DYN_LINK -DBOOST_GRAPH_NO_LIB -I/Users/leonardo/Documents/dev/ProgettoIngInf/backend/external/arlib/include -isystem /opt/homebrew/include -g -std=gnu++17 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk -std=c++17 -o CMakeFiles/softwarex_examples.dir/src/softwarex_example.cpp.o -c /Users/leonardo/Documents/dev/ProgettoIngInf/backend/external/arlib/examples/src/softwarex_example.cpp",
+  "file": "/Users/leonardo/Documents/dev/ProgettoIngInf/backend/external/arlib/examples/src/softwarex_example.cpp",
+  "output": "external/arlib/examples/CMakeFiles/softwarex_examples.dir/src/softwarex_example.cpp.o"
+}
+]

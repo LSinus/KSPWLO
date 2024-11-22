@@ -1,0 +1,20 @@
+# ninja log v6
+2	636	1732203229869696121	CMakeFiles/main.dir/message.cpp.o	7c983e90bec1cdcb
+1	1130	1732203229868534137	external/arlib/CMakeFiles/arlib.dir/src/arlib/details/esx_impl.cpp.o	ac99e444c0f34b85
+1	1406	1732203229868949339	external/arlib/CMakeFiles/arlib.dir/src/arlib/graph_utils.cpp.o	909b7ea2cee50d8c
+1409	1517	1732203231276333370	external/arlib/libarlib.a	cd1bcabc0ad9fb16
+2	1650	1732203229869519957	CMakeFiles/main.dir/network.cpp.o	21e8f49e13eb687c
+2	2278	1732203229869091754	CMakeFiles/main.dir/main.cpp.o	e56cc29c6f243d92
+2	2621	1732203229869236877	CMakeFiles/main.dir/engine.cpp.o	f8a111379a83daef
+641	3870	1732203230508424182	CMakeFiles/main.dir/utils.cpp.o	fcf46ce708a2cc03
+3870	3983	1732203233737243305	main	1074787de5cab340
+16	947	1732203558364716161	CMakeFiles/main.dir/message.cpp.o	7c983e90bec1cdcb
+15	1806	1732203558364487164	CMakeFiles/main.dir/network.cpp.o	21e8f49e13eb687c
+15	2484	1732203558363579468	CMakeFiles/main.dir/main.cpp.o	e56cc29c6f243d92
+15	2734	1732203558364096252	CMakeFiles/main.dir/engine.cpp.o	f8a111379a83daef
+2734	2866	1732203561082830239	main	1074787de5cab340
+26	1099	1732216299406246005	CMakeFiles/main.dir/message.cpp.o	7c983e90bec1cdcb
+26	1970	1732216299405724629	CMakeFiles/main.dir/network.cpp.o	21e8f49e13eb687c
+25	2578	1732216299405164003	CMakeFiles/main.dir/main.cpp.o	e56cc29c6f243d92
+26	2818	1732216299405570504	CMakeFiles/main.dir/engine.cpp.o	f8a111379a83daef
+2819	2959	1732216302198478718	main	1074787de5cab340
