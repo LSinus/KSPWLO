@@ -16,11 +16,14 @@ private:
     Graph m_graph;
     Vertex m_source;
     Vertex m_dest;
-    int port_;
+    int port_, m_k;
+    float m_theta;
+    std::ostringstream m_results;
 
 private:
-    void buildGraph(std::istream& graphStream);
-    void runAlg() const;
+    void buildGraph(message& msg);
+    void runAlg();
+    void saveResults();
 };
 
 #endif

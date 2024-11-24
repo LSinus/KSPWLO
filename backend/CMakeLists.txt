@@ -10,3 +10,4 @@ add_subdirectory(external/arlib)
 add_executable(main main.cpp engine.cpp network.cpp message.cpp utils.cpp)
 target_link_libraries(main PUBLIC arlib)
 
+add_dependencies(main arlib)

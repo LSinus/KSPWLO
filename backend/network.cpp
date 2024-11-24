@@ -42,9 +42,10 @@ void NetworkProvider::receiveHeader()
 
         m_bodyBuffer.resize(size-4);
 
-        std::cout << m_bodyBuffer.size() << std::endl;
         std::string response = "ok";
         sendData(response);
+        std::cout << '\n';
+        std::cout << "-------------------------------------------------------- " << std::endl;
         std::cout << "Header ricevuto, in attesa di un grafo di dimensione " << size-4 << std::endl;
     }
     else{

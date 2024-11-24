@@ -3,3 +3,6 @@
 /frontend/cache
 /backend/build
 prova.*
+/frontend/graph.xml
+/frontend/graph.graphml
+/frontend/gr.graphml

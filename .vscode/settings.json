@@ -78,7 +78,9 @@
         "numbers": "cpp",
         "scoped_allocator": "cpp",
         "semaphore": "cpp",
-        "syncstream": "cpp"
+        "syncstream": "cpp",
+        "ostream": "cpp",
+        "tuple": "cpp"
     },
     "cmake.sourceDirectory": "/Users/leonardo/Documents/dev/ProgettoIngInf/prova",
     "C_Cpp.errorSquiggles": "disabled",

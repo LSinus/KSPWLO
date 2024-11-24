@@ -1,4 +1,5 @@
 #include "utils.hpp"
+#include <chrono>
 
 namespace utils{
 
@@ -23,15 +24,16 @@ namespace utils{
         }
     }
 
-    std::vector<arlib::Path<Graph>> get_alternative_routes(std::string_view alg,Graph const &G, Vertex s,Vertex t) 
+    std::vector<arlib::Path<Graph>> get_alternative_routes(std::string_view alg,Graph const &G, Vertex s,Vertex t, int k, double theta, std::ostream* results) 
     {
         auto predecessors = arlib::multi_predecessor_map<Vertex>{};
-
-        int k = 3;                                       // Nb alternative routes
-        double theta = 0.5;                              // Overlapping threshold
         auto weight = boost::get(boost::edge_weight, G); // Get Edge WeightMap
 
-        run_alt_routing(alg, G, weight, predecessors, s, t, k, theta);
+        (*results) << alg << "," << s << "," << t << "," << k << "," << theta;
+        {
+            Timer timer(results);
+            run_alt_routing(alg, G, weight, predecessors, s, t, k, theta);
+        }
         auto alt_routes = arlib::to_paths(G, predecessors, weight, s, t);
         return alt_routes;
     }

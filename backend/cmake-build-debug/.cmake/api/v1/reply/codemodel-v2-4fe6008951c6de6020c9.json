@@ -1,0 +1,236 @@
+{
+	"configurations" : 
+	[
+		{
+			"directories" : 
+			[
+				{
+					"build" : ".",
+					"childIndexes" : 
+					[
+						1
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-.-Debug-f5ebdc15457944623624.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"projectIndex" : 0,
+					"source" : ".",
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"build" : "external/arlib",
+					"childIndexes" : 
+					[
+						2,
+						5,
+						6,
+						7
+					],
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-external.arlib-Debug-b79c40dca95b85e6c287.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 0,
+					"projectIndex" : 1,
+					"source" : "external/arlib",
+					"targetIndexes" : 
+					[
+						0
+					]
+				},
+				{
+					"build" : "external/arlib/include/arlib",
+					"childIndexes" : 
+					[
+						3,
+						4
+					],
+					"jsonFile" : "directory-external.arlib.include.arlib-Debug-8e2a35093c47a26d8e9a.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "external/arlib/include/arlib"
+				},
+				{
+					"build" : "external/arlib/include/arlib/details",
+					"jsonFile" : "directory-external.arlib.include.arlib.details-Debug-70cd6b7bbeafbf2e0188.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 1,
+					"source" : "external/arlib/include/arlib/details"
+				},
+				{
+					"build" : "external/arlib/include/arlib/routing_kernels",
+					"jsonFile" : "directory-external.arlib.include.arlib.routing_kernels-Debug-79602811cbbf7dd410ae.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 2,
+					"projectIndex" : 1,
+					"source" : "external/arlib/include/arlib/routing_kernels"
+				},
+				{
+					"build" : "external/arlib/src/arlib",
+					"jsonFile" : "directory-external.arlib.src.arlib-Debug-920e48d5f75ced708084.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "external/arlib/src/arlib"
+				},
+				{
+					"build" : "external/arlib/doc",
+					"hasInstallRule" : true,
+					"jsonFile" : "directory-external.arlib.doc-Debug-6120a7e2fddfb3fa72df.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.10"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 1,
+					"source" : "external/arlib/doc",
+					"targetIndexes" : 
+					[
+						1
+					]
+				},
+				{
+					"build" : "external/arlib/examples",
+					"jsonFile" : "directory-external.arlib.examples-Debug-265c7b1c8bdbed53e9d5.json",
+					"minimumCMakeVersion" : 
+					{
+						"string" : "3.5"
+					},
+					"parentIndex" : 1,
+					"projectIndex" : 2,
+					"source" : "external/arlib/examples",
+					"targetIndexes" : 
+					[
+						2,
+						4
+					]
+				}
+			],
+			"name" : "Debug",
+			"projects" : 
+			[
+				{
+					"childIndexes" : 
+					[
+						1
+					],
+					"directoryIndexes" : 
+					[
+						0
+					],
+					"name" : "backend",
+					"targetIndexes" : 
+					[
+						3
+					]
+				},
+				{
+					"childIndexes" : 
+					[
+						2
+					],
+					"directoryIndexes" : 
+					[
+						1,
+						2,
+						3,
+						4,
+						5,
+						6
+					],
+					"name" : "alternative-routing-lib",
+					"parentIndex" : 0,
+					"targetIndexes" : 
+					[
+						0,
+						1
+					]
+				},
+				{
+					"directoryIndexes" : 
+					[
+						7
+					],
+					"name" : "examples",
+					"parentIndex" : 1,
+					"targetIndexes" : 
+					[
+						2,
+						4
+					]
+				}
+			],
+			"targets" : 
+			[
+				{
+					"directoryIndex" : 1,
+					"id" : "arlib::@cf639793db35ae81b57a",
+					"jsonFile" : "target-arlib-Debug-d15abfae2f7a5109937f.json",
+					"name" : "arlib",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 6,
+					"id" : "doc::@e6e59f70a38e47d98882",
+					"jsonFile" : "target-doc-Debug-05972d1820ff37643df4.json",
+					"name" : "doc",
+					"projectIndex" : 1
+				},
+				{
+					"directoryIndex" : 7,
+					"id" : "getting_started::@2542a76c091113781c08",
+					"jsonFile" : "target-getting_started-Debug-b910aeb7a7005c374750.json",
+					"name" : "getting_started",
+					"projectIndex" : 2
+				},
+				{
+					"directoryIndex" : 0,
+					"id" : "main::@6890427a1f51a3e7e1df",
+					"jsonFile" : "target-main-Debug-93e4ffe19f843e1cbc59.json",
+					"name" : "main",
+					"projectIndex" : 0
+				},
+				{
+					"directoryIndex" : 7,
+					"id" : "softwarex_examples::@2542a76c091113781c08",
+					"jsonFile" : "target-softwarex_examples-Debug-3f6f70102f47729407e8.json",
+					"name" : "softwarex_examples",
+					"projectIndex" : 2
+				}
+			]
+		}
+	],
+	"kind" : "codemodel",
+	"paths" : 
+	{
+		"build" : "/Users/leonardo/Documents/dev/ProgettoIngInf/backend/cmake-build-debug",
+		"source" : "/Users/leonardo/Documents/dev/ProgettoIngInf/backend"
+	},
+	"version" : 
+	{
+		"major" : 2,
+		"minor" : 7
+	}
+}

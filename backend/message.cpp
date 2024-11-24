@@ -6,3 +6,7 @@ std::istringstream message::read() const {
     std::istringstream stream(body_string);
     return stream;
 }
+
+uint32_t message::size() const{
+    return header.size;
+}

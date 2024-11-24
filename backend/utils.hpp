@@ -25,9 +25,27 @@ namespace utils{
     template <typename WeightMap, typename MultiPredecessorMap>
     void run_alt_routing(std::string_view name, Graph const &G,WeightMap const &weight, MultiPredecessorMap &predecessors,Vertex s, Vertex t, int k, double theta);
     
-    std::vector<arlib::Path<Graph>> get_alternative_routes(std::string_view alg,Graph const &G, Vertex s,Vertex t);
+    std::vector<arlib::Path<Graph>> get_alternative_routes(std::string_view alg,Graph const &G, Vertex s,Vertex t, int k, double theta, std::ostream* results);
 
     void print_path(arlib::Path<Graph> const &path);
+
+    struct Timer {
+        std::chrono::time_point<std::chrono::steady_clock> start, end;
+        std::chrono::duration<float> duration;
+        std::ostream* m_results;
+
+        Timer( std::ostream* results): m_results{results}
+        {   
+            start = std::chrono::high_resolution_clock::now();
+        }
+
+        ~Timer(){
+            end = std::chrono::high_resolution_clock::now();
+            duration = end - start;
+            (*m_results) << "," << duration.count()*1000 << "\n";
+        }
+
+    };
 }
 
 #endif
