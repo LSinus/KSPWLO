@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import CheckButtons
 
 # Leggi i dati
-df = pd.read_csv('../backend/build/output.csv')
+df = pd.read_csv('cittastudi_res.csv')
 
 # Raggruppa per 'k', 'theta' e 'alg' e calcola la media del 'time'
 df_grouped = df.groupby(['k', 'theta', 'alg']).agg({'time': 'mean'}).reset_index()
