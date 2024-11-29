@@ -10,16 +10,11 @@ class NetworkProvider {
 
 public:
     NetworkProvider(int port);
+    ~NetworkProvider();
     void connect();
     void disconnect();
     void send(const message& msg);
     message receive();
-
-private:
-    void receiveHeader();
-    void receiveBody();
-    message buildMessage() const;
-    void sendData(const std::string& data);
 
 private:
     std::array<uint8_t, 4> m_headerBuffer;
@@ -28,6 +23,12 @@ private:
     boost::asio::ip::tcp::endpoint m_endpoint;
     boost::asio::ip::tcp::acceptor m_acceptor;
     boost::asio::ip::tcp::socket m_socket;
+
+private:
+    void receiveHeader();
+    void receiveBody();
+    message buildMessage() const;
+    void sendData(const std::string& data);
 };
 
 #endif

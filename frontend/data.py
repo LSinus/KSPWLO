@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib.widgets import CheckButtons
 
 # Leggi i dati
-df = pd.read_csv('cittastudi_res.csv')
+df = pd.read_csv("../backend/build/output.csv")
 
 # Raggruppa per 'k', 'theta' e 'alg' e calcola la media del 'time'
 df_grouped = df.groupby(['k', 'theta', 'alg']).agg({'time': 'mean'}).reset_index()
@@ -34,10 +34,10 @@ for alg_name, color in zip(algorithms, colors):
         color=color
     )
 
-# Imposta i limiti degli assi
+#Imposta i limiti degli assi
 ax.set_xlim(0, 10)
 ax.set_ylim(0, 1)
-ax.set_zlim(0, 1000)
+#ax.set_zlim(0, 500)
 
 # Aggiungi etichette e legenda
 ax.set_xlabel('k')

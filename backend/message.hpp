@@ -36,6 +36,7 @@ struct message{
     struct header{
         uint32_t size;
     } header{};
+    
     struct body
     {
        std::vector<char> data;

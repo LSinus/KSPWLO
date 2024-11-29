@@ -11,6 +11,8 @@ public:
     explicit Engine(int port = 10714);
     void loop();
     void end();
+    ~Engine();
+    
 private:
     NetworkProvider m_netProvider;
     Graph m_graph;
@@ -23,7 +25,8 @@ private:
 private:
     void buildGraph(message& msg);
     void runAlg();
-    void saveResults();
+    void saveResults(const std::string& result);
+    void saveProfilingResults();
 };
 
 #endif
