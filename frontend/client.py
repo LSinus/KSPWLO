@@ -39,8 +39,8 @@ ox.save_graphml(graph, filepath)
 
 source = 2500
 dest = 7653
-theta = 1
-k = 1
+theta = 0.2
+k = 3
 source_dest_bytes = struct.pack("!iifi", source, dest, theta, k)
 
 from modify_graphml import add_osmid
