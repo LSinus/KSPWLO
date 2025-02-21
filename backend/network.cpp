@@ -46,7 +46,7 @@ void NetworkProvider::receiveHeader()
         sendData(response);
         std::cout << '\n';
         std::cout << "-------------------------------------------------------- " << std::endl;
-        std::cout << "Header ricevuto, in attesa di un grafo di dimensione " << size-4 << std::endl;
+        std::cout << "Header ricevuto, in attesa di un messaggio di dimensione " << size-4 << std::endl;
     }
     else{
         std::string response = "Error: invalid header";
@@ -88,5 +88,11 @@ message NetworkProvider::receive()
 
 void NetworkProvider::disconnect()
 {
+    m_socket.close();
+}
+
+NetworkProvider::~NetworkProvider()
+{   
+    std::cout << "ciao sono il networkprovider e sto morendo\n";
     m_socket.close();
 }

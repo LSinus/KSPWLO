@@ -16,7 +16,7 @@
 #include <arlib/penalty.hpp>
 #include <arlib/routing_kernels/types.hpp>
 
-using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS, boost::no_property, boost::property<boost::edge_weight_t, double> , boost::no_property>;
+using Graph = boost::adjacency_list<boost::vecS, boost::vecS, boost::bidirectionalS, boost::property<boost::vertex_name_t, size_t>, boost::property<boost::edge_weight_t, double> , boost::no_property>;
 using Vertex = typename boost::graph_traits<Graph>::vertex_descriptor;
 using Edge = typename boost::graph_traits<Graph>::edge_descriptor;
 
@@ -28,6 +28,7 @@ namespace utils{
     std::vector<arlib::Path<Graph>> get_alternative_routes(std::string_view alg,Graph const &G, Vertex s,Vertex t, int k, double theta, std::ostream* results);
 
     void print_path(arlib::Path<Graph> const &path);
+    std::string get_osmid_path(arlib::Path<Graph> const &path, Vertex source);
 
     struct Timer {
         std::chrono::time_point<std::chrono::steady_clock> start, end;
@@ -46,6 +47,8 @@ namespace utils{
         }
 
     };
+
+
 }
 
 #endif

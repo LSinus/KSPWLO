@@ -30,7 +30,7 @@ namespace utils{
         auto weight = boost::get(boost::edge_weight, G); // Get Edge WeightMap
 
         (*results) << alg << "," << s << "," << t << "," << k << "," << theta;
-        {
+        {   
             Timer timer(results);
             run_alt_routing(alg, G, weight, predecessors, s, t, k, theta);
         }
@@ -40,12 +40,50 @@ namespace utils{
 
     void print_path(arlib::Path<Graph> const &path) {
         using namespace boost;
-
+        
         for (auto [v_it, v_end] = vertices(path); v_it != v_end; ++v_it) {
             for (auto [e_it, e_end] = out_edges(*v_it, path); e_it != e_end; ++e_it) {
             std::cout << source(*e_it, path) << " -- "
                         << target(*e_it, path) << "\n";
             }
         }
+        std::cout << path.length() << '\n';
+    }
+
+    // Definizione del visitor personalizzato
+    template <typename Graph>
+    class DFSVisitor : public boost::default_dfs_visitor {
+    public:
+        DFSVisitor(std::ostringstream* vertex_results) : m_vertex_results{vertex_results} {};
+    private: 
+        std::ostringstream* m_vertex_results;
+    public:
+        void discover_vertex(typename boost::graph_traits<Graph>::vertex_descriptor v, const Graph& g) {
+            auto osmid_map = get(boost::vertex_name, g);
+            (*m_vertex_results) << osmid_map[v] << ",";
+        }
+
+    };
+
+
+
+    std::string get_osmid_path(arlib::Path<Graph> const &path, Vertex source) {
+        using namespace boost;
+        // auto osmid_map = get(boost::vertex_name, path);
+        // for (const auto& v : boost::make_iterator_range(vertices(path))) {
+        //     std::cout << "Nodo: " << v << ", OSMID: " << osmid_map[v] << "\n";
+        // }
+        // auto [e_begin, e_end] = edges(path);
+        // for (auto e = e_begin; e != e_end; ++e) {
+        //     std::cout << "Arco da " << source(*e, path) << " a " << target(*e, path) << std::endl;
+        // }
+
+        std::ostringstream results;
+        DFSVisitor<arlib::Path<Graph>> vis(&results);
+        depth_first_search(path, visitor(vis).root_vertex(source));
+        
+        std::string res = results.str();
+        res.pop_back();
+        return res;
     }
 }
