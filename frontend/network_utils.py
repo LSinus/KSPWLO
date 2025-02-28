@@ -61,7 +61,7 @@ def parse_data(data):
     for item in re.split(r'[ \n]+', data):
         list_osmid = []
         tmp =  item.split(',')
-        if tmp:
+        if tmp and len(tmp)>1:
             alg_name = tmp[0]
             num_result = int(tmp[1])
             osmids = tmp[2:]
