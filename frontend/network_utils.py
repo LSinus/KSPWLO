@@ -41,7 +41,7 @@ def send_data(socket, data, graph_size=0):
     the backend with 'ok' and then the sockets waits for the body. If the body is received 
     correctly the function calls parse_data to parse the message and returns the response.
 '''
-def receive_data(socket):
+def receive_data(socket) -> List[Result]:
     header = socket.recv(1024)
     if header:
         size = int(header.decode('utf-8'))
