@@ -12,9 +12,15 @@ void Engine::loop()
     m_netProvider.connect();
     try {
         while(true){
+            //Clear result file
+            std::ofstream output_file("result.txt");
+            if (output_file.is_open()) {
+                output_file.close();
+            }
             message msg = m_netProvider.receive();
             buildGraph(msg);
             runAlg();
+            sendResults();
         }
     }catch (std::exception& e) {
         std::cerr << "Connessione terminata dal client: " << e.what() << std::endl;
@@ -28,34 +34,44 @@ void Engine::buildGraph(message& msg)
 {   
     std::istringstream graphStream = msg.read();
 
-    std::array<uint8_t, 4> tmp_source{}, tmp_dest{}, tmp_k{}, tmp_theta{};
+    std::array<uint8_t, 8> tmp_source{}, tmp_dest{};
+    std::array<uint8_t, 4> tmp_k{}, tmp_theta{};
 
     if (!graphStream) {
         throw std::runtime_error("Errore nella lettura dei dati m_dest, m_source, m_k, m_theta.");
     }
 
-    graphStream.read(reinterpret_cast<char*>(&tmp_source), sizeof(tmp_source));
-    graphStream.read(reinterpret_cast<char*>(&tmp_dest), sizeof(tmp_dest));
-    graphStream.read(reinterpret_cast<char*>(&tmp_theta), sizeof(tmp_theta));
-    graphStream.read(reinterpret_cast<char*>(&tmp_k), sizeof(tmp_k));
+    // Read the bytes from the stream
+    graphStream.read(reinterpret_cast<char*>(tmp_source.data()), sizeof(tmp_source));
+    graphStream.read(reinterpret_cast<char*>(tmp_dest.data()), sizeof(tmp_dest));
+    graphStream.read(reinterpret_cast<char*>(tmp_theta.data()), sizeof(tmp_theta));
+    graphStream.read(reinterpret_cast<char*>(tmp_k.data()), sizeof(tmp_k));
 
-    m_source = 
-            (tmp_source[0] << 24) | 
-            (tmp_source[1] << 16) | 
-            (tmp_source[2] << 8) | 
-             tmp_source[3];
+    // Reconstruct the integers in big-endian order
+    m_source =
+        (static_cast<uint64_t>(tmp_source[0]) << 56) |
+        (static_cast<uint64_t>(tmp_source[1]) << 48) |
+        (static_cast<uint64_t>(tmp_source[2]) << 40) |
+        (static_cast<uint64_t>(tmp_source[3]) << 32) |
+        (static_cast<uint64_t>(tmp_source[4]) << 24) |
+        (static_cast<uint64_t>(tmp_source[5]) << 16) |
+        (static_cast<uint64_t>(tmp_source[6]) << 8) |
+        (static_cast<uint64_t>(tmp_source[7]));
 
-    m_dest = 
-            (tmp_dest[0] << 24) | 
-            (tmp_dest[1] << 16) | 
-            (tmp_dest[2] << 8) | 
-             tmp_dest[3];
-
+    m_dest =
+        (static_cast<uint64_t>(tmp_dest[0]) << 56) |
+        (static_cast<uint64_t>(tmp_dest[1]) << 48) |
+        (static_cast<uint64_t>(tmp_dest[2]) << 40) |
+        (static_cast<uint64_t>(tmp_dest[3]) << 32) |
+        (static_cast<uint64_t>(tmp_dest[4]) << 24) |
+        (static_cast<uint64_t>(tmp_dest[5]) << 16) |
+        (static_cast<uint64_t>(tmp_dest[6]) << 8) |
+        (static_cast<uint64_t>(tmp_dest[7]));
     m_k = 
-            (tmp_k[0] << 24) | 
-            (tmp_k[1] << 16) | 
-            (tmp_k[2] << 8) | 
-             tmp_k[3]; 
+        (tmp_k[0] << 24) |
+        (tmp_k[1] << 16) |
+        (tmp_k[2] << 8)  |
+        tmp_k[3];
     
     float tmp_float;
     std::reverse(tmp_theta.begin(), tmp_theta.end());
@@ -94,6 +110,26 @@ void Engine::saveProfilingResults() {
     }
 }
 
+void Engine::sendResults() {
+    std::ifstream input_file("result.txt", std::ios::binary | std::ios::ate);
+
+    if (!input_file.is_open()) {
+        throw std::runtime_error("Could not open file");
+    }
+
+    // Get file size
+    std::streamsize size = input_file.tellg();
+    input_file.seekg(0, std::ios::beg);
+
+    // Create vector and read the data
+    std::vector<char> buffer(size);
+    if (!input_file.read(buffer.data(), size)) {
+        throw std::runtime_error("Could not read file");
+    }
+    message msg(buffer);
+    m_netProvider.send(msg);
+}
+
 void Engine::saveResults(const std::string& result) {
     std::ofstream output_file("result.txt", std::ios::app);
 
@@ -109,28 +145,50 @@ void Engine::runAlg() {
     // auto predecessors = arlib::multi_predecessor_map<Vertex>{};
     // auto weight = boost::get(boost::edge_weight, m_graph);
     // utils::Timer timer;
-    std::cout<<"calcolo onepass+\n";
-    const auto res_opplus = utils::get_alternative_routes("onepass_plus", m_graph, m_source, m_dest, m_k, static_cast<double>(m_theta), &m_results);
-    for (auto const &route : res_opplus) {
-        std::cout << "Length: " << route.length() << "\n";
-        std::string path = utils::get_osmid_path(route, m_source);
-        saveResults(path);
-    }
 
-    std::cout<<"calcolo esx\n";
-    const auto res_esx = utils::get_alternative_routes("esx", m_graph, m_source, m_dest, m_k, static_cast<double>(m_theta), &m_results);
-    for (auto const &route : res_esx) {
-        std::cout << "Length: " << route.length() << "\n";
-        std::string path = utils::get_osmid_path(route, m_source);
-        saveResults(path);
-    }
+#if 1
+    Vertex source = utils::find_vertex_by_osmid(m_graph, m_source);
+    Vertex dest = utils::find_vertex_by_osmid(m_graph, m_dest);
+#else
+    auto source = m_source;
+    auto dest = m_dest;
+#endif
 
-    std::cout<<"calcolo penalty\n";
-    const auto res_penalty = utils::get_alternative_routes("penalty", m_graph, m_source, m_dest, m_k, static_cast<double>(m_theta), &m_results);
-    for (auto const &route : res_penalty) {
-        std::cout << "Length: " << route.length() << "\n";
-        std::string path = utils::get_osmid_path(route, m_source);
-        saveResults(path);
+    if (source != -1 && dest != -1) {
+        size_t count = 0;
+
+        std::cout<<"calcolo onepass+\n";
+
+        const auto res_opplus = utils::get_alternative_routes("onepass_plus", m_graph, source, dest, m_k, static_cast<double>(m_theta), &m_results);
+        for (auto const &route : res_opplus) {
+            std::cout << "Length: " << route.length() << "\n";
+            std::string path = "onepass+," + std::to_string(count) + "," + utils::get_osmid_path(route, source);
+            saveResults(path);
+            ++count;
+        }
+
+        count = 0;
+        std::cout<<"calcolo esx\n";
+        const auto res_esx = utils::get_alternative_routes("esx", m_graph, source, dest, m_k, static_cast<double>(m_theta), &m_results);
+        for (auto const &route : res_esx) {
+            std::cout << "Length: " << route.length() << "\n";
+            std::string path = "esx+," + std::to_string(count) + "," + utils::get_osmid_path(route, source);
+            saveResults(path);
+            ++count;
+        }
+
+        count = 0;
+        std::cout<<"calcolo penalty\n";
+        const auto res_penalty = utils::get_alternative_routes("penalty", m_graph, source, dest, m_k, static_cast<double>(m_theta), &m_results);
+        for (auto const &route : res_penalty) {
+            std::cout << "Length: " << route.length() << "\n";
+            std::string path = "penalty," + std::to_string(count) + "," + utils::get_osmid_path(route, source);
+            saveResults(path);
+            ++count;
+        }
+    }
+    else {
+        std::cout<<"INVALID OSMID ABORT...\n";
     }
 }
 

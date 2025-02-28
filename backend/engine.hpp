@@ -14,6 +14,12 @@ public:
     ~Engine();
     
 private:
+    void buildGraph(message& msg);
+    void runAlg();
+    void saveResults(const std::string& result);
+    void saveProfilingResults();
+    void sendResults();
+
     NetworkProvider m_netProvider;
     Graph m_graph;
     Vertex m_source;
@@ -22,11 +28,7 @@ private:
     float m_theta;
     std::ostringstream m_results;
 
-private:
-    void buildGraph(message& msg);
-    void runAlg();
-    void saveResults(const std::string& result);
-    void saveProfilingResults();
+
 };
 
 #endif

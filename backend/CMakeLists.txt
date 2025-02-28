@@ -8,6 +8,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 add_subdirectory(external/arlib)
 
 add_executable(main main.cpp engine.cpp network.cpp message.cpp utils.cpp)
-target_link_libraries(main PUBLIC arlib)
+target_link_libraries(main PUBLIC arlib curl)
 
 add_dependencies(main arlib)

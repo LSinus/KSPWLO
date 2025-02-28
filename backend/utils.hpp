@@ -30,6 +30,8 @@ namespace utils{
     void print_path(arlib::Path<Graph> const &path);
     std::string get_osmid_path(arlib::Path<Graph> const &path, Vertex source);
 
+    Vertex find_vertex_by_osmid(const Graph& g, unsigned long target_osmid);
+
     struct Timer {
         std::chrono::time_point<std::chrono::steady_clock> start, end;
         std::chrono::duration<float> duration;

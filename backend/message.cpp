@@ -10,3 +10,8 @@ std::istringstream message::read() const {
 uint32_t message::size() const{
     return header.size;
 }
+
+message::message(const std::vector<char>& data) {
+    header.size = data.size()+4;
+    body.data = data;
+}

@@ -42,8 +42,10 @@ struct message{
        std::vector<char> data;
     } body;
 
-    std::istringstream read() const;
-    uint32_t size() const;
+    [[nodiscard]] std::istringstream read() const;
+    [[nodiscard]] uint32_t size() const;
+    message()= default;
+    explicit message(const std::vector<char>& data);
 };
 
 #endif

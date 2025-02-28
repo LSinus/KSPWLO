@@ -24,8 +24,24 @@ void NetworkProvider::sendData(const std::string& data)
 }
 
 auto NetworkProvider::send(const message& message) -> void {
-    //boost::asio::write(m_socket, boost::asio::buffer(data.c_str(), data.length()));
+    char resbuf[32];
+
+    sendHeader(message);
+
+    // Wait for client response
+    m_socket.wait(m_socket.wait_read);
+    size_t bytes_read = m_socket.read_some(boost::asio::buffer(resbuf, sizeof(resbuf) - 1));
+    resbuf[bytes_read] = '\0';
+
+    if (std::string(resbuf) == "ok") {
+        sendBody(message);
+        std::cout << "Response body sent\n";
+    } else {
+        std::cerr << "Invalid response from client: " << resbuf << "\n";
+    }
 }
+
+
 
 void NetworkProvider::receiveHeader()
 {
@@ -68,7 +84,16 @@ void NetworkProvider::receiveBody()
         std::cout << "Errore nella ricezione del grafo" << std::endl;
 }
 
-message NetworkProvider::buildMessage() const {
+void NetworkProvider::sendHeader(const message &msg) {
+    boost::asio::write(m_socket, boost::asio::buffer(std::to_string(msg.header.size).c_str(), std::to_string(msg.header.size).length()));
+}
+
+void NetworkProvider::sendBody(const message &msg) {
+    boost::asio::write(m_socket, boost::asio::buffer(std::string(msg.body.data.data()).c_str(), std::string(msg.body.data.data()).length()));
+}
+
+message NetworkProvider::buildMessage() const
+{
     message msg;
     msg.header.size = m_bodyBuffer.size() + 4;
     msg.body.data = m_bodyBuffer;
@@ -93,6 +118,5 @@ void NetworkProvider::disconnect()
 
 NetworkProvider::~NetworkProvider()
 {   
-    std::cout << "ciao sono il networkprovider e sto morendo\n";
     m_socket.close();
 }

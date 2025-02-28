@@ -99,7 +99,7 @@ build CMakeFiles/main.dir/utils.cpp.o: CXX_COMPILER__main_unscanned_Debug /Users
 
 build main: CXX_EXECUTABLE_LINKER__main_Debug CMakeFiles/main.dir/main.cpp.o CMakeFiles/main.dir/engine.cpp.o CMakeFiles/main.dir/network.cpp.o CMakeFiles/main.dir/message.cpp.o CMakeFiles/main.dir/utils.cpp.o | external/arlib/libarlib.a /opt/homebrew/lib/libboost_graph-mt.dylib || external/arlib/libarlib.a
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX15.0.sdk
-  LINK_LIBRARIES = external/arlib/libarlib.a  /opt/homebrew/lib/libboost_graph-mt.dylib
+  LINK_LIBRARIES = external/arlib/libarlib.a  -lcurl  /opt/homebrew/lib/libboost_graph-mt.dylib
   OBJECT_DIR = CMakeFiles/main.dir
   POST_BUILD = :
   PRE_LINK = :

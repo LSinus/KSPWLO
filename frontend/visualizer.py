@@ -38,7 +38,7 @@ class MappaWindow(QMainWindow):
         layout.addWidget(self.result_label)
 
         self.browser = QWebEngineView()
-        self.map_file = "mappa.html"
+        self.map_file = "route_map.html"
         self.create_map(45.4642, 9.19)  
         self.load_map()
         layout.addWidget(self.browser)

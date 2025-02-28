@@ -27,6 +27,8 @@ private:
 private:
     void receiveHeader();
     void receiveBody();
+    void sendHeader(const message& msg);
+    void sendBody(const message& msg);
     message buildMessage() const;
     void sendData(const std::string& data);
 };

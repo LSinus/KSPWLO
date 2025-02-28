@@ -19,7 +19,7 @@ namespace utils{
                         max_nb_updates, max_nb_steps,
                         routing_kernels::bidirectional_dijkstra);
         } else {
-            std::cout << "Unknown algorithm '" << name << "'. Exiting...\n";
+            std::cerr << "Unknown algorithm '" << name << "'. Exiting...\n";
             std::exit(1);
         }
     }
@@ -50,7 +50,9 @@ namespace utils{
         std::cout << path.length() << '\n';
     }
 
-    // Definizione del visitor personalizzato
+    /* Custom Depth First Visitor for the graph used to store osmid of each discovered vertex in the solution,
+     * this is important in order to show the result on a map in the frontend layer, because thanks to the
+     * osmid is it possible to find the univocal position on the map */
     template <typename Graph>
     class DFSVisitor : public boost::default_dfs_visitor {
     public:
@@ -65,18 +67,8 @@ namespace utils{
 
     };
 
-
-
     std::string get_osmid_path(arlib::Path<Graph> const &path, Vertex source) {
         using namespace boost;
-        // auto osmid_map = get(boost::vertex_name, path);
-        // for (const auto& v : boost::make_iterator_range(vertices(path))) {
-        //     std::cout << "Nodo: " << v << ", OSMID: " << osmid_map[v] << "\n";
-        // }
-        // auto [e_begin, e_end] = edges(path);
-        // for (auto e = e_begin; e != e_end; ++e) {
-        //     std::cout << "Arco da " << source(*e, path) << " a " << target(*e, path) << std::endl;
-        // }
 
         std::ostringstream results;
         DFSVisitor<arlib::Path<Graph>> vis(&results);
@@ -85,5 +77,16 @@ namespace utils{
         std::string res = results.str();
         res.pop_back();
         return res;
+    }
+
+
+    Vertex find_vertex_by_osmid(const Graph& g, unsigned long target_osmid) {
+        auto osmid_map = get(boost::vertex_name, g);
+        for (auto v : boost::make_iterator_range(boost::vertices(g))) {
+            if (osmid_map[v] == target_osmid) {
+                return v;
+            }
+        }
+        return boost::graph_traits<Graph>::null_vertex();
     }
 }
