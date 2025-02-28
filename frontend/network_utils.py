@@ -73,7 +73,7 @@ def parse_data(data):
                 list_osmid
             )
             results_by_alg.append(result)
-        return results_by_alg
+    return results_by_alg
     
 
 
