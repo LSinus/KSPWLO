@@ -60,7 +60,6 @@ k = 3
 source_dest_bytes = struct.pack("!QQfi", source, dest, theta, k)
 
 
-
 graph_size = os.path.getsize(filepath)
 
 #lettura file grafo salvato precedentemente
