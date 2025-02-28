@@ -67,7 +67,7 @@ class AppIntegrata(QMainWindow):
 
     def show_default_map(self):
         m_default=folium.Map(location=[45.4642, 9.1900], zoom_start=12)
-        m_default.save("default_map.html")
+        m_default.save("files/default_map.html")
         data_default=io.BytesIO()
         m_default.save(data_default, close_file=False)
         self.webview.setHtml(data_default.getvalue().decode())
@@ -102,7 +102,7 @@ class AppIntegrata(QMainWindow):
         
         #opening the connection
         client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        client_socket.connect((self.host_server_ip, self.host_server_port)) #uso argomenti passati per parametro
+        client_socket.connect(("192.168.1.3", 10714))
         
         #new Nominatim client
         geolocator=Nominatim(user_agent="geoapp")
@@ -125,13 +125,13 @@ class AppIntegrata(QMainWindow):
         max_lon = max(start.longitude, end.longitude) + margin
         G = ox.graph_from_bbox(max_lat, min_lat, max_lon, min_lon, network_type='drive')
         print("Grafo ricevuto, salvo il file...")
-        filepath='G.graphml'
+        filepath='files/G.graphml'
         ox.save_graphml(G, filepath)
 
         from graph_utils import add_osmid, calc_min_dist_osmid
         add_osmid(filepath, filepath)
-        source = int(calc_min_dist_osmid(start.latitude, start.longitude))
-        dest = int(calc_min_dist_osmid(end.latitude, end.longitude))
+        source = int(calc_min_dist_osmid(start.latitude, start.longitude, filepath))
+        dest = int(calc_min_dist_osmid(end.latitude, end.longitude, filepath))
         print(str(source) + " " + str(dest))
         source_dest_bytes = struct.pack("!QQfi", source, dest, self.theta, self.k)
         graph_size = os.path.getsize(filepath)
@@ -217,16 +217,16 @@ class AppIntegrata(QMainWindow):
 
 if __name__ == "__main__":
     parser=argparse.ArgumentParser()
-    parser.add_argument('-hip', type=str, help='IP del server')
-    parser.add_argument('-hp', type=str, help='Porta del server')
+    parser.add_argument('-ip', type=str, help='IP del server')
+    parser.add_argument('-p', type=int, help='Porta del server')
     args=parser.parse_args()
-    if args.hip:
-        host_server_ip=args.hip
+    if args.ip:
+        host_server_ip=args.ip
     else:
         host_server_ip='127.0.0.1' 
     
-    if args.hp:
-        host_server_port=args.hp
+    if args.p:
+        host_server_port=args.p
     else:
         host_server_port=10714
 

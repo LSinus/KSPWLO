@@ -35,7 +35,7 @@ def add_osmid(file_input, file_output):
    
     tree.write(file_output, encoding="utf-8", xml_declaration=True)
 
-def calc_min_dist_osmid(lat, lon):
+def calc_min_dist_osmid(lat, lon, file_input):
     
     tree = ET.parse(file_input)
     root = tree.getroot()
@@ -66,6 +66,3 @@ def calc_min_dist_osmid(lat, lon):
 
     return closest_osmid
 
-# input and output graph file
-file_input = "graph.graphml"
-file_output = "graph.graphml"
