@@ -48,7 +48,7 @@ def receive_data(socket):
         print('[INFO] Receiving a response of: ' + str(size) + ' bytes')
         res = 'ok'
         socket.sendall(res.encode('utf-8'))
-        body = socket.recv(size)
+        body = socket.recv(size-4)
         if body:
            return parse_data(body.decode('utf-8'))
 
@@ -61,19 +61,19 @@ def parse_data(data):
     for item in re.split(r'[ \n]+', data):
         list_osmid = []
         tmp =  item.split(',')
-        alg_name = tmp[0]
-        num_result = int(tmp[1])
-        osmids = tmp[2:]
-        for osmid in osmids:
-            list_osmid.append(int(osmid))
-        result = Result(
-            alg_name,
-            num_result,
-            list_osmid
-        )
-        results_by_alg.append(result)
-        result = []
-    return results_by_alg
+        if tmp:
+            alg_name = tmp[0]
+            num_result = int(tmp[1])
+            osmids = tmp[2:]
+            for osmid in osmids:
+                list_osmid.append(int(osmid))
+            result = Result(
+                alg_name,
+                num_result,
+                list_osmid
+            )
+            results_by_alg.append(result)
+        return results_by_alg
     
 
 
@@ -90,19 +90,19 @@ if __name__ == '__main__':
     client_socket.connect((server_ip, server_port))
 
     
-    graph = ox.graph_from_bbox(45.48742, 45.47916, 9.22802, 9.23930, network_type='drive')
+    graph = ox.graph_from_bbox(45.49094, 45.48491, 9.1913, 9.20323, network_type='drive')
     filepath='graph.graphml'
     ox.save_graphml(graph, filepath)
    
     from graph_utils import add_osmid, calc_min_dist_osmid
     add_osmid(filepath, filepath)
 
-    source = int(calc_min_dist_osmid(45.48216, 9.23530))
-    dest = int(calc_min_dist_osmid(45.48442, 9.23502))
+    source = int(calc_min_dist_osmid(45.48906, 9.19318, filepath))
+    dest = int(calc_min_dist_osmid(45.48744, 9.20065, filepath))
 
     print(str(source) + " " + str(dest))
-    theta = 0.2
-    k = 3
+    theta = 0.9
+    k = 2
     source_dest_bytes = struct.pack("!QQfi", source, dest, theta, k)
     graph_size = os.path.getsize(filepath)
 
