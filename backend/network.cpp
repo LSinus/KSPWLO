@@ -63,6 +63,7 @@ void NetworkProvider::receiveHeader()
         std::cout << '\n';
         std::cout << "-------------------------------------------------------- " << std::endl;
         std::cout << "Header ricevuto, in attesa di un messaggio di dimensione " << size-4 << std::endl;
+        std::cout << "m_bodyBuffer size is: "<< m_bodyBuffer.size() << std::endl;
     }
     else{
         std::string response = "Error: invalid header";

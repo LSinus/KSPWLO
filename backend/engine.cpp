@@ -172,12 +172,12 @@ void Engine::runAlg() {
         const auto res_esx = utils::get_alternative_routes("esx", m_graph, source, dest, m_k, static_cast<double>(m_theta), &m_results);
         for (auto const &route : res_esx) {
             std::cout << "Length: " << route.length() << "\n";
-            std::string path = "esx+," + std::to_string(count) + "," + utils::get_osmid_path(route, source);
+            std::string path = "esx," + std::to_string(count) + "," + utils::get_osmid_path(route, source);
             saveResults(path);
             ++count;
         }
 
-        count = 0;
+        /*count = 0;
         std::cout<<"calcolo penalty\n";
         const auto res_penalty = utils::get_alternative_routes("penalty", m_graph, source, dest, m_k, static_cast<double>(m_theta), &m_results);
         for (auto const &route : res_penalty) {
@@ -185,7 +185,7 @@ void Engine::runAlg() {
             std::string path = "penalty," + std::to_string(count) + "," + utils::get_osmid_path(route, source);
             saveResults(path);
             ++count;
-        }
+        }*/
     }
     else {
         std::cout<<"INVALID OSMID ABORT...\n";
