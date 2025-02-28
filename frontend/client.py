@@ -119,11 +119,12 @@ class AppIntegrata(QMainWindow):
         pprint(end)
 
         print("Ottengo il grafo...")
-        margin=0.01
+        margin=0.035
         min_lat = min(start.latitude, end.latitude) - margin
         max_lat = max(start.latitude, end.latitude) + margin
         min_lon = min(start.longitude, end.longitude) - margin
         max_lon = max(start.longitude, end.longitude) + margin
+
         G = ox.graph_from_bbox(max_lat, min_lat, max_lon, min_lon, network_type='drive')
         print("Grafo ricevuto, salvo il file...")
         filepath='files/G.graphml'
@@ -183,13 +184,15 @@ class AppIntegrata(QMainWindow):
             icon=folium.Icon(color="green")).add_to(m)
         folium.Marker(location=[end.latitude, end.longitude], popup= "ARRIVO", 
             icon=folium.Icon(color="green")).add_to(m)
+        from utils import rgb_to_hex
+        folium.PolyLine(locations=((min_lat, min_lon), (max_lat, min_lon), (max_lat, max_lon), (min_lat, max_lon), (min_lat, min_lon)), color=rgb_to_hex(0, 0, 0), weight=6, opacity=1).add_to(m)
         if results:
-            print(results)
+            #print(results)
             for result in results:
                 #onepass+ esx penalty
                 if result.alg_name=="onepass+":
                     route_coords=[(G.nodes[node]['y'], G.nodes[node]['x']) for node in result.list_osmid]
-                    folium.PolyLine(locations=route_coords, color="#ff0000", weight=5, opacity=1).add_to(m)
+                    folium.PolyLine(locations=route_coords, color=rgb_to_hex(255, (20*result.num_result)%255, 0), weight=6, opacity=1).add_to(m)
                     folium.Marker(
                         location=route_coords[len(route_coords)//2], 
                         popup=f"onePass risultato n° {result.num_result+1}",
@@ -197,7 +200,7 @@ class AppIntegrata(QMainWindow):
                 
                 elif result.alg_name=="esx":
                     route_coords=[(G.nodes[node]['y'], G.nodes[node]['x']) for node in result.list_osmid]
-                    folium.PolyLine(locations=route_coords, color="blue", weight=5, opacity=1).add_to(m)
+                    folium.PolyLine(locations=route_coords, color=rgb_to_hex((20*result.num_result)%255, 0, 255-10*result.num_result), weight=4, opacity=1).add_to(m)
                     folium.Marker(
                         location=route_coords[len(route_coords)//2], 
                         popup=f"esx risultato n° {result.num_result+1}",
@@ -205,7 +208,7 @@ class AppIntegrata(QMainWindow):
                 
                 elif result.alg_name=="penalty":
                     route_coords=[(G.nodes[node]['y'], G.nodes[node]['x']) for node in result.list_osmid]
-                    folium.PolyLine(locations=route_coords, color="green", weight=5, opacity=1).add_to(m)
+                    folium.PolyLine(locations=route_coords, color=rgb_to_hex(0, 255, (20*result.num_result)%255), weight=2, opacity=1).add_to(m)
                     folium.Marker(
                         location=route_coords[len(route_coords)//2], 
                         popup=f"penalty risultato n° {result.num_result+1}",
