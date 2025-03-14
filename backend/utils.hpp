@@ -24,8 +24,6 @@ namespace utils{
 
     template <typename WeightMap, typename MultiPredecessorMap>
     void run_alt_routing(std::string_view name, Graph const &G,WeightMap const &weight, MultiPredecessorMap &predecessors,Vertex s, Vertex t, int k, double theta);
-    
-    std::vector<arlib::Path<Graph>> get_alternative_routes(std::string_view alg,Graph const &G, Vertex s,Vertex t, int k, double theta, std::ostream* results);
 
     void print_path(arlib::Path<Graph> const &path);
     std::string get_osmid_path(arlib::Path<Graph> const &path, Vertex source);

@@ -57,6 +57,8 @@ def receive_data(socket) -> List[Result]:
     and the num_result, finally it builds the list of osmids from the string.
 '''
 def parse_data(data):
+    if(data == "COMPUTATION_DONE"):
+        return None
     results_by_alg = []
     for item in re.split(r'[ \n]+', data):
         list_osmid = []

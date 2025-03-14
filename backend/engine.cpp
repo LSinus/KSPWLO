@@ -141,51 +141,51 @@ void Engine::saveResults(const std::string& result) {
     }
 }
 
+void Engine::get_alternative_routes(std::string_view alg, Graph const &G, Vertex s,Vertex t, int k, double theta)
+{
+    auto predecessors = arlib::multi_predecessor_map<Vertex>{};
+    auto weight = boost::get(boost::edge_weight, G); // Get Edge WeightMap
+    utils::run_alt_routing(alg, G, weight, predecessors, s, t, k, theta);
+    auto result = arlib::to_paths(G, predecessors, weight, s, t);
+
+    size_t count = 0;
+
+    for (auto const &route : result) {
+        std::cout << "Length: " << route.length() << "\n";
+        std::string path = std::string(alg)+ "," + std::to_string(count) + ",u" + utils::get_osmid_path(route, s);
+        message msg(std::vector<char>(path.begin(), path.end()));
+
+        m_resultsMutex.lock();
+        m_netProvider.send(msg);
+        m_resultsMutex.unlock();
+
+        ++count;
+    }
+
+}
+
 void Engine::runAlg() {
     // auto predecessors = arlib::multi_predecessor_map<Vertex>{};
     // auto weight = boost::get(boost::edge_weight, m_graph);
     // utils::Timer timer;
 
-#if 1
     Vertex source = utils::find_vertex_by_osmid(m_graph, m_source);
     Vertex dest = utils::find_vertex_by_osmid(m_graph, m_dest);
-#else
-    auto source = m_source;
-    auto dest = m_dest;
-#endif
 
     if (source != -1 && dest != -1) {
-        size_t count = 0;
 
-        std::cout<<"calcolo onepass+\n";
 
-        const auto res_opplus = utils::get_alternative_routes("onepass_plus", m_graph, source, dest, m_k, static_cast<double>(m_theta), &m_results);
-        for (auto const &route : res_opplus) {
-            std::cout << "Length: " << route.length() << "\n";
-            std::string path = "onepass+," + std::to_string(count) + "," + utils::get_osmid_path(route, source);
-            saveResults(path);
-            ++count;
-        }
+        std::thread thread_opp([this, source, dest]() { this->get_alternative_routes("onepass_plus", m_graph, source, dest, m_k, m_theta);});
+        std::thread thread_esx([this, source, dest]() { this->get_alternative_routes("esx", m_graph, source, dest, m_k, m_theta);});
+        std::thread thread_penalty([this, source, dest]() { this->get_alternative_routes("penalty", m_graph, source, dest, m_k, m_theta);});
 
-        count = 0;
-        std::cout<<"calcolo esx\n";
-        const auto res_esx = utils::get_alternative_routes("esx", m_graph, source, dest, m_k, static_cast<double>(m_theta), &m_results);
-        for (auto const &route : res_esx) {
-            std::cout << "Length: " << route.length() << "\n";
-            std::string path = "esx," + std::to_string(count) + "," + utils::get_osmid_path(route, source);
-            saveResults(path);
-            ++count;
-        }
+        thread_opp.join();
+        thread_esx.join();
+        thread_penalty.join();
 
-        /*count = 0;
-        std::cout<<"calcolo penalty\n";
-        const auto res_penalty = utils::get_alternative_routes("penalty", m_graph, source, dest, m_k, static_cast<double>(m_theta), &m_results);
-        for (auto const &route : res_penalty) {
-            std::cout << "Length: " << route.length() << "\n";
-            std::string path = "penalty," + std::to_string(count) + "," + utils::get_osmid_path(route, source);
-            saveResults(path);
-            ++count;
-        }*/
+        std::string done = "COMPUNTATION_DONE";
+        message msg(std::vector<char>(done.begin(), done.end()));
+        m_netProvider.send(msg);
     }
     else {
         std::cout<<"INVALID OSMID ABORT...\n";

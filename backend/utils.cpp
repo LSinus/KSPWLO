@@ -24,18 +24,12 @@ namespace utils{
         }
     }
 
-    std::vector<arlib::Path<Graph>> get_alternative_routes(std::string_view alg,Graph const &G, Vertex s,Vertex t, int k, double theta, std::ostream* results) 
+    void get_alternative_routes(std::string_view alg, Graph const &G, Vertex s,Vertex t, int k, double theta, std::vector<arlib::Path<Graph>> &result)
     {
         auto predecessors = arlib::multi_predecessor_map<Vertex>{};
         auto weight = boost::get(boost::edge_weight, G); // Get Edge WeightMap
-
-        (*results) << alg << "," << s << "," << t << "," << k << "," << theta;
-        {   
-            Timer timer(results);
-            run_alt_routing(alg, G, weight, predecessors, s, t, k, theta);
-        }
-        auto alt_routes = arlib::to_paths(G, predecessors, weight, s, t);
-        return alt_routes;
+        run_alt_routing(alg, G, weight, predecessors, s, t, k, theta);
+        result = arlib::to_paths(G, predecessors, weight, s, t);
     }
 
     void print_path(arlib::Path<Graph> const &path) {
