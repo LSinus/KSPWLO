@@ -103,7 +103,15 @@ class AppIntegrata(QMainWindow):
             self.show_error("Errore: Inserisci un nuero valido per la sovrapposizone (decimale tra 0 e 1)")
             return 
         
+    def getZoomLevel(distance):
+         # Default level for distances >= 700
+        distance_limit=[0,5, 1, 5, 20, 50, 150, 200, 300, 400, 500, 600, 700]
+        zoom_level=[18, 16, 15, 13, 11, 10, 9, 8, 7, 6, 5, 4, 3]
 
+        for i, lim in enumerate(distance_limit):
+            if distance < lim:
+                zoom_lev=zoom_level[i]
+        zoom_level[-1] 
         
         #new Nominatim client
         geolocator=Nominatim(user_agent="geoapp")
@@ -144,39 +152,16 @@ class AppIntegrata(QMainWindow):
         data = source_dest_bytes + graph_data
 
         send_data(self.client_socket, data, graph_size)
-        
 
-        results=receive_data(self.client_socket)
-
+        import bisect 
         #calculating zoom
         distance_km=geodesic((start.latitude, start.longitude), (end.latitude, end.longitude)).km
         print(distance_km)
-        if distance_km < 0.5:
-            zoom_level = 18
-        elif distance_km<1:
-            zoom_level=16
-        elif distance_km<5:
-            zoom_level=15
-        elif distance_km<20:
-            zoom_level=13
-        elif distance_km<50:
-            zoom_level=11
-        elif distance_km<150:
-            zoom_level=10
-        elif distance_km<200:
-            zoom_level=9
-        elif distance_km<300:
-            zoom_level=8
-        elif distance_km<400:
-            zoom_level=7
-        elif distance_km<500:
-            zoom_level=6
-        elif distance_km<600:
-            zoom_level=5
-        elif distance_km<700:
-            zoom_level=4
-        else:
-            zoom_level=3
+        distance_limit=[0,5, 1, 5, 20, 50, 150, 200, 300, 400, 500, 600, 700]
+        zoom_levels=[18, 16, 15, 13, 11, 10, 9, 8, 7, 6, 5, 4, 3]
+        index = bisect.bisect_left(distance_limit, distance_km) #bisect executes a binary search of distance_km getting the index
+        # Return the corresponding zoom level
+        zoom_level=zoom_levels[min(index, len(zoom_levels) - 1)] #
         
         m=folium.Map(location=[(start.latitude+end.latitude)/2, (start.longitude+end.longitude)/2], zoom_start=zoom_level)
         #adding marker for source and destination
@@ -186,41 +171,43 @@ class AppIntegrata(QMainWindow):
             icon=folium.Icon(color="green")).add_to(m)
         from utils import rgb_to_hex
         folium.PolyLine(locations=((min_lat, min_lon), (max_lat, min_lon), (max_lat, max_lon), (min_lat, max_lon), (min_lat, min_lon)), color=rgb_to_hex(0, 0, 0), weight=6, opacity=1).add_to(m)
-        if results:
-            #print(results)
-            for result in results:
-                #onepass+ esx penalty
-                if result.alg_name=="onepass+":
-                    route_coords=[(G.nodes[node]['y'], G.nodes[node]['x']) for node in result.list_osmid]
-                    folium.PolyLine(locations=route_coords, color=rgb_to_hex(255, (20*result.num_result)%255, 0), weight=6, opacity=1).add_to(m)
-                    folium.Marker(
-                        location=route_coords[len(route_coords)//2], 
-                        popup=f"onePass risultato n° {result.num_result+1}",
-                        icon=folium.Icon(color="red"), icon_size=(40, 40)).add_to(m)
-                
-                elif result.alg_name=="esx":
-                    route_coords=[(G.nodes[node]['y'], G.nodes[node]['x']) for node in result.list_osmid]
-                    folium.PolyLine(locations=route_coords, color=rgb_to_hex((20*result.num_result)%255, 0, 255-10*result.num_result), weight=4, opacity=1).add_to(m)
-                    folium.Marker(
-                        location=route_coords[len(route_coords)//2], 
-                        popup=f"esx risultato n° {result.num_result+1}",
-                        icon=folium.Icon(color="blue"), icon_size=(40, 40)).add_to(m)
-                
-                elif result.alg_name=="penalty":
-                    route_coords=[(G.nodes[node]['y'], G.nodes[node]['x']) for node in result.list_osmid]
-                    folium.PolyLine(locations=route_coords, color=rgb_to_hex(0, 255, (20*result.num_result)%255), weight=2, opacity=1).add_to(m)
-                    folium.Marker(
-                        location=route_coords[len(route_coords)//2], 
-                        popup=f"penalty risultato n° {result.num_result+1}",
-                        icon=folium.Icon(color="green"), icon_size=(40, 40)).add_to(m)
-
         
-        #save map data to data object
-        data=io.BytesIO()
-        m.save(data, close_file=False)
+        results=receive_data(self.client_socket)
+        while(results!=None):
+            if results:
+                #print(results)
+                for result in results:
+                    #onepass+ esx penalty
+                    if result.alg_name=="onepass+":
+                        route_coords=[(G.nodes[node]['y'], G.nodes[node]['x']) for node in result.list_osmid]
+                        folium.PolyLine(locations=route_coords, color=rgb_to_hex(255, (20*result.num_result)%255, 0), weight=6, opacity=1).add_to(m)
+                        folium.Marker(
+                            location=route_coords[len(route_coords)//2], 
+                            popup=f"onePass risultato n° {result.num_result+1}",
+                            icon=folium.Icon(color="red"), icon_size=(40, 40)).add_to(m)
+                    
+                    elif result.alg_name=="esx":
+                        route_coords=[(G.nodes[node]['y'], G.nodes[node]['x']) for node in result.list_osmid]
+                        folium.PolyLine(locations=route_coords, color=rgb_to_hex((20*result.num_result)%255, 0, 255-10*result.num_result), weight=4, opacity=1).add_to(m)
+                        folium.Marker(
+                            location=route_coords[len(route_coords)//2], 
+                            popup=f"esx risultato n° {result.num_result+1}",
+                            icon=folium.Icon(color="blue"), icon_size=(40, 40)).add_to(m)
+                    
+                    elif result.alg_name=="penalty":
+                        route_coords=[(G.nodes[node]['y'], G.nodes[node]['x']) for node in result.list_osmid]
+                        folium.PolyLine(locations=route_coords, color=rgb_to_hex(0, 255, (20*result.num_result)%255), weight=2, opacity=1).add_to(m)
+                        folium.Marker(
+                            location=route_coords[len(route_coords)//2], 
+                            popup=f"penalty risultato n° {result.num_result+1}",
+                            icon=folium.Icon(color="green"), icon_size=(40, 40)).add_to(m)
 
-         # adding the QWebEngineView to the existing layout
-        self.webview.setHtml(data.getvalue().decode())
+                    #save map data to data object
+                    data=io.BytesIO()
+                    m.save(data, close_file=False)
+                    # adding the QWebEngineView to the existing layout
+                    self.webview.setHtml(data.getvalue().decode())
+                    results=receive_data(self.client_socket)
 
 if __name__ == "__main__":
     parser=argparse.ArgumentParser()
