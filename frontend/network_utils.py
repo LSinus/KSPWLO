@@ -42,9 +42,9 @@ def send_data(socket, data, graph_size=0):
     correctly the function calls parse_data to parse the message and returns the response.
 '''
 def receive_data(socket) -> List[Result]:
-    header = socket.recv(1024)
+    header = socket.recv(4)
     if header:
-        size = int(header.decode('utf-8'))
+        size = struct.unpack("I", header)[0]
         print('[INFO] Receiving a response of: ' + str(size) + ' bytes')
         res = 'ok'
         socket.sendall(res.encode('utf-8'))
