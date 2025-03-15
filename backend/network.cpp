@@ -86,11 +86,14 @@ void NetworkProvider::receiveBody()
 }
 
 void NetworkProvider::sendHeader(const message &msg) {
-    boost::asio::write(m_socket, boost::asio::buffer(std::to_string(msg.header.size).c_str(), std::to_string(msg.header.size).length()));
+    char msg_size[4];
+    int size = msg.size();
+    std::memcpy(msg_size, &size, 4);
+    boost::asio::write(m_socket, boost::asio::buffer(msg_size, 4));
 }
 
 void NetworkProvider::sendBody(const message &msg) {
-    boost::asio::write(m_socket, boost::asio::buffer(std::string(msg.body.data.data()).c_str(), std::string(msg.body.data.data()).length()));
+    boost::asio::write(m_socket, boost::asio::buffer(std::string(msg.body.data.data()).c_str(), msg.size()-4));
 }
 
 message NetworkProvider::buildMessage() const

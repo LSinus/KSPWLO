@@ -152,7 +152,7 @@ void Engine::get_alternative_routes(std::string_view alg, Graph const &G, Vertex
 
     for (auto const &route : result) {
         std::cout << "Length: " << route.length() << "\n";
-        std::string path = std::string(alg)+ "," + std::to_string(count) + ",u" + utils::get_osmid_path(route, s);
+        std::string path = std::string(alg)+ "," + std::to_string(count) + "," + utils::get_osmid_path(route, s);
         message msg(std::vector<char>(path.begin(), path.end()));
 
         m_resultsMutex.lock();
@@ -173,7 +173,7 @@ void Engine::runAlg() {
     Vertex dest = utils::find_vertex_by_osmid(m_graph, m_dest);
 
     if (source != -1 && dest != -1) {
-
+        //get_alternative_routes("onepass_plus", m_graph, source, dest, m_k, m_theta);
 
         std::thread thread_opp([this, source, dest]() { this->get_alternative_routes("onepass_plus", m_graph, source, dest, m_k, m_theta);});
         std::thread thread_esx([this, source, dest]() { this->get_alternative_routes("esx", m_graph, source, dest, m_k, m_theta);});
@@ -186,6 +186,8 @@ void Engine::runAlg() {
         std::string done = "COMPUNTATION_DONE";
         message msg(std::vector<char>(done.begin(), done.end()));
         m_netProvider.send(msg);
+
+        std::cout << "[INFO]:COMPUTATION DONE\n" << std::endl;
     }
     else {
         std::cout<<"INVALID OSMID ABORT...\n";

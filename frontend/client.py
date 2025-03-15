@@ -133,10 +133,11 @@ class AppIntegrata(QMainWindow):
         min_lon = min(start.longitude, end.longitude) - margin
         max_lon = max(start.longitude, end.longitude) + margin
 
-        G = ox.graph_from_bbox(max_lat, min_lat, max_lon, min_lon, network_type='drive')
+        #G = ox.graph_from_bbox(max_lat, min_lat, max_lon, min_lon, network_type='drive')
         print("Grafo ricevuto, salvo il file...")
         filepath='files/G.graphml'
-        ox.save_graphml(G, filepath)
+        G = ox.load_graphml(filepath)
+        #ox.save_graphml(G, filepath)
 
         from graph_utils import add_osmid, calc_min_dist_osmid
         add_osmid(filepath, filepath)
