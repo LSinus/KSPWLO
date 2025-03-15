@@ -20,12 +20,13 @@ from PyQt5.QtCore import QTimer
 
 
 class AppIntegrata(QMainWindow):
-    def __init__(self, host_server_ip, host_server_port):
+    def __init__(self, host_server_ip, host_server_port, local_map):
         super().__init__()
         #opening the connection
         
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client_socket.connect((host_server_ip, host_server_port))
+        self.local_map = local_map
 
         self.setWindowTitle("SuperMap")
         self.resize(1600, 1200)
@@ -80,7 +81,7 @@ class AppIntegrata(QMainWindow):
     def showNumberRange(self):
         data, ok =QInputDialog.getInt(self, "Numero percorsi", "k", 5, 1, 15) #it returns a tuple: the first number is the value, the second one true or false
         self.k=data #saved in class attribute in order to use it later
-        print(f"Numero percorsi salvato: {self.k}")
+        print(f"[INFO]: Number of path saved: {self.k}")
 
     def show_error(self, message):
         error_dialog=QMessageBox(self)
@@ -114,27 +115,30 @@ class AppIntegrata(QMainWindow):
         start=geolocator.geocode(start_loc) #converting in latitude and longitude
         end=geolocator.geocode(end_loc)
 
-        pprint(start)
-        pprint(end)
 
-        print("Ottengo il grafo...")
         margin=0.035
         min_lat = min(start.latitude, end.latitude) - margin
         max_lat = max(start.latitude, end.latitude) + margin
         min_lon = min(start.longitude, end.longitude) - margin
         max_lon = max(start.longitude, end.longitude) + margin
 
-        self.G = ox.graph_from_bbox(max_lat, min_lat, max_lon, min_lon, network_type='drive')
-        print("Grafo ricevuto, salvo il file...")
+
         filepath='files/G.graphml'
-        #self.G=ox.load_graphml(filepath)
+        if self.local_map:
+            print("[INFO]: Loading Graph from cache...")
+            self.G = ox.load_graphml(filepath)
+            print("[INFO]: Graph loaded...")
+        else:
+            print("[INFO]: Obtaining graph from OSM...")
+            self.G = ox.graph_from_bbox(max_lat, min_lat, max_lon, min_lon, network_type='drive')
+            print("[INFO]: Graph received...")
         ox.save_graphml(self.G, filepath)
 
         from graph_utils import add_osmid, calc_min_dist_osmid
         add_osmid(filepath, filepath)
         source = int(calc_min_dist_osmid(start.latitude, start.longitude, filepath))
         dest = int(calc_min_dist_osmid(end.latitude, end.longitude, filepath))
-        print(str(source) + " " + str(dest))
+
         source_dest_bytes = struct.pack("!QQfi", source, dest, self.theta, self.k)
         graph_size = os.path.getsize(filepath)
 
@@ -148,14 +152,14 @@ class AppIntegrata(QMainWindow):
         import bisect 
         #calculating zoom
         distance_km=geodesic((start.latitude, start.longitude), (end.latitude, end.longitude)).km
-        print(distance_km)
+        print(f"[INFO]: Distance (km): {distance_km}")
         distance_limit=[0,5, 1, 5, 20, 50, 150, 200, 300, 400, 500, 600, 700]
         zoom_levels=[17, 15, 14, 12, 10, 9, 8, 7, 6, 5, 4, 3, 2]
         index = bisect.bisect_left(distance_limit, distance_km) #bisect executes a binary search of distance_km getting the index
         # Return the corresponding zoom level
         zoom_level=zoom_levels[min(index, len(zoom_levels) - 1)]
-        
-        
+
+
         self.m=folium.Map(location=[(start.latitude+end.latitude)/2, (start.longitude+end.longitude)/2], zoom_start=zoom_level)
         #adding marker for source and destination
         folium.Marker(location=[start.latitude, start.longitude], popup= "PARTENZA", 
@@ -166,14 +170,14 @@ class AppIntegrata(QMainWindow):
         folium.PolyLine(locations=((min_lat, min_lon), (max_lat, min_lon), (max_lat, max_lon), (min_lat, max_lon), (min_lat, min_lon)), color=rgb_to_hex(0, 0, 0), weight=6, opacity=1).add_to(self.m)
         
         self.update_map()
-        #when the socket is ready to be read, the signal activated is given, so it is 
+        #when the socket is ready to be read, the signal activated is given, so it is
         # linked to this signal the receive_results() function
-        #fileno() methods for socket returns the id of the socket we are using, so we are 
+        #fileno() methods for socket returns the id of the socket we are using, so we are
         # asking QSocketNotifier to track the activiti of the socket of our connection
         from PyQt5.QtCore import QSocketNotifier
         self.notifier=QSocketNotifier(self.client_socket.fileno(), QSocketNotifier.Read)
         self.notifier.activated.connect(self.receive_results)
-        
+
         #self.result_timer=QTimer() #timer creation
         #self.result_timer.timeout.connect(self.receive_results)
         #self.result_timer.start(100) #check every 100ms
@@ -188,10 +192,9 @@ class AppIntegrata(QMainWindow):
     def receive_results(self):
         from network_utils import receive_data
         from utils import rgb_to_hex
-        try: 
+        try:
             results=receive_data(self.client_socket)
             if(results is None):
-                print("fine computazione")
                 #self.result_timer.stop()
                 return
             #print(results)
@@ -225,22 +228,25 @@ class AppIntegrata(QMainWindow):
             pass
 
 if __name__ == "__main__":
+    host_server_ip = '127.0.0.1'
+    host_server_port = 10714
+    local_map = False
+
     parser=argparse.ArgumentParser()
-    parser.add_argument('-ip', type=str, help='IP del server')
-    parser.add_argument('-p', type=int, help='Porta del server')
+    parser.add_argument('-ip', type=str, help='Server IP address')
+    parser.add_argument('-p', type=int, help='Server port')
+    parser.add_argument('-l','--local', action="store_true", help='local saved graph')
     args=parser.parse_args()
     if args.ip:
         host_server_ip=args.ip
-    else:
-        host_server_ip='127.0.0.1' 
-    
+    if args.local:
+        local_map=True
     if args.p:
         host_server_port=args.p
-    else:
-        host_server_port=10714
+
 
     app = QApplication(sys.argv)
-    window = AppIntegrata(host_server_ip, host_server_port)
+    window = AppIntegrata(host_server_ip, host_server_port, local_map)
     window.show()
 
     sys.exit(app.exec_())
