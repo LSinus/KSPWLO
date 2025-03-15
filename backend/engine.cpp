@@ -151,7 +151,7 @@ void Engine::get_alternative_routes(std::string_view alg, Graph const &G, Vertex
     size_t count = 0;
 
     for (auto const &route : result) {
-        std::cout << "Length: " << route.length() << "\n";
+        std::cout << "[INFO]: " << std::string(alg)+ ", " + std::to_string(count) + ", Length: " << route.length() << "\n";
         std::string path = std::string(alg)+ "," + std::to_string(count) + "," + utils::get_osmid_path(route, s);
         message msg(std::vector<char>(path.begin(), path.end()));
 

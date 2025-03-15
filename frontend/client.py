@@ -199,7 +199,7 @@ class AppIntegrata(QMainWindow):
             # adding the QWebEngineView to the existing layout
             self.webview.setHtml(data.getvalue().decode())
             results=receive_data(self.client_socket)
-        print("fine")
+
 
 if __name__ == "__main__":
     parser=argparse.ArgumentParser()
