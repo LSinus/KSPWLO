@@ -25,15 +25,15 @@ class Result:
 '''
 def send_data(socket, data, graph_size=0):
     msg_size_bytes = struct.pack("!i", graph_size + 8 + 8 + 4 + 4 + 4)
-    print("[INFO] Sending to the server message size...")
+    print("[NETWORK_INFO]: Sending to the server message size...")
     socket.sendall(msg_size_bytes)
     response = socket.recv(1024)
     if response and response.decode('utf-8') == 'ok':
-        print(f"[INFO] Received message: {response.decode('utf-8')}")
+        print(f"[NETWORK_INFO]: Received message: {response.decode('utf-8')}")
         socket.sendall(data)
         response = socket.recv(1024)
         if response and response.decode('utf-8') == 'ok':
-            print(f"[INFO] Received message: {response.decode('utf-8')}")
+            print(f"[NETWORK_INFO]: Received message: {response.decode('utf-8')}")
 
 ''' The function receives a structured message with the response from the backend.
     First of all, the socket waits for the header, this header contains the total
@@ -45,7 +45,7 @@ def receive_data(socket) -> List[Result]:
     header = socket.recv(4)
     if header:
         size = struct.unpack("I", header)[0]
-        print('[INFO] Receiving a response of: ' + str(size) + ' bytes')
+        print('[NETWORK_INFO]: Receiving a response of: ' + str(size) + ' bytes')
         res = 'ok'
         socket.sendall(res.encode('utf-8'))
         body = socket.recv(size-4)
@@ -58,7 +58,7 @@ def receive_data(socket) -> List[Result]:
 '''
 def parse_data(data):
     if(data == "COMPUTATION_DONE"):
-        print("[INFO] Received COMPUTATION_DONE")
+        print("[NETWORK_INFO]: Received COMPUTATION_DONE")
         return None
     results_by_alg = []
     for item in re.split(r'[ \n]+', data):

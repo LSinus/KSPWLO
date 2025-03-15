@@ -10,11 +10,15 @@ import os
 import socket
 import struct
 from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QPushButton, QLineEdit, QMainWindow, QInputDialog, QMessageBox
-from PyQt5.QtWebEngineWidgets import QWebEngineView 
+from PyQt5.QtWebEngineWidgets import QWebEngineView
 from geopy.geocoders import Nominatim
-from geopy.geocoders import Nominatim
-from pprint import pprint
 from geopy.distance import geodesic
+import bisect
+from PyQt5.QtCore import QSocketNotifier
+
+from graph_utils import add_osmid, calc_min_dist_osmid
+from utils import rgb_to_hex
+from network_utils import send_data, receive_data, parse_data
 from PyQt5.QtCore import QTimer
 
 
@@ -132,24 +136,29 @@ class AppIntegrata(QMainWindow):
             print("[INFO]: Obtaining graph from OSM...")
             self.G = ox.graph_from_bbox(max_lat, min_lat, max_lon, min_lon, network_type='drive')
             print("[INFO]: Graph received...")
-        ox.save_graphml(self.G, filepath)
+            ox.save_graphml(self.G, filepath)
 
-        from graph_utils import add_osmid, calc_min_dist_osmid
-        add_osmid(filepath, filepath)
-        source = int(calc_min_dist_osmid(start.latitude, start.longitude, filepath))
-        dest = int(calc_min_dist_osmid(end.latitude, end.longitude, filepath))
+            print("[INFO]: Adding OSMID to graph...")
+            add_osmid(filepath, filepath)
+            print("[INFO]: Done...")
 
+        print("[INFO]: Calculating source and target OSMID...")
+        (source, dest) = calc_min_dist_osmid(start.latitude, start.longitude, end.latitude, end.longitude, filepath)
+        print("[INFO]: Done...")
+
+        print("[INFO]: Preparing data for server...")
         source_dest_bytes = struct.pack("!QQfi", source, dest, self.theta, self.k)
         graph_size = os.path.getsize(filepath)
 
-        from network_utils import send_data, receive_data, parse_data
+
         with open('files/G.graphml', 'rb') as f:
             graph_data = f.read()
         data = source_dest_bytes + graph_data
-
+        print("[INFO]: Sending data...")
         send_data(self.client_socket, data, graph_size)
+        print("[INFO]: Done")
 
-        import bisect 
+
         #calculating zoom
         distance_km=geodesic((start.latitude, start.longitude), (end.latitude, end.longitude)).km
         print(f"[INFO]: Distance (km): {distance_km}")
@@ -166,15 +175,15 @@ class AppIntegrata(QMainWindow):
             icon=folium.Icon(color="green")).add_to(self.m)
         folium.Marker(location=[end.latitude, end.longitude], popup= "ARRIVO", 
             icon=folium.Icon(color="green")).add_to(self.m)
-        from utils import rgb_to_hex
+
         folium.PolyLine(locations=((min_lat, min_lon), (max_lat, min_lon), (max_lat, max_lon), (min_lat, max_lon), (min_lat, min_lon)), color=rgb_to_hex(0, 0, 0), weight=6, opacity=1).add_to(self.m)
         
         self.update_map()
         #when the socket is ready to be read, the signal activated is given, so it is
         # linked to this signal the receive_results() function
         #fileno() methods for socket returns the id of the socket we are using, so we are
-        # asking QSocketNotifier to track the activiti of the socket of our connection
-        from PyQt5.QtCore import QSocketNotifier
+        # asking QSocketNotifier to track the activity of the socket of our connection
+
         self.notifier=QSocketNotifier(self.client_socket.fileno(), QSocketNotifier.Read)
         self.notifier.activated.connect(self.receive_results)
 
@@ -190,8 +199,7 @@ class AppIntegrata(QMainWindow):
         self.webview.setHtml(data.getvalue().decode())
 
     def receive_results(self):
-        from network_utils import receive_data
-        from utils import rgb_to_hex
+
         try:
             results=receive_data(self.client_socket)
             if(results is None):

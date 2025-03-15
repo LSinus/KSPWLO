@@ -1,21 +1,21 @@
-import xml.etree.ElementTree as ET
+from lxml import etree as ET
 
 def add_osmid(file_input, file_output):
     tree = ET.parse(file_input)
     root = tree.getroot()
 
     ns = {"graphml": "http://graphml.graphdrawing.org/xmlns"}
-    ET.register_namespace("", ns["graphml"])  
-
     # verify if the same key already exists
     osmid_key_id = None
+    key_count = 0
     for key in root.findall("graphml:key", ns):
         if key.attrib.get("attr.name") == "osmid":
             osmid_key_id = key.attrib["id"]
             break
+        key_count += 1
 
     if not osmid_key_id:
-        osmid_key_id = "d_osmid"  
+        osmid_key_id = "d"  + str(key_count+1)
         key_element = ET.Element("key", {
             "id": osmid_key_id,
             "for": "node",
@@ -27,23 +27,28 @@ def add_osmid(file_input, file_output):
     
     for node in root.findall(".//graphml:node", ns):
         node_id = node.attrib["id"]
+        est_elem = node.find(f"graphml:data[@key='{osmid_key_id}']", ns)
 
-        data_element = ET.Element("data", {"key": osmid_key_id})
-        data_element.text = node_id
-        node.append(data_element)
+        if est_elem is None:
+            data_element = ET.Element("data", {"key": osmid_key_id})
+            data_element.text = node_id
+            node.append(data_element)
 
    
-    tree.write(file_output, encoding="utf-8", xml_declaration=True)
+    tree.write(file_output, encoding="utf-8", xml_declaration=True, pretty_print=True)
 
-def calc_min_dist_osmid(lat, lon, file_input):
+def calc_min_dist_osmid(source_lat, source_lon, dest_lat, dest_lon, file_input):
     
     tree = ET.parse(file_input)
     root = tree.getroot()
 
     ns = {"graphml": "http://graphml.graphdrawing.org/xmlns"}
-    ET.register_namespace("", ns["graphml"]) 
 
-    min_dist = float("inf")
+    source_min_dist = float("inf")
+    dest_min_dist = float("inf")
+    source_closest_osmid = None
+    dest_closest_osmid = None
+
     for node in root.findall(".//graphml:node", ns):
         latitude_elem = node.find("graphml:data[@key='d4']", ns)
         longitude_elem = node.find("graphml:data[@key='d5']", ns)
@@ -53,16 +58,33 @@ def calc_min_dist_osmid(lat, lon, file_input):
                 latitude = float(latitude_elem.text)
                 longitude = float(longitude_elem.text)
 
-                delta_lat = lat - latitude
-                delta_lon = lon - longitude
-                squared_dist = delta_lat**2 + delta_lon**2
+                source_delta_lat = source_lat - latitude
+                source_delta_lon = source_lon - longitude
 
-                if squared_dist < min_dist:
-                    min_dist = squared_dist
-                    closest_osmid = node.get("id")
+                dest_delta_lat = dest_lat - latitude
+                dest_delta_lon = dest_lon - longitude
+
+                source_squared_dist = source_delta_lat ** 2 + source_delta_lon ** 2
+                dest_squared_dist = dest_delta_lat ** 2 + dest_delta_lon ** 2
+
+                if source_squared_dist < source_min_dist:
+                    source_min_dist = source_squared_dist
+                    source_closest_osmid = node.get("id")
+                if dest_squared_dist < dest_min_dist:
+                    dest_min_dist = dest_squared_dist
+                    dest_closest_osmid = node.get("id")
 
             except ValueError:
                 print(f"Errore nella conversione dei dati per il nodo {node.get('id')}")
 
-    return closest_osmid
+    return (int(source_closest_osmid), int(dest_closest_osmid))
+
+
+
+if __name__ == "__main__":
+    intput_filepath = "files/G.graphml"
+    output_filepath = "files/G.graphml"
+
+    add_osmid(intput_filepath, output_filepath)
+    calc_min_dist_osmid(45.4891030,9.2024614, 45.4891030,9.2024614,intput_filepath)
 

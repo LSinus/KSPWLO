@@ -20,7 +20,6 @@ void Engine::loop()
             message msg = m_netProvider.receive();
             buildGraph(msg);
             runAlg();
-            sendResults();
         }
     }catch (std::exception& e) {
         std::cerr << "Connessione terminata dal client: " << e.what() << std::endl;

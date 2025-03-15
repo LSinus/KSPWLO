@@ -6,6 +6,6 @@ CMake Warning (dev) at external/arlib/CMakeLists.txt:21 (find_package):
 
 This warning is for project developers.  Use -Wno-dev to suppress it.
 
--- Configuring done (0.2s)
--- Generating done (0.0s)
+-- Configuring done (0.1s)
+-- Generating done (0.5s)
 -- Build files have been written to: /Users/leonardo/Documents/dev/ProgettoIngInf/backend/cmake-build-debug

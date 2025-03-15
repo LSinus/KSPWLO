@@ -2,6 +2,8 @@
 /frontend/env
 /frontend/cache
 /backend/build
+/backend/cmake-build*
+/frontend/files
 prova.*
 /frontend/graph.xml
 /frontend/graph.graphml
