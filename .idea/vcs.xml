@@ -2,8 +2,6 @@
 <project version="4">
   <component name="VcsDirectoryMappings">
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/arlib" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/arlib/examples/external/arlib" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/backend/external/arlib" vcs="Git" />
   </component>
 </project>

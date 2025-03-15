@@ -77,7 +77,7 @@ def parse_data(data):
             results_by_alg.append(result)
     return results_by_alg
     
-
+ 
 
 
 if __name__ == '__main__':
