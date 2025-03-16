@@ -31,6 +31,10 @@ class AppIntegrata(QMainWindow):
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client_socket.connect((host_server_ip, host_server_port))
         self.local_map = local_map
+        if self.local_map:
+            print("[INFO]: Loading Graph from cache...")
+            self.G = ox.load_graphml("files/G.graphml")
+            print("[INFO]: Graph loaded...")
 
         self.setWindowTitle("SuperMap")
         self.resize(1600, 1200)
@@ -128,11 +132,8 @@ class AppIntegrata(QMainWindow):
 
 
         filepath='files/G.graphml'
-        if self.local_map:
-            print("[INFO]: Loading Graph from cache...")
-            self.G = ox.load_graphml(filepath)
-            print("[INFO]: Graph loaded...")
-        else:
+
+        if not self.local_map:
             print("[INFO]: Obtaining graph from OSM...")
             self.G = ox.graph_from_bbox(max_lat, min_lat, max_lon, min_lon, network_type='drive')
             print("[INFO]: Graph received...")
