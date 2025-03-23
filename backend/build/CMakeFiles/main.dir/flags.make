@@ -4,7 +4,7 @@
 # compile CXX with /Library/Developer/CommandLineTools/usr/bin/c++
 CXX_DEFINES = -DBOOST_GRAPH_DYN_LINK -DBOOST_GRAPH_NO_LIB
 
-CXX_INCLUDES = -I/Users/giorgiasavo/Documents/KSPWLO/backend/external/arlib/include -isystem /opt/homebrew/include
+CXX_INCLUDES = -I/Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/external/arlib/include -isystem /opt/homebrew/include
 
 CXX_FLAGSarm64 = -std=gnu++17 -arch arm64 -isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk -std=c++17
 

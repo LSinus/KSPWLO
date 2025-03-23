@@ -20,7 +20,7 @@ from graph_utils import add_osmid, calc_min_dist_osmid
 from utils import rgb_to_hex
 from network_utils import send_data, receive_data, parse_data
 from PyQt5.QtCore import QTimer
-
+from hierarchicalGraphImpl import HierarchicalGraph
 
 
 class AppIntegrata(QMainWindow):
@@ -31,13 +31,14 @@ class AppIntegrata(QMainWindow):
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client_socket.connect((host_server_ip, host_server_port))
         self.local_map = local_map
+        
         if self.local_map:
             print("[INFO]: Loading Graph from cache...")
             self.G = ox.load_graphml("files/G.graphml")
             print("[INFO]: Graph loaded...")
 
         self.setWindowTitle("SuperMap")
-        self.resize(1600, 1200)
+        self.resize(800, 600)
         self.theta=None
         self.k=None
         #main layout
@@ -101,6 +102,7 @@ class AppIntegrata(QMainWindow):
 
     def generate_map(self):
         #saving the overlap
+        hgraph = HierarchicalGraph() #instance of the new class created
         sovr_value=self.sovr_input.text()
         try:
             theta_value=float(sovr_value)
@@ -135,16 +137,22 @@ class AppIntegrata(QMainWindow):
 
         if not self.local_map:
             print("[INFO]: Obtaining graph from OSM...")
-            self.G = ox.graph_from_bbox(max_lat, min_lat, max_lon, min_lon, network_type='drive')
+            #self.G = ox.graph_from_bbox(max_lat, min_lat, max_lon, min_lon, network_type='drive')
+            self.G=hgraph.create_hierarchical_graph(start, end)
             print("[INFO]: Graph received...")
+            # Create a folium map
+            m = ox.plot_graph_folium(self.G, popup_attribute='name', edge_width=2)
+            m.save('interactive_map.html')
             ox.save_graphml(self.G, filepath)
-
             print("[INFO]: Adding OSMID to graph...")
             add_osmid(filepath, filepath)
             print("[INFO]: Done...")
 
         print("[INFO]: Calculating source and target OSMID...")
-        (source, dest) = calc_min_dist_osmid(start.latitude, start.longitude, end.latitude, end.longitude, filepath)
+        #(source, dest) = calc_min_dist_osmid(start.latitude, start.longitude, end.latitude, end.longitude, filepath)
+        points = ox.nearest_nodes(self.G, [start.latitude, end.latitude], [start.longitude, end.longitude])
+        source = points[0]
+        dest = points[1]
         print("[INFO]: Done...")
 
         print("[INFO]: Preparing data for server...")
@@ -163,8 +171,8 @@ class AppIntegrata(QMainWindow):
         #calculating zoom
         distance_km=geodesic((start.latitude, start.longitude), (end.latitude, end.longitude)).km
         print(f"[INFO]: Distance (km): {distance_km}")
-        distance_limit=[0,5, 1, 5, 20, 50, 150, 200, 300, 400, 500, 600, 700]
-        zoom_levels=[17, 15, 14, 12, 10, 9, 8, 7, 6, 5, 4, 3, 2]
+        distance_limit=[0.5, 1, 5, 20, 50, 150, 200, 300, 400, 500, 600, 700]
+        zoom_levels=[16, 15, 14, 13, 12, 11, 9, 8, 7, 6, 5, 4, 3]
         index = bisect.bisect_left(distance_limit, distance_km) #bisect executes a binary search of distance_km getting the index
         # Return the corresponding zoom level
         zoom_level=zoom_levels[min(index, len(zoom_levels) - 1)]
@@ -184,10 +192,8 @@ class AppIntegrata(QMainWindow):
         # linked to this signal the receive_results() function
         #fileno() methods for socket returns the id of the socket we are using, so we are
         # asking QSocketNotifier to track the activity of the socket of our connection
-
         self.notifier=QSocketNotifier(self.client_socket.fileno(), QSocketNotifier.Read)
         self.notifier.activated.connect(self.receive_results)
-
         #self.result_timer=QTimer() #timer creation
         #self.result_timer.timeout.connect(self.receive_results)
         #self.result_timer.start(100) #check every 100ms

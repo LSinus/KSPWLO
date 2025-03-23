@@ -1,6 +1,6 @@
 CMakeFiles/main.dir/network.cpp.o: \
-  /Users/giorgiasavo/Documents/KSPWLO/backend/network.cpp \
-  /Users/giorgiasavo/Documents/KSPWLO/backend/network.hpp \
+  /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/network.cpp \
+  /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/network.hpp \
   /opt/homebrew/include/boost/asio.hpp \
   /opt/homebrew/include/boost/asio/any_completion_executor.hpp \
   /opt/homebrew/include/boost/asio/detail/config.hpp \
@@ -1807,5 +1807,5 @@ CMakeFiles/main.dir/network.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/path_iterator.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/recursive_directory_iterator.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/u8path.h \
-  /Users/giorgiasavo/Documents/KSPWLO/backend/message.hpp \
+  /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/message.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/iostream

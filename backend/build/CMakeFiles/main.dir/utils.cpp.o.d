@@ -1,6 +1,6 @@
 CMakeFiles/main.dir/utils.cpp.o: \
-  /Users/giorgiasavo/Documents/KSPWLO/backend/utils.cpp \
-  /Users/giorgiasavo/Documents/KSPWLO/backend/utils.hpp \
+  /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/utils.cpp \
+  /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/utils.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/iostream \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__assert \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__assertion_handler \
@@ -2222,8 +2222,8 @@ CMakeFiles/main.dir/utils.cpp.o: \
   /opt/homebrew/include/boost/detail/is_sorted.hpp \
   /opt/homebrew/include/boost/range/algorithm_ext/iota.hpp \
   /opt/homebrew/include/boost/property_map/function_property_map.hpp \
-  /Users/giorgiasavo/Documents/KSPWLO/backend/external/arlib/include/arlib/esx.hpp \
-  /Users/giorgiasavo/Documents/KSPWLO/backend/external/arlib/include/arlib/terminators.hpp \
+  /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/external/arlib/include/arlib/esx.hpp \
+  /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/external/arlib/include/arlib/terminators.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/chrono \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/calendar.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/convert_to_tm.h \
@@ -2241,8 +2241,8 @@ CMakeFiles/main.dir/utils.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/year_month_weekday.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__chrono/literals.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/forward_list \
-  /Users/giorgiasavo/Documents/KSPWLO/backend/external/arlib/include/arlib/type_traits.hpp \
-  /Users/giorgiasavo/Documents/KSPWLO/backend/external/arlib/include/arlib/details/esx_impl.hpp \
+  /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/external/arlib/include/arlib/type_traits.hpp \
+  /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/external/arlib/include/arlib/details/esx_impl.hpp \
   /opt/homebrew/include/boost/graph/astar_search.hpp \
   /opt/homebrew/include/boost/graph/relax.hpp \
   /opt/homebrew/include/boost/graph/breadth_first_search.hpp \
@@ -2254,16 +2254,16 @@ CMakeFiles/main.dir/utils.cpp.o: \
   /opt/homebrew/include/boost/graph/filtered_graph.hpp \
   /opt/homebrew/include/boost/graph/detail/set_adaptor.hpp \
   /opt/homebrew/include/boost/iterator/filter_iterator.hpp \
-  /Users/giorgiasavo/Documents/KSPWLO/backend/external/arlib/include/arlib/details/arlib_utils.hpp \
+  /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/external/arlib/include/arlib/details/arlib_utils.hpp \
   /opt/homebrew/include/boost/graph/reverse_graph.hpp \
   /opt/homebrew/include/boost/iterator/transform_iterator.hpp \
-  /Users/giorgiasavo/Documents/KSPWLO/backend/external/arlib/include/arlib/path.hpp \
-  /Users/giorgiasavo/Documents/KSPWLO/backend/external/arlib/include/arlib/details/path_impl.hpp \
-  /Users/giorgiasavo/Documents/KSPWLO/backend/external/arlib/include/arlib/routing_kernels/bidirectional_dijkstra.hpp \
-  /Users/giorgiasavo/Documents/KSPWLO/backend/external/arlib/include/arlib/routing_kernels/details/bidirectional_dijkstra_impl.hpp \
-  /Users/giorgiasavo/Documents/KSPWLO/backend/external/arlib/include/arlib/routing_kernels/visitor.hpp \
-  /Users/giorgiasavo/Documents/KSPWLO/backend/external/arlib/include/arlib/routing_kernels/types.hpp \
-  /Users/giorgiasavo/Documents/KSPWLO/backend/external/arlib/include/arlib/graph_utils.hpp \
+  /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/external/arlib/include/arlib/path.hpp \
+  /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/external/arlib/include/arlib/details/path_impl.hpp \
+  /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/external/arlib/include/arlib/routing_kernels/bidirectional_dijkstra.hpp \
+  /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/external/arlib/include/arlib/routing_kernels/details/bidirectional_dijkstra_impl.hpp \
+  /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/external/arlib/include/arlib/routing_kernels/visitor.hpp \
+  /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/external/arlib/include/arlib/routing_kernels/types.hpp \
+  /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/external/arlib/include/arlib/graph_utils.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/copy_options.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/directory_entry.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/file_status.h \
@@ -2282,8 +2282,8 @@ CMakeFiles/main.dir/utils.cpp.o: \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/recursive_directory_iterator.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__filesystem/u8path.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/fstream \
-  /Users/giorgiasavo/Documents/KSPWLO/backend/external/arlib/include/arlib/graph_types.hpp \
-  /Users/giorgiasavo/Documents/KSPWLO/backend/external/arlib/include/arlib/multi_predecessor_map.hpp \
+  /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/external/arlib/include/arlib/graph_types.hpp \
+  /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/external/arlib/include/arlib/multi_predecessor_map.hpp \
   /opt/homebrew/include/boost/graph/compressed_sparse_row_graph.hpp \
   /opt/homebrew/include/boost/graph/detail/indexed_properties.hpp \
   /opt/homebrew/include/boost/iterator/counting_iterator.hpp \
@@ -2539,7 +2539,7 @@ CMakeFiles/main.dir/utils.cpp.o: \
   /opt/homebrew/include/boost/graph/detail/is_distributed_selector.hpp \
   /opt/homebrew/include/boost/property_map/transform_value_property_map.hpp \
   /opt/homebrew/include/boost/mpl/print.hpp \
-  /Users/giorgiasavo/Documents/KSPWLO/backend/external/arlib/include/arlib/onepass_plus.hpp \
-  /Users/giorgiasavo/Documents/KSPWLO/backend/external/arlib/include/arlib/details/onepass_plus_impl.hpp \
-  /Users/giorgiasavo/Documents/KSPWLO/backend/external/arlib/include/arlib/penalty.hpp \
-  /Users/giorgiasavo/Documents/KSPWLO/backend/external/arlib/include/arlib/details/penalty_impl.hpp
+  /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/external/arlib/include/arlib/onepass_plus.hpp \
+  /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/external/arlib/include/arlib/details/onepass_plus_impl.hpp \
+  /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/external/arlib/include/arlib/penalty.hpp \
+  /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/external/arlib/include/arlib/details/penalty_impl.hpp

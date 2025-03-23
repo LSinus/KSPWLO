@@ -1,6 +1,6 @@
 CMakeFiles/main.dir/message.cpp.o: \
-  /Users/giorgiasavo/Documents/KSPWLO/backend/message.cpp \
-  /Users/giorgiasavo/Documents/KSPWLO/backend/message.hpp \
+  /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/message.cpp \
+  /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/message.hpp \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/vector \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/copy.h \
   /Library/Developer/CommandLineTools/SDKs/MacOSX15.2.sdk/usr/include/c++/v1/__algorithm/copy_move_common.h \

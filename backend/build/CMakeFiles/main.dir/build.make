@@ -53,10 +53,10 @@ RM = /opt/homebrew/bin/cmake -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /Users/giorgiasavo/Documents/KSPWLO/backend
+CMAKE_SOURCE_DIR = /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /Users/giorgiasavo/Documents/KSPWLO/backend/build
+CMAKE_BINARY_DIR = /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/main.dir/depend.make
@@ -73,74 +73,74 @@ CMakeFiles/main.dir/codegen:
 .PHONY : CMakeFiles/main.dir/codegen
 
 CMakeFiles/main.dir/main.cpp.o: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/main.cpp.o: /Users/giorgiasavo/Documents/KSPWLO/backend/main.cpp
+CMakeFiles/main.dir/main.cpp.o: /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/main.cpp
 CMakeFiles/main.dir/main.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/giorgiasavo/Documents/KSPWLO/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/main.dir/main.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/main.cpp.o -MF CMakeFiles/main.dir/main.cpp.o.d -o CMakeFiles/main.dir/main.cpp.o -c /Users/giorgiasavo/Documents/KSPWLO/backend/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/main.dir/main.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/main.cpp.o -MF CMakeFiles/main.dir/main.cpp.o.d -o CMakeFiles/main.dir/main.cpp.o -c /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/main.cpp
 
 CMakeFiles/main.dir/main.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/main.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/giorgiasavo/Documents/KSPWLO/backend/main.cpp > CMakeFiles/main.dir/main.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/main.cpp > CMakeFiles/main.dir/main.cpp.i
 
 CMakeFiles/main.dir/main.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/main.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/giorgiasavo/Documents/KSPWLO/backend/main.cpp -o CMakeFiles/main.dir/main.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/main.cpp -o CMakeFiles/main.dir/main.cpp.s
 
 CMakeFiles/main.dir/engine.cpp.o: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/engine.cpp.o: /Users/giorgiasavo/Documents/KSPWLO/backend/engine.cpp
+CMakeFiles/main.dir/engine.cpp.o: /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/engine.cpp
 CMakeFiles/main.dir/engine.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/giorgiasavo/Documents/KSPWLO/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/main.dir/engine.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/engine.cpp.o -MF CMakeFiles/main.dir/engine.cpp.o.d -o CMakeFiles/main.dir/engine.cpp.o -c /Users/giorgiasavo/Documents/KSPWLO/backend/engine.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/main.dir/engine.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/engine.cpp.o -MF CMakeFiles/main.dir/engine.cpp.o.d -o CMakeFiles/main.dir/engine.cpp.o -c /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/engine.cpp
 
 CMakeFiles/main.dir/engine.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/engine.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/giorgiasavo/Documents/KSPWLO/backend/engine.cpp > CMakeFiles/main.dir/engine.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/engine.cpp > CMakeFiles/main.dir/engine.cpp.i
 
 CMakeFiles/main.dir/engine.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/engine.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/giorgiasavo/Documents/KSPWLO/backend/engine.cpp -o CMakeFiles/main.dir/engine.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/engine.cpp -o CMakeFiles/main.dir/engine.cpp.s
 
 CMakeFiles/main.dir/network.cpp.o: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/network.cpp.o: /Users/giorgiasavo/Documents/KSPWLO/backend/network.cpp
+CMakeFiles/main.dir/network.cpp.o: /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/network.cpp
 CMakeFiles/main.dir/network.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/giorgiasavo/Documents/KSPWLO/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/main.dir/network.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/network.cpp.o -MF CMakeFiles/main.dir/network.cpp.o.d -o CMakeFiles/main.dir/network.cpp.o -c /Users/giorgiasavo/Documents/KSPWLO/backend/network.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/main.dir/network.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/network.cpp.o -MF CMakeFiles/main.dir/network.cpp.o.d -o CMakeFiles/main.dir/network.cpp.o -c /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/network.cpp
 
 CMakeFiles/main.dir/network.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/network.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/giorgiasavo/Documents/KSPWLO/backend/network.cpp > CMakeFiles/main.dir/network.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/network.cpp > CMakeFiles/main.dir/network.cpp.i
 
 CMakeFiles/main.dir/network.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/network.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/giorgiasavo/Documents/KSPWLO/backend/network.cpp -o CMakeFiles/main.dir/network.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/network.cpp -o CMakeFiles/main.dir/network.cpp.s
 
 CMakeFiles/main.dir/message.cpp.o: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/message.cpp.o: /Users/giorgiasavo/Documents/KSPWLO/backend/message.cpp
+CMakeFiles/main.dir/message.cpp.o: /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/message.cpp
 CMakeFiles/main.dir/message.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/giorgiasavo/Documents/KSPWLO/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/main.dir/message.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/message.cpp.o -MF CMakeFiles/main.dir/message.cpp.o.d -o CMakeFiles/main.dir/message.cpp.o -c /Users/giorgiasavo/Documents/KSPWLO/backend/message.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/main.dir/message.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/message.cpp.o -MF CMakeFiles/main.dir/message.cpp.o.d -o CMakeFiles/main.dir/message.cpp.o -c /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/message.cpp
 
 CMakeFiles/main.dir/message.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/message.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/giorgiasavo/Documents/KSPWLO/backend/message.cpp > CMakeFiles/main.dir/message.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/message.cpp > CMakeFiles/main.dir/message.cpp.i
 
 CMakeFiles/main.dir/message.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/message.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/giorgiasavo/Documents/KSPWLO/backend/message.cpp -o CMakeFiles/main.dir/message.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/message.cpp -o CMakeFiles/main.dir/message.cpp.s
 
 CMakeFiles/main.dir/utils.cpp.o: CMakeFiles/main.dir/flags.make
-CMakeFiles/main.dir/utils.cpp.o: /Users/giorgiasavo/Documents/KSPWLO/backend/utils.cpp
+CMakeFiles/main.dir/utils.cpp.o: /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/utils.cpp
 CMakeFiles/main.dir/utils.cpp.o: CMakeFiles/main.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/giorgiasavo/Documents/KSPWLO/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/main.dir/utils.cpp.o"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/utils.cpp.o -MF CMakeFiles/main.dir/utils.cpp.o.d -o CMakeFiles/main.dir/utils.cpp.o -c /Users/giorgiasavo/Documents/KSPWLO/backend/utils.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/main.dir/utils.cpp.o"
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/main.dir/utils.cpp.o -MF CMakeFiles/main.dir/utils.cpp.o.d -o CMakeFiles/main.dir/utils.cpp.o -c /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/utils.cpp
 
 CMakeFiles/main.dir/utils.cpp.i: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/main.dir/utils.cpp.i"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/giorgiasavo/Documents/KSPWLO/backend/utils.cpp > CMakeFiles/main.dir/utils.cpp.i
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/utils.cpp > CMakeFiles/main.dir/utils.cpp.i
 
 CMakeFiles/main.dir/utils.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/main.dir/utils.cpp.s"
-	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/giorgiasavo/Documents/KSPWLO/backend/utils.cpp -o CMakeFiles/main.dir/utils.cpp.s
+	/Library/Developer/CommandLineTools/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/utils.cpp -o CMakeFiles/main.dir/utils.cpp.s
 
 # Object files for target main
 main_OBJECTS = \
@@ -162,7 +162,7 @@ main: CMakeFiles/main.dir/build.make
 main: external/arlib/libarlib.a
 main: /opt/homebrew/lib/libboost_graph-mt.dylib
 main: CMakeFiles/main.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/giorgiasavo/Documents/KSPWLO/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable main"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --bold --progress-dir=/Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Linking CXX executable main"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/main.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -174,6 +174,6 @@ CMakeFiles/main.dir/clean:
 .PHONY : CMakeFiles/main.dir/clean
 
 CMakeFiles/main.dir/depend:
-	cd /Users/giorgiasavo/Documents/KSPWLO/backend/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/giorgiasavo/Documents/KSPWLO/backend /Users/giorgiasavo/Documents/KSPWLO/backend /Users/giorgiasavo/Documents/KSPWLO/backend/build /Users/giorgiasavo/Documents/KSPWLO/backend/build /Users/giorgiasavo/Documents/KSPWLO/backend/build/CMakeFiles/main.dir/DependInfo.cmake "--color=$(COLOR)"
+	cd /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/build && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/build /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/build /Users/giorgiasavo/Documents/projects/academic/KSPWLO/backend/build/CMakeFiles/main.dir/DependInfo.cmake "--color=$(COLOR)"
 .PHONY : CMakeFiles/main.dir/depend
 
