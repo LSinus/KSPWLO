@@ -7,85 +7,154 @@ from geopy.geocoders import Nominatim
 import osmnx as ox 
 import os
 from utils import rgb_to_hex
+import geonamescache
 from network_utils import send_data, receive_data, parse_data
 
+
+DEFAULT_PATH = "files/resultGraph.graphml"
+
 class HierarchicalGraph:
+    def __init__(self, start=None, dest=None):
+
+
+
+        if start is None and dest is None:
+            self.graph = ox.load_graphml(DEFAULT_PATH)
+        elif start is not None and dest is not None:
+            self.origin_graph = None
+            self.destination_graph = None
+
+            print("[INFO] getting detailed graphs")
+            self.start_name = self.get_city_name(str(start))
+            self.dest_name  = self.get_city_name(str(dest))
+
+            for root, dirs, files in os.walk("files"):
+                for file in files:
+                    if file.endswith(".graphml"):
+                        if file.startswith(self.start_name):
+                            print("[INFO] loading origin graph from cache")
+                            self.origin_graph = ox.load_graphml(os.path.join("files", file))
+                        if file.startswith(self.dest_name):
+                            print("[INFO] loading destination graph from cache")
+                            self.destination_graph = ox.load_graphml(os.path.join("files", file))
+
+            if self.origin_graph is None:
+                print("[INFO] downloading origin graph")
+                self.start_radius = self.get_city_radius(self.start_name)
+                self.origin_graph = self.get_detailed_area(start, self.start_radius)
+
+
+            if self.destination_graph is None:
+                print("[INFO] downloading destination graph")
+                self.dest_radius = self.get_city_radius(self.dest_name)
+                self.destination_graph = self.get_detailed_area(dest, self.dest_radius)
+
+            print("[INFO] getting low detailed graphs")
+            low_detail_graph = self.get_lowDetGraph(start, dest)
+            print("[INFO] merging graphs")
+            self.graph = nx.compose(self.origin_graph, low_detail_graph)
+            self.graph = nx.compose(self.graph, self.destination_graph)
+
+
+            ox.save_graphml(self.graph, DEFAULT_PATH)
+            add_osmid(DEFAULT_PATH, DEFAULT_PATH)
+
     
-    def create_hierarchical_graph(self, start, dest):
-        
-        print("[INFO] getting detailed graphs")
-        #self.start_radius = get_city_radius(str(start).split(',')[0]) 
-        origin_graph = self.get_detailed_area(self, start, 7000)
-        # start.raw['address']['city']
-        # clean_location = start.replace(" ", "_").lower()
-        filepath = os.path.join("files", "start.graphml")
-        ox.save_graphml(origin_graph, filepath)
-        add_osmid(filepath, filepath)
-
-        #self.dest_radius = get_city_radius(str(dest).split(',')[0])
-        dest_graph = self.get_detailed_area(self, dest, 7000)
-        # dest.raw['address']['city']
-        # clean_location = dest.replace(" ", "_").lower()
-        filepath = os.path.join("files", "dest.graphml")
-        #filepath = os.path.join("files", f"{clean_location}.graphml")
-        ox.save_graphml(dest_graph, filepath)
-        add_osmid(filepath, filepath)
-
-        print("[INFO] getting low detailed graphs")
-        low_detail_graph = self.get_lowDetGraph(self, start, dest)
-        filepath = os.path("files", "lowdet.graphml")
-        ox.save_graphml(res, filepath)
-
-        print("[INFO] merging graphs")
-        G=nx.compose(origin_graph, low_detail_graph)
-        res=nx.compose(G, dest_graph)
-        filepath = os.path("files", "resultGraph.graphml")
-        ox.save_graphml(res, filepath)
-        self.graph = res
-    
-    def get_detailed_area(self, start, radius):
+    def get_detailed_area(self, center, radius):
         #the aim is to download or search the graph of this city
 
         #note: the join methods iterates the string contained in the parameter and between the elements of the array insert |, so the result is residential|tertiary|...
-        center=(start.latitude, start.longitude)
+        center = (center.latitude, center.longitude)
         custom_filter = '["highway"~"residential|tertiary|secondary|primary"]'
-        G=ox.graph_from_point(center_point=center, dist=radius, dist_type='network', network_type='drive', custom_filter=custom_filter)
-        return G
+        return ox.graph_from_point(center_point=center, dist=radius, dist_type='network', network_type='drive', custom_filter=custom_filter)
     
     def get_long_margin(self, lat):
         import math
-        return 2*math.pi*math.cos(lat*math.pi/180)*6371/10
+        return (360*10)/(2*math.pi*math.cos(lat*math.pi/180)*6371)
 
     
-    def get_lowDetGraph(self, start, dest):
+    def get_lowDetGraph(self, s, d):
         custom_filter = '["highway"~"trunk|motorway|primary"]'
-        lat_margin=0.09
-        long_margin = self.get_long_margin(self, start.latitude)
-        min_lat = min(start.latitude, dest.latitude) - lat_margin
-        max_lat = max(start.latitude, dest.latitude) + lat_margin
-        min_lon = min(start.longitude, dest.longitude) - long_margin
-        max_lon = max(start.longitude, dest.longitude) + long_margin
+        lat_margin = 0.09
+        long_margin = self.get_long_margin(s.latitude)
+        min_lat = min(s.latitude, d.latitude) - lat_margin
+        max_lat = max(s.latitude, d.latitude) + lat_margin
+        min_lon = min(s.longitude, d.longitude) - long_margin
+        max_lon = max(s.longitude, d.longitude) + long_margin
         G = ox.graph_from_bbox(max_lat, min_lat, max_lon, min_lon, network_type='drive', custom_filter=custom_filter)
         return G
-    
-    def get_raw_graph():
-        return self.graph
-    
-    def get_filepath():
-        import sys
-        graph_size = os.path.getsize("files/resultGraph.graphml")
-        print("old: " + graph_size)
-        new = sys.getsizeof(self.graph)
-        print("new: " + new)
+
+    def get_graph_size(self):
+        return os.path.getsize(DEFAULT_PATH)
+
+    def get_graph_data(self):
+        with open('files/resultGraph.graphml', 'rb') as f:
+            graph_data = f.read()
+        return graph_data
+
+    def get_city_radius(self, city_name):
+        parts = city_name.split('_')
+        c_parts = [part.capitalize() for part in parts]
+        name = ' '.join(c_parts)
+
+        radius = 2000
+
+        if name is None:
+            return radius
+
+        gc = geonamescache.GeonamesCache()
+
+        cities = gc.search_cities(name, case_sensitive=False, contains_search=False)
+        population = 0
+        for city in cities:
+            if city['population'] > population:
+                population = city['population']
+
+        if population > 2000000:
+            radius = 15000
+        elif population > 1000000:
+            radius = 10000
+        elif population > 500000:
+            radius = 7000
+        elif population > 150000:
+            radius = 5000
+        elif population > 25000:
+            radius = 4000
+
+        return radius
+
+    def get_city_name(self, location_name):
+        gl = Nominatim(user_agent="geoapp")
+        location = gl.geocode(location_name, addressdetails=True)
+
+        if location and "address" in location.raw:
+            address = location.raw["address"]
+            loc = address.get("city") or address.get("town") or address.get("village") or address.get("municipality")
+            return loc.replace(" ", "_").lower()
+
+        return None
+
+    def save_cache(self):
+        print("[INFO] saving graphs in cache")
+        filepath = os.path.join("files", f"{self.start_name}.graphml")
+        ox.save_graphml(self.origin_graph, filepath)
+        add_osmid(filepath, filepath)
+
+        filepath = os.path.join("files", f"{self.dest_name}.graphml")
+        ox.save_graphml(self.destination_graph, filepath)
+        add_osmid(filepath, filepath)
+
+    def __del__(self):
+        self.save_cache()
 
 if __name__ == "__main__":
-    G = HierarchicalGraph
-    geolocator=Nominatim(user_agent="geoapp")
-    start=geolocator.geocode("Milano") #converting in latitude and longitude
-    dest=geolocator.geocode("Pavia")
-    G.create_hierarchical_graph(G, start, dest)
 
-    G.get_filepath()
+    geolocator=Nominatim(user_agent="geoapp")
+    point_start=geolocator.geocode("Via Melchiorre gioia, 51 milano") #converting in latitude and longitude
+    point_dest=geolocator.geocode("Pavia")
+    G = HierarchicalGraph(start=point_start, dest=point_dest)
+    #G = HierarchicalGraph(path=DEFAULT_PATH)
+    print(G.get_graph_size())
 
 
 

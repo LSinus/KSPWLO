@@ -182,7 +182,7 @@ void Engine::runAlg() {
         thread_esx.join();
         thread_penalty.join();
 
-        std::string done = "COMPUNTATION_DONE";
+        std::string done = "COMPUTATION_DONE";
         message msg(std::vector<char>(done.begin(), done.end()));
         m_netProvider.send(msg);
 

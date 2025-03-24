@@ -15,7 +15,6 @@ from geopy.geocoders import Nominatim
 from geopy.distance import geodesic
 import bisect
 from PyQt5.QtCore import QSocketNotifier
-
 from graph_utils import add_osmid, calc_min_dist_osmid
 from utils import rgb_to_hex
 from network_utils import send_data, receive_data, parse_data
@@ -34,7 +33,7 @@ class AppIntegrata(QMainWindow):
         
         if self.local_map:
             print("[INFO]: Loading Graph from cache...")
-            self.G = ox.load_graphml("files/G.graphml")
+            self.G = HierarchicalGraph()
             print("[INFO]: Graph loaded...")
 
         self.setWindowTitle("SuperMap")
@@ -102,7 +101,6 @@ class AppIntegrata(QMainWindow):
 
     def generate_map(self):
         #saving the overlap
-        hgraph = HierarchicalGraph() #instance of the new class created
         sovr_value=self.sovr_input.text()
         try:
             theta_value=float(sovr_value)
@@ -117,7 +115,6 @@ class AppIntegrata(QMainWindow):
 
         #new Nominatim client
         geolocator=Nominatim(user_agent="geoapp")
-
         #saving start and destination
         start_loc=self.start_input.text() #prese da input
         end_loc=self.end_input.text()
@@ -126,46 +123,26 @@ class AppIntegrata(QMainWindow):
         end=geolocator.geocode(end_loc)
 
 
-        margin=0.035
-        min_lat = min(start.latitude, end.latitude) - margin
-        max_lat = max(start.latitude, end.latitude) + margin
-        min_lon = min(start.longitude, end.longitude) - margin
-        max_lon = max(start.longitude, end.longitude) + margin
-
-
-        filepath='files/G.graphml'
-
         if not self.local_map:
-            print("[INFO]: Obtaining graph from OSM...")
-            #self.G = ox.graph_from_bbox(max_lat, min_lat, max_lon, min_lon, network_type='drive')
-            self.G=hgraph.create_hierarchical_graph(start, end)
+            self.G = HierarchicalGraph(start, end)
             print("[INFO]: Graph received...")
-            # Create a folium map
-            m = ox.plot_graph_folium(self.G, popup_attribute='name', edge_width=2)
-            m.save('interactive_map.html')
-            ox.save_graphml(self.G, filepath)
-            print("[INFO]: Adding OSMID to graph...")
-            add_osmid(filepath, filepath)
-            print("[INFO]: Done...")
 
         print("[INFO]: Calculating source and target OSMID...")
         #(source, dest) = calc_min_dist_osmid(start.latitude, start.longitude, end.latitude, end.longitude, filepath)
-        points = ox.nearest_nodes(self.G, [start.latitude, end.latitude], [start.longitude, end.longitude])
+        points = ox.nearest_nodes(self.G.graph, [start.latitude, end.latitude], [start.longitude, end.longitude])
         source = points[0]
         dest = points[1]
         print("[INFO]: Done...")
 
         print("[INFO]: Preparing data for server...")
         source_dest_bytes = struct.pack("!QQfi", source, dest, self.theta, self.k)
-        graph_size = os.path.getsize(filepath)
+        graph_size = self.G.get_graph_size()
 
-
-        with open('files/G.graphml', 'rb') as f:
-            graph_data = f.read()
-        data = source_dest_bytes + graph_data
+        data = source_dest_bytes + self.G.get_graph_data()
         print("[INFO]: Sending data...")
         send_data(self.client_socket, data, graph_size)
         print("[INFO]: Done")
+        self.G.save_cache()
 
 
         #calculating zoom
@@ -185,8 +162,6 @@ class AppIntegrata(QMainWindow):
         folium.Marker(location=[end.latitude, end.longitude], popup= "ARRIVO", 
             icon=folium.Icon(color="green")).add_to(self.m)
 
-        folium.PolyLine(locations=((min_lat, min_lon), (max_lat, min_lon), (max_lat, max_lon), (min_lat, max_lon), (min_lat, min_lon)), color=rgb_to_hex(0, 0, 0), weight=6, opacity=1).add_to(self.m)
-        
         self.update_map()
         #when the socket is ready to be read, the signal activated is given, so it is
         # linked to this signal the receive_results() function
@@ -206,7 +181,6 @@ class AppIntegrata(QMainWindow):
         self.webview.setHtml(data.getvalue().decode())
 
     def receive_results(self):
-
         try:
             results=receive_data(self.client_socket)
             if(results is None):
@@ -216,7 +190,7 @@ class AppIntegrata(QMainWindow):
             for result in results:
                 #onepass+ esx penalty
                 if result.alg_name=="onepass_plus":
-                    route_coords=[(self.G.nodes[node]['y'], self.G.nodes[node]['x']) for node in result.list_osmid]
+                    route_coords=[(self.G.graph.nodes[node]['y'], self.G.graph.nodes[node]['x']) for node in result.list_osmid]
                     folium.PolyLine(locations=route_coords, color=rgb_to_hex(255, (20*result.num_result)%255, 0), weight=6, opacity=1).add_to(self.m)
                     folium.Marker(
                         location=route_coords[len(route_coords)//2],
@@ -224,7 +198,7 @@ class AppIntegrata(QMainWindow):
                         icon=folium.Icon(color="red"), icon_size=(40, 40)).add_to(self.m)
 
                 elif result.alg_name=="esx":
-                    route_coords=[(self.G.nodes[node]['y'], self.G.nodes[node]['x']) for node in result.list_osmid]
+                    route_coords=[(self.G.graph.nodes[node]['y'], self.G.graph.nodes[node]['x']) for node in result.list_osmid]
                     folium.PolyLine(locations=route_coords, color=rgb_to_hex((20*result.num_result)%255, 0, 255-10*result.num_result), weight=4, opacity=1).add_to(self.m)
                     folium.Marker(
                         location=route_coords[len(route_coords)//2],
@@ -232,15 +206,19 @@ class AppIntegrata(QMainWindow):
                         icon=folium.Icon(color="blue"), icon_size=(40, 40)).add_to(self.m)
 
                 elif result.alg_name=="penalty":
-                    route_coords=[(self.G.nodes[node]['y'], self.G.nodes[node]['x']) for node in result.list_osmid]
+                    route_coords=[(self.G.graph.nodes[node]['y'], self.G.graph.nodes[node]['x']) for node in result.list_osmid]
                     folium.PolyLine(locations=route_coords, color=rgb_to_hex(0, 255, (20*result.num_result)%255), weight=8, opacity=1).add_to(self.m)
                     folium.Marker(
                         location=route_coords[len(route_coords)//2],
                         popup=f"penalty risultato n° {result.num_result+1}",
                         icon=folium.Icon(color="green"), icon_size=(40, 40)).add_to(self.m)
             self.update_map()
+
+
         except BlockingIOError:
             pass
+
+
 
 if __name__ == "__main__":
     host_server_ip = '127.0.0.1'
