@@ -79,11 +79,13 @@ void Engine::buildGraph(message& msg)
 
     std::cout << "source " << m_source << ", dest " << m_dest << ", k " << m_k << ", theta " << m_theta << std::endl;
 
-    if(msg.size() > 20) {
+    if(msg.size() > 28) {
+        m_graph.clear();
         std::cout << "costruzione grafo\n";
         boost::dynamic_properties dp(boost::ignore_other_properties);
         dp.property("osmid", boost::get(boost::vertex_name, m_graph));
         dp.property("length", boost::get(boost::edge_weight, m_graph));
+
         boost::read_graphml(graphStream, m_graph, dp);
 
         std::cout << "Numero vertici: " << boost::num_vertices(m_graph) << "\n";

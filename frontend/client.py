@@ -30,6 +30,7 @@ class AppIntegrata(QMainWindow):
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client_socket.connect((host_server_ip, host_server_port))
         self.local_map = local_map
+        self.G = None
         
         if self.local_map:
             print("[INFO]: Loading Graph from cache...")
@@ -123,26 +124,39 @@ class AppIntegrata(QMainWindow):
         end=geolocator.geocode(end_loc)
 
 
-        if not self.local_map:
-            self.G = HierarchicalGraph(start, end)
-            print("[INFO]: Graph received...")
+        if self.G is None or not self.G.compare_trip(start, end):
+            if not self.local_map:
+                self.G = HierarchicalGraph(start, end)
+                print("[INFO]: Graph received...")
 
-        print("[INFO]: Calculating source and target OSMID...")
-        #(source, dest) = calc_min_dist_osmid(start.latitude, start.longitude, end.latitude, end.longitude, filepath)
-        points = ox.nearest_nodes(self.G.graph, [start.latitude, end.latitude], [start.longitude, end.longitude])
-        source = points[0]
-        dest = points[1]
-        print("[INFO]: Done...")
+            print("[INFO]: Calculating source and target OSMID...")
+            (source, dest) = calc_min_dist_osmid(start.latitude, start.longitude, end.latitude, end.longitude, self.G.get_filepath())
+            #points = ox.nearest_nodes(self.G.graph, [start.latitude, end.latitude], [start.longitude, end.longitude])
+            #source = points[0]
+            #dest = points[1]
+            print("[INFO]: Done...")
 
-        print("[INFO]: Preparing data for server...")
-        source_dest_bytes = struct.pack("!QQfi", source, dest, self.theta, self.k)
-        graph_size = self.G.get_graph_size()
+            print("[INFO]: Preparing data for server...")
+            source_dest_bytes = struct.pack("!QQfi", source, dest, self.theta, self.k)
+            graph_size = self.G.get_graph_size()
 
-        data = source_dest_bytes + self.G.get_graph_data()
-        print("[INFO]: Sending data...")
-        send_data(self.client_socket, data, graph_size)
-        print("[INFO]: Done")
-        self.G.save_cache()
+            data = source_dest_bytes + self.G.get_graph_data()
+            print("[INFO]: Sending data...")
+            send_data(self.client_socket, data, graph_size)
+            print("[INFO]: Done")
+            self.G.save_cache()
+            self.G.set_start_dest_names(start, end)
+
+        else:
+            print("[INFO]: SOURCE and DEST already contained in graph...")
+            print("[INFO]: Calculating source and target OSMID...")
+            (source, dest) = calc_min_dist_osmid(start.latitude, start.longitude, end.latitude, end.longitude,self.G.get_filepath())
+            print("[INFO]: Done...")
+            print("[INFO]: Preparing data for server...")
+            source_dest_bytes = struct.pack("!QQfi", source, dest, self.theta, self.k)
+            print("[INFO]: Sending data...")
+            send_data(self.client_socket, source_dest_bytes)
+            print("[INFO]: Done")
 
 
         #calculating zoom
@@ -159,7 +173,7 @@ class AppIntegrata(QMainWindow):
         #adding marker for source and destination
         folium.Marker(location=[start.latitude, start.longitude], popup= "PARTENZA", 
             icon=folium.Icon(color="green")).add_to(self.m)
-        folium.Marker(location=[end.latitude, end.longitude], popup= "ARRIVO", 
+        folium.Marker(location=[end.latitude, end.longitude], popup= "ARRIVO",
             icon=folium.Icon(color="green")).add_to(self.m)
 
         self.update_map()
@@ -167,8 +181,9 @@ class AppIntegrata(QMainWindow):
         # linked to this signal the receive_results() function
         #fileno() methods for socket returns the id of the socket we are using, so we are
         # asking QSocketNotifier to track the activity of the socket of our connection
-        self.notifier=QSocketNotifier(self.client_socket.fileno(), QSocketNotifier.Read)
-        self.notifier.activated.connect(self.receive_results)
+        ##self.notifier=QSocketNotifier(self.client_socket.fileno(), QSocketNotifier.Read)
+        ##self.notifier.activated.connect(self.receive_results)
+        self.receive_results()
         #self.result_timer=QTimer() #timer creation
         #self.result_timer.timeout.connect(self.receive_results)
         #self.result_timer.start(100) #check every 100ms
@@ -217,7 +232,7 @@ class AppIntegrata(QMainWindow):
 
         except BlockingIOError:
             pass
-
+        self.receive_results()
 
 
 if __name__ == "__main__":

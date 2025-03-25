@@ -16,13 +16,15 @@ DEFAULT_PATH = "files/resultGraph.graphml"
 class HierarchicalGraph:
     def __init__(self, start=None, dest=None):
 
-
+        self.origin_graph = None
+        self.destination_graph = None
+        self.start_name = None
+        self.dest_name = None
 
         if start is None and dest is None:
             self.graph = ox.load_graphml(DEFAULT_PATH)
+
         elif start is not None and dest is not None:
-            self.origin_graph = None
-            self.destination_graph = None
 
             print("[INFO] getting detailed graphs")
             self.start_name = self.get_city_name(str(start))
@@ -84,8 +86,24 @@ class HierarchicalGraph:
         G = ox.graph_from_bbox(max_lat, min_lat, max_lon, min_lon, network_type='drive', custom_filter=custom_filter)
         return G
 
+    def compare_trip(self, start, dest):
+        if self.start_name is None or self.dest_name is None:
+            return False
+
+        new_start_loc = self.get_city_name(start)
+        new_dest_loc = self.get_city_name(dest)
+
+        return self.start_name == new_start_loc and self.dest_name == new_dest_loc
+
+    def set_start_dest_names(self, start, dest):
+        self.start_name = self.get_city_name(start)
+        self.dest_name = self.get_city_name(dest)
+
     def get_graph_size(self):
         return os.path.getsize(DEFAULT_PATH)
+
+    def get_filepath(self):
+        return DEFAULT_PATH
 
     def get_graph_data(self):
         with open('files/resultGraph.graphml', 'rb') as f:
@@ -136,13 +154,15 @@ class HierarchicalGraph:
 
     def save_cache(self):
         print("[INFO] saving graphs in cache")
-        filepath = os.path.join("files", f"{self.start_name}.graphml")
-        ox.save_graphml(self.origin_graph, filepath)
-        add_osmid(filepath, filepath)
+        if self.origin_graph is not None:
+            filepath = os.path.join("files", f"{self.start_name}.graphml")
+            ox.save_graphml(self.origin_graph, filepath)
+            add_osmid(filepath, filepath)
 
-        filepath = os.path.join("files", f"{self.dest_name}.graphml")
-        ox.save_graphml(self.destination_graph, filepath)
-        add_osmid(filepath, filepath)
+        if self.destination_graph is not None:
+            filepath = os.path.join("files", f"{self.dest_name}.graphml")
+            ox.save_graphml(self.destination_graph, filepath)
+            add_osmid(filepath, filepath)
 
     def __del__(self):
         self.save_cache()
