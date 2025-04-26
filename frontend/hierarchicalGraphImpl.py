@@ -54,9 +54,9 @@ class HierarchicalGraph:
             print("[INFO] getting low detailed graphs")
             low_detail_graph = self.get_lowDetGraph(start, dest)
             print("[INFO] merging graphs")
+            
             self.graph = nx.compose(self.origin_graph, low_detail_graph)
             self.graph = nx.compose(self.graph, self.destination_graph)
-
 
             ox.save_graphml(self.graph, DEFAULT_PATH)
             add_osmid(DEFAULT_PATH, DEFAULT_PATH)

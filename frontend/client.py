@@ -2,7 +2,7 @@
 # (geocoding) and otherwise (reverse geocoding).
 
 import argparse
-import osmnx as ox 
+import osmnx as ox
 import sys
 import io
 import folium
@@ -142,6 +142,7 @@ class AppIntegrata(QMainWindow):
 
             data = source_dest_bytes + self.G.get_graph_data()
             print("[INFO]: Sending data...")
+
             send_data(self.client_socket, data, graph_size)
             print("[INFO]: Done")
             self.G.save_cache()
@@ -205,6 +206,7 @@ class AppIntegrata(QMainWindow):
             for result in results:
                 #onepass+ esx penalty
                 if result.alg_name=="onepass_plus":
+
                     route_coords=[(self.G.graph.nodes[node]['y'], self.G.graph.nodes[node]['x']) for node in result.list_osmid]
                     folium.PolyLine(locations=route_coords, color=rgb_to_hex(255, (20*result.num_result)%255, 0), weight=6, opacity=1).add_to(self.m)
                     folium.Marker(
@@ -213,6 +215,7 @@ class AppIntegrata(QMainWindow):
                         icon=folium.Icon(color="red"), icon_size=(40, 40)).add_to(self.m)
 
                 elif result.alg_name=="esx":
+
                     route_coords=[(self.G.graph.nodes[node]['y'], self.G.graph.nodes[node]['x']) for node in result.list_osmid]
                     folium.PolyLine(locations=route_coords, color=rgb_to_hex((20*result.num_result)%255, 0, 255-10*result.num_result), weight=4, opacity=1).add_to(self.m)
                     folium.Marker(
@@ -221,6 +224,7 @@ class AppIntegrata(QMainWindow):
                         icon=folium.Icon(color="blue"), icon_size=(40, 40)).add_to(self.m)
 
                 elif result.alg_name=="penalty":
+
                     route_coords=[(self.G.graph.nodes[node]['y'], self.G.graph.nodes[node]['x']) for node in result.list_osmid]
                     folium.PolyLine(locations=route_coords, color=rgb_to_hex(0, 255, (20*result.num_result)%255), weight=8, opacity=1).add_to(self.m)
                     folium.Marker(
@@ -233,6 +237,7 @@ class AppIntegrata(QMainWindow):
         except BlockingIOError:
             pass
         self.receive_results()
+
 
 
 if __name__ == "__main__":

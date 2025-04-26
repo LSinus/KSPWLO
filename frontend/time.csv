@@ -1,0 +1,16 @@
+Algorithm       Timestamp (s)    Relative number path Absolute number path'
+onepass_plus    1.6913740634918213	1	1
+penalty         1.6963298320770264	1	2
+onepass_plus    1.7014398574829102	2	3
+penalty	        1.707395076751709	2	4
+onepass_plus	1.714195966720581	3	5
+penalty	        1.721606969833374	3	6
+onepass_plus	1.7299728393554688	4	7
+penalty	        1.7388920783996582	4	8
+onepass_plus	1.7492380142211914	5	9
+penalty	        1.761098861694336	5	10
+esx	            3.755181074142456	1	11
+esx	            3.7678749561309814	2	12
+esx	            3.7813827991485596	3	13
+esx	            3.795600175857544	4	14
+esx	            3.810675859451294	5	15
