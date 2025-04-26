@@ -23,10 +23,11 @@ from hierarchicalGraphImpl import HierarchicalGraph
 
 
 class AppIntegrata(QMainWindow):
-    def __init__(self, host_server_ip, host_server_port, local_map):
+    def __init__(self, host_server_ip, host_server_port, local_map, graphPath = None):
         super().__init__()
         #opening the connection
-        
+
+        self.m = None
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client_socket.connect((host_server_ip, host_server_port))
         self.local_map = local_map
@@ -34,7 +35,7 @@ class AppIntegrata(QMainWindow):
         
         if self.local_map:
             print("[INFO]: Loading Graph from cache...")
-            self.G = HierarchicalGraph()
+            self.G = HierarchicalGraph(path = graphPath)
             print("[INFO]: Graph loaded...")
 
         self.setWindowTitle("SuperMap")
@@ -122,15 +123,19 @@ class AppIntegrata(QMainWindow):
 
         start=geolocator.geocode(start_loc) #converting in latitude and longitude
         end=geolocator.geocode(end_loc)
-
-
+        '''source_lat = start.latitude
+        source_lon = start.longitude
+        dest_lat = end.latitude
+        dest_lon = end.longitude'''
+        (source, dest, (source_lat, source_lon), (dest_lat, dest_lon)) = calc_min_dist_osmid(start.latitude, start.longitude, end.latitude,
+                                                                       end.longitude, self.G.get_filepath())
         if self.G is None or not self.G.compare_trip(start, end):
             if not self.local_map:
                 self.G = HierarchicalGraph(start, end)
                 print("[INFO]: Graph received...")
 
             print("[INFO]: Calculating source and target OSMID...")
-            (source, dest) = calc_min_dist_osmid(start.latitude, start.longitude, end.latitude, end.longitude, self.G.get_filepath())
+            #(source, dest, source_coord, dest_coord) = calc_min_dist_osmid(start.latitude, start.longitude,end.latitude,end.longitude, self.G.get_filepath())
             #points = ox.nearest_nodes(self.G.graph, [start.latitude, end.latitude], [start.longitude, end.longitude])
             #source = points[0]
             #dest = points[1]
@@ -150,7 +155,7 @@ class AppIntegrata(QMainWindow):
         else:
             print("[INFO]: SOURCE and DEST already contained in graph...")
             print("[INFO]: Calculating source and target OSMID...")
-            (source, dest) = calc_min_dist_osmid(start.latitude, start.longitude, end.latitude, end.longitude,self.G.get_filepath())
+          #  (source, dest, (source_lat, source_lon), (dest_lat, dest_lon)) = calc_min_dist_osmid(start.latitude, start.longitude, end.latitude, end.longitude,self.G.get_filepath())
             print("[INFO]: Done...")
             print("[INFO]: Preparing data for server...")
             source_dest_bytes = struct.pack("!QQfi", source, dest, self.theta, self.k)
@@ -158,6 +163,7 @@ class AppIntegrata(QMainWindow):
             send_data(self.client_socket, source_dest_bytes)
             print("[INFO]: Done")
 
+        
 
         #calculating zoom
         distance_km=geodesic((start.latitude, start.longitude), (end.latitude, end.longitude)).km
@@ -168,13 +174,13 @@ class AppIntegrata(QMainWindow):
         # Return the corresponding zoom level
         zoom_level=zoom_levels[min(index, len(zoom_levels) - 1)]
 
+        self.m = folium.Map(location=[(start.latitude + end.latitude) / 2, (start.longitude + end.longitude) / 2],zoom_start=zoom_level)
+        # adding marker for source and destination
 
-        self.m=folium.Map(location=[(start.latitude+end.latitude)/2, (start.longitude+end.longitude)/2], zoom_start=zoom_level)
-        #adding marker for source and destination
-        folium.Marker(location=[start.latitude, start.longitude], popup= "PARTENZA", 
-            icon=folium.Icon(color="green")).add_to(self.m)
-        folium.Marker(location=[end.latitude, end.longitude], popup= "ARRIVO",
-            icon=folium.Icon(color="green")).add_to(self.m)
+        folium.Marker(location=[source_lat, source_lon], popup="PARTENZA",
+                      icon=folium.Icon(color="green")).add_to(self.m)
+        folium.Marker(location=[dest_lat, dest_lon], popup="ARRIVO",
+                      icon=folium.Icon(color="green")).add_to(self.m)
 
         self.update_map()
         #when the socket is ready to be read, the signal activated is given, so it is
@@ -239,12 +245,16 @@ if __name__ == "__main__":
     host_server_ip = '127.0.0.1'
     host_server_port = 10714
     local_map = False
+    path=None
 
     parser=argparse.ArgumentParser()
     parser.add_argument('-ip', type=str, help='Server IP address')
     parser.add_argument('-p', type=int, help='Server port')
     parser.add_argument('-l','--local', action="store_true", help='local saved graph')
+    parser.add_argument('-g', help='path to graph file')
     args=parser.parse_args()
+    if args.g:
+        path=args.g
     if args.ip:
         host_server_ip=args.ip
     if args.local:
@@ -254,7 +264,7 @@ if __name__ == "__main__":
 
 
     app = QApplication(sys.argv)
-    window = AppIntegrata(host_server_ip, host_server_port, local_map)
+    window = AppIntegrata(host_server_ip, host_server_port, local_map, path)
     window.show()
 
     sys.exit(app.exec_())
