@@ -48,15 +48,19 @@ def calc_min_dist_osmid(source_lat, source_lon, dest_lat, dest_lon, file_input):
     dest_min_dist = float("inf")
     source_closest_osmid = None
     dest_closest_osmid = None
+    source_coord = (source_lat, source_lon)
+    dest_coord = (dest_lat, dest_lon)
 
     for node in root.findall(".//graphml:node", ns):
         latitude_elem = node.find("graphml:data[@key='d4']", ns)
         longitude_elem = node.find("graphml:data[@key='d5']", ns)
 
         if latitude_elem is not None and longitude_elem is not None:
+
             try:
                 latitude = float(latitude_elem.text)
                 longitude = float(longitude_elem.text)
+               
 
                 source_delta_lat = source_lat - latitude
                 source_delta_lon = source_lon - longitude
@@ -70,14 +74,17 @@ def calc_min_dist_osmid(source_lat, source_lon, dest_lat, dest_lon, file_input):
                 if source_squared_dist < source_min_dist:
                     source_min_dist = source_squared_dist
                     source_closest_osmid = node.get("id")
+                    source_coord = (latitude, longitude)
+
                 if dest_squared_dist < dest_min_dist:
                     dest_min_dist = dest_squared_dist
                     dest_closest_osmid = node.get("id")
+                    dest_coord = (latitude, longitude)
 
             except ValueError:
                 print(f"Errore nella conversione dei dati per il nodo {node.get('id')}")
 
-    return (int(source_closest_osmid), int(dest_closest_osmid))
+    return (int(source_closest_osmid), int(dest_closest_osmid), source_coord, dest_coord)
 
 
 

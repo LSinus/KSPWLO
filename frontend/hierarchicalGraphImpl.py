@@ -11,18 +11,22 @@ import geonamescache
 from network_utils import send_data, receive_data, parse_data
 
 
-DEFAULT_PATH = "files/resultGraph.graphml"
+
 
 class HierarchicalGraph:
-    def __init__(self, start=None, dest=None):
+    def __init__(self, start = None, dest = None, path = None):
 
+        self.DEFAULT_PATH = "files/resultGraph.graphml"
         self.origin_graph = None
         self.destination_graph = None
         self.start_name = None
         self.dest_name = None
 
+        if path: 
+            self.DEFAULT_PATH = path
+
         if start is None and dest is None:
-            self.graph = ox.load_graphml(DEFAULT_PATH)
+            self.graph = ox.load_graphml(self.DEFAULT_PATH)
 
         elif start is not None and dest is not None:
 
@@ -58,8 +62,8 @@ class HierarchicalGraph:
             self.graph = nx.compose(self.graph, self.destination_graph)
 
 
-            ox.save_graphml(self.graph, DEFAULT_PATH)
-            add_osmid(DEFAULT_PATH, DEFAULT_PATH)
+            ox.save_graphml(self.graph, self.DEFAULT_PATH)
+            add_osmid(self.DEFAULT_PATH, self.DEFAULT_PATH)
 
     
     def get_detailed_area(self, center, radius):
@@ -100,10 +104,10 @@ class HierarchicalGraph:
         self.dest_name = self.get_city_name(dest)
 
     def get_graph_size(self):
-        return os.path.getsize(DEFAULT_PATH)
+        return os.path.getsize(self.DEFAULT_PATH)
 
     def get_filepath(self):
-        return DEFAULT_PATH
+        return self.DEFAULT_PATH
 
     def get_graph_data(self):
         with open('files/resultGraph.graphml', 'rb') as f:
@@ -173,7 +177,7 @@ if __name__ == "__main__":
     point_start=geolocator.geocode("Via Melchiorre gioia, 51 milano") #converting in latitude and longitude
     point_dest=geolocator.geocode("Pavia")
     G = HierarchicalGraph(start=point_start, dest=point_dest)
-    #G = HierarchicalGraph(path=DEFAULT_PATH)
+    #G = HierarchicalGraph(path=self.DEFAULT_PATH)
     print(G.get_graph_size())
 
 
