@@ -142,18 +142,18 @@ void Engine::saveResults(const std::string& result) {
     }
 }
 
-void Engine::get_alternative_routes(std::string_view alg, Graph const &G, Vertex s,Vertex t, int k, double theta)
+void Engine::get_alternative_routes(std::string_view alg)
 {
     auto predecessors = arlib::multi_predecessor_map<Vertex>{};
-    auto weight = boost::get(boost::edge_weight, G); // Get Edge WeightMap
-    utils::run_alt_routing(alg, G, weight, predecessors, s, t, k, theta);
-    auto result = arlib::to_paths(G, predecessors, weight, s, t);
+    auto weight = boost::get(boost::edge_weight, m_graph); // Get Edge WeightMap
+    utils::run_alt_routing(alg, m_graph, weight, predecessors, m_source, m_dest, m_k, m_theta, this);
+    //auto result = arlib::to_paths(m_graph, predecessors, weight, m_source, m_dest);
 
-    size_t count = 0;
+    //size_t count = 0;
 
-    for (auto const &route : result) {
+    /*for (auto const &route : result) {
         std::cout << "[INFO]: " << std::string(alg)+ ", " + std::to_string(count) + ", Length: " << route.length() << "\n";
-        std::string path = std::string(alg)+ "," + std::to_string(count) + "," + utils::get_osmid_path(route, s);
+        std::string path = std::string(alg)+ "," + std::to_string(count) + "," + utils::get_osmid_path(route, m_source);
         message msg(std::vector<char>(path.begin(), path.end()));
 
         m_resultsMutex.lock();
@@ -161,7 +161,7 @@ void Engine::get_alternative_routes(std::string_view alg, Graph const &G, Vertex
         m_resultsMutex.unlock();
 
         ++count;
-    }
+    }*/
 
 }
 
@@ -170,15 +170,15 @@ void Engine::runAlg() {
     // auto weight = boost::get(boost::edge_weight, m_graph);
     // utils::Timer timer;
 
-    Vertex source = utils::find_vertex_by_osmid(m_graph, m_source);
-    Vertex dest = utils::find_vertex_by_osmid(m_graph, m_dest);
+    m_source = utils::find_vertex_by_osmid(m_graph, m_source);
+    m_dest = utils::find_vertex_by_osmid(m_graph, m_dest);
 
-    if (source != -1 && dest != -1) {
-        //get_alternative_routes("onepass_plus", m_graph, source, dest, m_k, m_theta);
+    if (m_source != -1 && m_dest != -1) {
+        //get_alternative_routes("onepass_plus", m_graph, m_source, dest, m_k, m_theta);
 
-        std::thread thread_opp([this, source, dest]() { this->get_alternative_routes("onepass_plus", m_graph, source, dest, m_k, m_theta);});
-        std::thread thread_esx([this, source, dest]() { this->get_alternative_routes("esx", m_graph, source, dest, m_k, m_theta);});
-        std::thread thread_penalty([this, source, dest]() { this->get_alternative_routes("penalty", m_graph, source, dest, m_k, m_theta);});
+        std::thread thread_opp([this]() { this->get_alternative_routes("onepass_plus");});
+        std::thread thread_esx([this]() { this->get_alternative_routes("esx");});
+        std::thread thread_penalty([this]() { this->get_alternative_routes("penalty");});
 
         thread_opp.join();
         thread_esx.join();
@@ -192,6 +192,25 @@ void Engine::runAlg() {
     }
     else {
         std::cout<<"INVALID OSMID ABORT...\n";
+    }
+}
+
+void Engine::savePath(std::vector<Edge> path, int count, std::string alg) {
+    auto predecessors = arlib::multi_predecessor_map<Vertex>{};
+    std::vector<std::vector<Edge>> paths;
+    paths.push_back(path);
+    arlib::details::fill_multi_predecessor(paths.begin(), paths.end(), m_graph, predecessors);
+    auto weight = boost::get(boost::edge_weight, m_graph);
+    auto results = arlib::to_paths(m_graph, predecessors, weight, m_source, m_dest);
+
+    for (auto const &route : results) {
+        std::cout << "[INFO][NEW FUNCTION]: " << std::string(alg)+ ", " + std::to_string(count) + ", Length: " << route.length() << "\n";
+        std::string path = std::string(alg)+ "," + std::to_string(count) + "," + utils::get_osmid_path(route, m_source);
+        message msg(std::vector<char>(path.begin(), path.end()));
+
+        m_resultsMutex.lock();
+        m_netProvider.send(msg);
+        m_resultsMutex.unlock();
     }
 }
 

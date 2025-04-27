@@ -556,12 +556,12 @@ void penalize_candidate_path(const std::vector<Edge> &candidate, const Graph &G,
 }
 
 template <typename Graph, typename WeightMap, typename MultiPredecessorMap,
-          typename RoutingKernel, typename Terminator,
+          typename RoutingKernel,typename Engine, typename Terminator,
           typename Vertex = vertex_of_t<Graph>>
 void penalty(const Graph &G, WeightMap const &original_weight,
              MultiPredecessorMap &predecessors, Vertex s, Vertex t, int k,
              double theta, double p, double r, int max_nb_updates,
-             int max_nb_steps, RoutingKernel &routing_kernel,
+             int max_nb_steps, Engine* engine, RoutingKernel &routing_kernel,
              Terminator &&terminator) {
   using namespace boost;
   using Edge = typename graph_traits<Graph>::edge_descriptor;
@@ -592,6 +592,9 @@ void penalty(const Graph &G, WeightMap const &original_weight,
 
   // P_LO <-- {shortest path p_0(s, t)};
   resPathsEdges.push_back(*sp);
+  if (engine != nullptr) {
+    engine->savePath(*sp, 0, "penalty");
+  }
   resEdges.emplace_back(sp->begin(), sp->end());
 
   // If we need the shortest path only
@@ -637,6 +640,9 @@ void penalty(const Graph &G, WeightMap const &original_weight,
 
     if (is_valid_path) {
       resPathsEdges.push_back(*p_tmp);
+      if (engine != nullptr) {
+        engine->savePath(*p_tmp, resPathsEdges.size()-1, "penalty");
+      }
       resEdges.emplace_back(p_tmp->begin(), p_tmp->end());
     }
   }

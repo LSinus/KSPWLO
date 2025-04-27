@@ -99,12 +99,12 @@ namespace arlib {
  *
  */
 template <typename Graph, typename WeightMap, typename MultiPredecessorMap,
-          typename Terminator = arlib::always_continue,
+          typename Terminator = arlib::always_continue, typename Engine,
           typename Vertex = vertex_of_t<Graph>>
 void penalty(const Graph &G, WeightMap const &original_weight,
              MultiPredecessorMap &predecessors, Vertex s, Vertex t, int k,
              double theta, double p, double r, int max_nb_updates,
-             int max_nb_steps,
+             int max_nb_steps, Engine* engine,
              routing_kernels algorithm = routing_kernels::dijkstra,
              Terminator &&terminator = Terminator{}) {
   using Length = length_of_t<Graph>;
@@ -113,13 +113,13 @@ void penalty(const Graph &G, WeightMap const &original_weight,
     auto routing_kernel = details::build_shortest_path_fn(
         algorithm, G, original_weight, heuristic);
     details::penalty(G, original_weight, predecessors, s, t, k, theta, p, r,
-                     max_nb_updates, max_nb_steps, routing_kernel,
+                     max_nb_updates, max_nb_steps, engine, routing_kernel,
                      std::forward<Terminator>(terminator));
   } else {
     auto routing_kernel =
         details::build_shortest_path_fn(algorithm, G, original_weight);
     details::penalty(G, original_weight, predecessors, s, t, k, theta, p, r,
-                     max_nb_updates, max_nb_steps, routing_kernel,
+                     max_nb_updates, max_nb_steps, engine, routing_kernel,
                      std::forward<Terminator>(terminator));
   }
 }

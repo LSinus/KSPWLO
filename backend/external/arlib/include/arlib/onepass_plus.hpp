@@ -47,6 +47,8 @@
 #include <unordered_map>
 #include <vector>
 
+#include "../../../engine.hpp"
+
 /**
  * An Alternative-Routing library for Boost.Graph
  */
@@ -92,12 +94,14 @@ namespace arlib {
  * @param theta The similarity threshold.
  *
  */
+
 template <typename Graph, typename WeightMap, typename MultiPredecessorMap,
+          typename Engine,
           typename Terminator = arlib::always_continue,
           typename Vertex = vertex_of_t<Graph>>
 void onepass_plus(const Graph &G, WeightMap weight,
                   MultiPredecessorMap &predecessors, Vertex s, Vertex t, int k,
-                  double theta, Terminator &&terminator = Terminator{}) {
+                  double theta, Engine* engine = nullptr, Terminator &&terminator = Terminator{}) {
   using namespace boost;
   using Edge = typename graph_traits<Graph>::edge_descriptor;
   using Length = typename boost::property_traits<WeightMap>::value_type;
@@ -140,6 +144,10 @@ void onepass_plus(const Graph &G, WeightMap weight,
   // P_LO <-- {shortest path p_0(s, t)};
   resPathsEdges.push_back(*sp_path);
   resPathIndex paths_count = 1;
+
+  if (engine != nullptr) {
+    engine->savePath(*sp_path, paths_count-1, "onepass_plus");
+  }
 
   // If we need the shortest path only
   if (k == 1) {
@@ -192,7 +200,12 @@ void onepass_plus(const Graph &G, WeightMap weight,
       resPathsEdges.push_back(label->get_path(G));
 
       auto &tmpPath = resPathsEdges.back();
+      if(engine != nullptr) {
+        engine->savePath(tmpPath, paths_count, "onepass_plus");
+      }
       ++paths_count;
+
+
 
       if (static_cast<int>(paths_count) == k) { // we found k paths. End.
         // Add computed alternatives to resPaths
