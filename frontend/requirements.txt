@@ -11,11 +11,13 @@ fiona==1.10.1
 folium==0.18.0
 fonttools==4.54.1
 geographiclib==2.0
+geonamescache==2.0.0
 geopandas==0.14.4
 geopy==2.4.1
 idna==3.10
 Jinja2==3.1.4
 kiwisolver==1.4.7
+lxml==5.4.0
 MarkupSafe==3.0.2
 matplotlib==3.9.2
 networkx==3.3

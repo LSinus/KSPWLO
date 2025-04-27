@@ -92,7 +92,7 @@ namespace arlib {
  *        routing_kernels::astar
  *
  */
-template <typename Graph, typename WeightMap, typename MultiPredecessorMap,
+template <typename Graph, typename WeightMap, typename MultiPredecessorMap, typename Engine,
           typename Terminator = arlib::always_continue,
           typename Vertex = vertex_of_t<Graph>,
           typename = std::enable_if_t<std::is_same_v<
@@ -100,9 +100,9 @@ template <typename Graph, typename WeightMap, typename MultiPredecessorMap,
               Vertex>>>
 void esx(const Graph &G, WeightMap const &weight,
          MultiPredecessorMap &predecessors, Vertex s, Vertex t, int k,
-         double theta, routing_kernels algorithm = routing_kernels::astar,
+         double theta, Engine* engine, routing_kernels algorithm = routing_kernels::astar,
          Terminator &&terminator = Terminator{}) {
-  details::esx_dispatch(G, weight, predecessors, s, t, k, theta, algorithm,
+  details::esx_dispatch(G, weight, predecessors, s, t, k, theta, engine, algorithm,
                         std::forward<Terminator>(terminator));
 }
 
