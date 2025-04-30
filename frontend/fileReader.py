@@ -1,6 +1,9 @@
 import os
 from geopy.geocoders import Nominatim
 
+def get_long_margin(lat):
+        import math
+        return (360*10)/(2*math.pi*math.cos(lat*math.pi/180)*6371)
 
 def calcBbox():
     source = os.environ.get('SOURCE')
@@ -20,18 +23,31 @@ def calcBbox():
     os.environ["START_LON"] = str(start.longitude)
     os.environ["END_LAT"] = str(end.latitude)
     os.environ["END_LON"] = str(end.longitude)
+    
+    lat_margin = 0.09
+    long_margin = 0.09
+    min_lat = min(start.latitude, end.latitude) - lat_margin
+    max_lat = max(start.latitude, end.latitude) + lat_margin
+    min_lon = min(start.longitude, end.longitude) - long_margin
+    max_lon = max(start.longitude, end.longitude) + long_margin
+    middle_bbox = [min_lon, min_lat, max_lon, max_lat] 
+    
+    lat_margin = 0.09
+    long_margin = 0.09
+    min_lat = start.latitude - lat_margin
+    max_lat = start.latitude + lat_margin
+    min_lon = start.longitude - long_margin
+    max_lon = start.longitude + long_margin
 
-    starting_bbox = [start.longitude - 0.05, start.latitude - 0.05, start.longitude + 0.05, start.latitude + 0.05]
-    ending_bbox = [end.longitude - 0.05, end.latitude - 0.05, end.longitude + 0.05, end.latitude + 0.05]
-    middle_bbox = [min(start.longitude, end.longitude) - 0.09, min(start.latitude, end.latitude) - 0.09, max(start.longitude, end.longitude) - 0.09, max(start.latitude, end.latitude) - 0.09]
-    # Assicurati che le coordinate siano sempre nel range valido
-    # Calcolo del middle_bbox, mantenendo la latitudine e longitudine valide
-    # middle_bbox = [
-    # max(min(start.longitude, end.longitude) - 0.09, -180),  # Assicurati che la longitudine non sia minore di -180
-    # max(min(start.latitude, end.latitude) - 0.09, -90),  # Assicurati che la latitudine non sia minore di -90
-    # min(max(start.longitude, end.longitude) + 0.09, 180),  # Assicurati che la longitudine non superi 180
-    # min(max(start.latitude, end.latitude) + 0.09, 90)  # Assicurati che la latitudine non superi 90
-    # ]
+    starting_bbox = [min_lon, min_lat, max_lon, max_lat]
+    long_margin = get_long_margin(end.latitude)
+    min_lat = end.latitude - lat_margin
+    max_lat = end.latitude + lat_margin
+    min_lon = end.longitude - long_margin
+    max_lon = end.longitude + long_margin
+    ending_bbox = [min_lon, min_lat, max_lon, max_lat]
+    
+    
 
     #due to the fact that evironment variables can only contains string, it is necessary
     #to save the corrd of the bbox in string format separated by a comma

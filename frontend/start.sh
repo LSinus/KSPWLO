@@ -6,8 +6,8 @@ echo "virtual environment activated"
 while IFS=',' read -r source dest; do
   #removing eventual initial or final spaces
 
-  if [ ! -f "nord-ovest-latest.osm.pbf" ]; then
-    echo "Error: nord-ovest-latest.osm.pbf not found"
+  if [ ! -f "files/nord-ovest-latest.osm.pbf" ]; then
+    echo "Error: files/nord-ovest-latest.osm.pbf not found"
     exit 1
   fi
 
@@ -49,19 +49,19 @@ while IFS=',' read -r source dest; do
   fi
 
     echo "Extracting source area..."
-    osmium extract -b "$SOURCE_BBOX" nord-ovest-latest.osm.pbf -o sourceGraph.osm --overwrite
-    osmium tags-filter sourceGraph.osm w/highway=residential,tertiary,secondary,primary -o sourceGraph_filtered.osm --overwrite
-    mv sourceGraph_filtered.osm sourceGraph.osm
+    osmium extract -b "$SOURCE_BBOX" files/nord-ovest-latest.osm.pbf -o files/sourceGraph.osm --overwrite
+    osmium tags-filter files/sourceGraph.osm w/highway=trunk,motorway,residential,tertiary,secondary,primary -o files/sourceGraph_filtered.osm --overwrite
+    mv files/sourceGraph_filtered.osm files/sourceGraph.osm
     
     echo "Extracting destination area..."
-    osmium extract -b "$DEST_BBOX" nord-ovest-latest.osm.pbf -o destGraph.osm --overwrite
-    osmium tags-filter destGraph.osm w/highway=residential,tertiary,secondary,primary -o destGraph_filtered.osm --overwrite
-    mv destGraph_filtered.osm destGraph.osm
+    osmium extract -b "$DEST_BBOX" files/nord-ovest-latest.osm.pbf -o files/destGraph.osm --overwrite
+    osmium tags-filter files/destGraph.osm w/highway=trunk,motorway,residential,tertiary,secondary,primary -o files/destGraph_filtered.osm --overwrite
+    mv files/destGraph_filtered.osm files/destGraph.osm
     
     echo "Extracting middle area..."
-     osmium extract -b "$MIDDLE_BBOX" nord-ovest-latest.osm.pbf -o middleGraph.osm --overwrite
-    osmium tags-filter middleGraph.osm w/highway=trunk,motorway,primary -o middleGraph_filtered.osm --overwrite
-    mv middleGraph_filtered.osm middleGraph.osm
+    osmium extract -b "$MIDDLE_BBOX" files/nord-ovest-latest.osm.pbf -o files/middleGraph.osm --overwrite
+    osmium tags-filter files/middleGraph.osm w/highway=trunk,motorway,primary,secondary -o files/middleGraph_filtered.osm --overwrite
+    mv files/middleGraph_filtered.osm files/middleGraph.osm
 
   # export SOURCE_GRAPH_PBF=sourceGraph.osm.pbf
   # export DEST_GRAPH_PBF=destGraph.osm.pbf

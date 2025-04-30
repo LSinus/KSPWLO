@@ -23,26 +23,26 @@ class HierarchicalGraphCarlo:
         # middle_graph = os.environ.get("MIDDLE_GRAPH_PBF")
         try:
             print("Checking if OSM files exist...")
-            if not os.path.exists('sourceGraph.osm') or not os.path.exists('destGraph.osm') or not os.path.exists('middleGraph.osm'):
+            if not os.path.exists('files/sourceGraph.osm') or not os.path.exists('files/destGraph.osm') or not os.path.exists('files/middleGraph.osm'):
                 print("Error: One or more required OSM files don't exist or are empty.")
                 for filename in ['sourceGraph.osm', 'destGraph.osm', 'middleGraph.osm']:
-                    if os.path.exists(filename):
-                        size = os.path.getsize(filename)
+                    if os.path.exists("files/" + filename):
+                        size = os.path.getsize("files/" + filename)
                         print(f"{filename} exists, size: {size} bytes")
                     else:
                         print(f"{filename} does not exist")
-                raise FileNotFoundError("Missing required OSM files")
+                raise FileNotFoundError("Missing required OSM files: " + filename)
 
             print("Loading source graph...")
-            source_graph = ox.graph_from_xml('sourceGraph.osm', simplify=True)
+            source_graph = ox.graph_from_xml('files/sourceGraph.osm', simplify=True)
             print("Source graph loaded successfully")
             
             print("Loading destination graph...")
-            dest_graph = ox.graph_from_xml('destGraph.osm', simplify=True)
+            dest_graph = ox.graph_from_xml('files/destGraph.osm', simplify=True)
             print("Destination graph loaded successfully")
             
             print("Loading middle graph...")
-            middle_graph = ox.graph_from_xml('middleGraph.osm', simplify=True)
+            middle_graph = ox.graph_from_xml('files/middleGraph.osm', simplify=True)
             print("Middle graph loaded successfully")
             
             print("Composing graphs...")

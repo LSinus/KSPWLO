@@ -1,2 +1,91 @@
-Via Melchiorre Gioia Milano, Via Milazzo 4 Pavia
-Viale Lodi 55 Pavia, Stazione Milano Lambrate
+Strada del Col San Carlo La Thuile, Via Gran Paradiso Cogne
+Corso Vittorio Emanuele II Torino, Via Roma Torino
+Via Garibaldi Torino, Corso Unità d'Italia Torino
+Via XX Settembre Novara, Corso Cavour Novara
+Corso Nizza Cuneo, Via Roma Cuneo
+Corso Alfieri Asti, Via Cavour Asti
+Via Principe Amedeo Alba, Corso Langhe Alba
+Corso Italia Verbania, Via Vittorio Veneto Verbania
+Via Galileo Ferraris Vercelli, Corso Libertà Vercelli
+Via Lagrange Torino, Piazza Castello Torino
+Corso Francia Torino, Via San Secondo Torino
+Via Montenero Biella, Via Italia Biella
+Via Monginevro Sestriere, Via Lattea Sauze d'Oulx
+Corso Inghilterra Torino, Via Madama Cristina Torino
+Corso Susa Rivoli, Via Piol Rivoli
+Via Ivrea Chivasso, Corso Galileo Ferraris Chivasso
+Via Trento Alessandria, Corso Roma Alessandria
+Via Torino Pinerolo, Corso Torino Pinerolo
+Via Barolo Barolo, Via Alba La Morra
+Via Vercelli Novara, Corso Risorgimento Novara
+Via Valenza Tortona, Corso Repubblica Tortona
+Via XX Settembre Genova, Via Garibaldi Genova
+Corso Italia Genova, Via Corsica Genova
+Via Aurelia Sanremo, Corso Imperatrice Sanremo
+Via Dante Alighieri Savona, Corso Italia Savona
+Via Garibaldi La Spezia, Via Chiodo La Spezia
+Via Roma Imperia, Corso Imperatrice Imperia
+Via XXV Aprile Chiavari, Corso Dante Chiavari
+Via Veneto Alassio, Corso Dante Alassio
+Via Mazzini Rapallo, Corso Italia Rapallo
+Via Cavour Ventimiglia, Via Roma Ventimiglia
+Via Colombo Genova, Corso Sardegna Genova
+Via Aurelia Portofino, Via Roma Santa Margherita Ligure
+Via Dante Varazze, Via Malocello Varazze
+Via Genova Sestri Levante, Via XXV Aprile Sestri Levante
+Via Vittorio Veneto Finale Ligure, Via Roma Finale Ligure
+Via Matteotti Albenga, Via Enrico d'Aste Albenga
+Via Manzoni Diano Marina, Corso Roma Diano Marina
+Via Dante Bordighera, Via Vittorio Emanuele Bordighera
+Via Della Libertà Lerici, Via Cavour Lerici
+Via Cavour Loano, Corso Europa Loano
+Via Dante Milano, Via Montenapoleone Milano
+Corso Buenos Aires Milano, Viale Piave Milano
+Via Vittorio Emanuele Bergamo, Via XX Settembre Bergamo
+Corso Martiri della Libertà Brescia, Via Musei Brescia
+Corso Garibaldi Como, Via Plinio Como
+Corso Roma Pavia, Via Strada Nuova Pavia
+Via Verdi Mantova, Corso Umberto I Mantova
+Via Dante Cremona, Corso Campi Cremona
+Via Milano Sondrio, Via Vittorio Veneto Sondrio
+Via Varese Lecco, Corso Martiri della Liberazione Lecco
+Via Torino Varese, Via Sacco Varese
+Via Manzoni Monza, Via Italia Monza
+Via Matteotti Lodi, Corso Umberto Lodi
+Via Roma Vigevano, Corso Vittorio Emanuele II Vigevano
+Via Cattaneo Voghera, Via Emilia Voghera
+Via Mazzini Desenzano del Garda, Via Dal Molin Desenzano del Garda
+Via Garibaldi Crema, Via XX Settembre Crema
+Via Broseta Bergamo, Via Roma Bergamo
+Via Moretto Brescia, Corso Palestro Brescia
+Via Milano Gallarate, Corso Sempione Gallarate
+Via Roma Aosta, Corso Stati Uniti Torino
+Via Vittorio Emanuele Milano, Via Garibaldi Genova
+Via Monte Bianco Courmayeur, Via Torino Ivrea
+Corso Sempione Milano, Via XX Settembre Novara
+Via Aurelia Sanremo, Via Nizza Cuneo
+Via Emile Chanoux Saint-Vincent, Via Cagliari Biella
+Via Montenapoleone Milano, Via Roma Torino
+Strada del Moncenisio Susa, Strada Regionale del Gran San Bernardo Aosta
+Via Vittorio Emanuele Bergamo, Corso Cavour Novara
+Via Cristoforo Colombo Genova, Corso Sempione Milano
+Corso Italia Genova, Via Torino Cuneo
+Via Garibaldi La Spezia, Via Dante Cremona
+Via Roma Verbania, Via Matteotti Varazze
+Via Cavour Ventimiglia, Via Verdi Mantova
+Via Monte Cervino Cervinia, Via Torino Pinerolo
+Via Lago Maggiore Stresa, Via Aurelia Alassio
+Corso Inghilterra Torino, Via Manzoni Milano
+Via Lattea Sestriere, Via Veneto Courmayeur
+Via Porte Pretoriane Aosta, Corso Alfieri Asti
+Via Roma Savona, Via Verdi Cremona
+Via Carducci Como, Via Corrado Gex Aosta
+Via Chiodo La Spezia, Via Delle Vigne Stradella
+Via Circonvallazione Chatillon, Via Ivrea Biella
+Via Dante Milano, Via Festaz Aosta
+Via Nizza Torino, Via Aurelia Sanremo
+Via Emilia Voghera, Via Mont Emilius Aosta
+Via Garibaldi Torino, Via XX Settembre Genova
+Via Torino Chivasso, Via Colombo Rapallo
+Via Mazzini Lodi, Corso Martiri della Libertà Alba
+Via Gran Paradiso Cogne, Corso Martiri della Liberazione Lecco

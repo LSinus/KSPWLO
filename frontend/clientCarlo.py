@@ -23,10 +23,6 @@ class carloClient:
         self.G = None
         self.theta = None
         self.k = None
-        self.countOPP = 0
-        self.countESX = 0
-        self.countPen = 0
-        self.countAss = 0
         #because of the fact that evironment variables are String, we have to rebuild the float
         #objects necessary to be used in calc_min_dist
         self.start_lat = float(os.environ.get("START_LAT"))
@@ -65,36 +61,27 @@ class carloClient:
         try:
             results = receive_data(self.client_socket)
             diffTime = time.time() - self.initial_timestamp
-            self.countAss += 1
             if(results is None):
                 return
             for result in results:
-                if result.alg_name=="onepass_plus":
-                    self.countOPP +=1
-                    self.saveOnCsv(result.alg_name, diffTime, self.countOPP, self.countAss)
-                if result.alg_name=="esx":
-                    self.countESX +=1
-                    self.saveOnCsv(result.alg_name, diffTime, self.countESX, self.countAss)
-                if result.alg_name=="penalty":
-                    self.countPen +=1
-                    self.saveOnCsv(result.alg_name, diffTime, self.countPen, self.countAss)
+                self.saveOnCsv(result.alg_name, diffTime, result.num_result, result.length)
         except BlockingIOError:
             pass
         self.receive_results()
 
-    def saveOnCsv(self, algName, timestamp, relNum, assNum):
-        new_row = [algName, timestamp, relNum, assNum]
+    def saveOnCsv(self, algName, timestamp, relNum, length):
+        new_row = [algName, timestamp, relNum, length, os.environ.get('SOURCE'), os.environ.get('DEST')]
         file_exists = os.path.isfile('time.csv')
         with open('time.csv', 'a', newline='') as f:
-            writer = csv.writer(f, delimiter='\t', quotechar='"', quoting=csv.QUOTE_MINIMAL)
+            writer = csv.writer(f, delimiter=',', quotechar='"', quoting=csv.QUOTE_MINIMAL)
             if not file_exists:
-                writer.writerow(['Algorithm', 'Timestamp (s)', 'Relative number path', 'Absolute number path'])
+                writer.writerow(['Algorithm', 'Timestamp (s)', 'Relative number path', 'length(m)', 'source', 'dest'])
             writer.writerow(new_row)
 
 if __name__ == "__main__":
 
-    host_server_ip = '127.0.0.1'
-    host_server_port = 10714
+    host_server_ip = '188.218.186.195'
+    host_server_port = 40000
     local_map = False
 
     parser = argparse.ArgumentParser()

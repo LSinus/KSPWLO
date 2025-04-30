@@ -13,6 +13,7 @@ from dataclasses import dataclass
 class Result:
     alg_name: str
     num_result: int
+    length: float
     list_osmid: List[int]
 
 
@@ -67,12 +68,14 @@ def parse_data(data):
         if tmp and len(tmp)>1:
             alg_name = tmp[0]
             num_result = int(tmp[1])
-            osmids = tmp[2:]
+            length = float(tmp[2])
+            osmids = tmp[3:]
             for osmid in osmids:
                 list_osmid.append(int(osmid))
             result = Result(
                 alg_name,
                 num_result,
+                length, 
                 list_osmid
             )
             results_by_alg.append(result)
