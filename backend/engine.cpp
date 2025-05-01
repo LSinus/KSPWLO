@@ -9,23 +9,26 @@ Engine::Engine(const int port)
 
 void Engine::loop()
 {
-    m_netProvider.connect();
-    try {
-        while(true){
-            //Clear result file
-            std::ofstream output_file("result.txt");
-            if (output_file.is_open()) {
-                output_file.close();
+
+    while (true) {
+        m_netProvider.connect();
+        try {
+            while(true){
+                //Clear result file
+                std::ofstream output_file("result.txt");
+                if (output_file.is_open()) {
+                    output_file.close();
+                }
+                message msg = m_netProvider.receive();
+                buildGraph(msg);
+                runAlg();
             }
-            message msg = m_netProvider.receive();
-            buildGraph(msg);
-            runAlg();
+        }catch (std::exception& e) {
+            std::cerr << "Connessione terminata dal client: " << e.what() << std::endl;
+            m_netProvider.disconnect();
+            saveProfilingResults();
         }
-    }catch (std::exception& e) {
-        std::cerr << "Connessione terminata dal client: " << e.what() << std::endl;
-        m_netProvider.disconnect();
-        saveProfilingResults();
-    } 
+    }
 }
 
 
@@ -195,18 +198,18 @@ void Engine::runAlg() {
     }
 }
 
-void Engine::savePath(std::vector<Edge> path, int count, std::string alg) {
+void Engine::savePath(const std::vector<Edge>& path, const int count, const std::string& alg) {
     auto predecessors = arlib::multi_predecessor_map<Vertex>{};
     std::vector<std::vector<Edge>> paths;
     paths.push_back(path);
     arlib::details::fill_multi_predecessor(paths.begin(), paths.end(), m_graph, predecessors);
-    auto weight = boost::get(boost::edge_weight, m_graph);
-    auto results = arlib::to_paths(m_graph, predecessors, weight, m_source, m_dest);
+    const auto weight = boost::get(boost::edge_weight, m_graph);
+    const auto results = arlib::to_paths(m_graph, predecessors, weight, m_source, m_dest);
 
     for (auto const &route : results) {
         std::cout << "[INFO][NEW FUNCTION]: " << std::string(alg)+ ", " + std::to_string(count) + ", Length: " << route.length() << "\n";
-        std::string path = std::string(alg)+ "," + std::to_string(count) + "," + utils::get_osmid_path(route, m_source);
-        message msg(std::vector<char>(path.begin(), path.end()));
+        std::string res_path = std::string(alg)+ "," + std::to_string(count) + "," + std::to_string(route.length())+ ","+ utils::get_osmid_path(route, m_source);
+        message msg(std::vector<char>(res_path.begin(), res_path.end()));
 
         m_resultsMutex.lock();
         m_netProvider.send(msg);

@@ -16,7 +16,7 @@ public:
     explicit Engine(int port = 10714);
     void loop();
     void end();
-    void savePath(std::vector<Edge> path, int count, std::string alg);
+    void savePath(const std::vector<Edge>& path, int count, const std::string& alg);
     ~Engine();
     
 private:

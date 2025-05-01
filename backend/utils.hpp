@@ -26,21 +26,26 @@ namespace utils{
     template <typename WeightMap, typename MultiPredecessorMap, typename Engine>
     void run_alt_routing(std::string_view name, Graph const &G,WeightMap const &weight, MultiPredecessorMap &predecessors,Vertex s, Vertex t, int k, double theta, Engine* engine)
     {
-        using arlib::routing_kernels;
-        if (name == "onepass_plus") {
-            arlib::onepass_plus(G, weight, predecessors, s, t, k, theta, engine);
-        } else if (name == "esx") {
-            arlib::esx(G, weight, predecessors, s, t, k, theta, engine,
-                    routing_kernels::astar);
-        } else if (name == "penalty") {
-            double p = 0.1, r = 0.1;
-            int max_nb_updates = 10, max_nb_steps = 100000;
-            arlib::penalty(G, weight, predecessors, s, t, k, theta, p, r,
-                        max_nb_updates, max_nb_steps, engine,
-                        routing_kernels::bidirectional_dijkstra);
-        } else {
-            std::cerr << "Unknown algorithm '" << name << "'. Exiting...\n";
-            std::exit(1);
+        try {
+            using arlib::routing_kernels;
+            arlib::timer timer(std::chrono::milliseconds(300000));
+            if (name == "onepass_plus") {
+                arlib::onepass_plus(G, weight, predecessors, s, t, k, theta, engine,  timer);
+            } else if (name == "esx") {
+                arlib::esx(G, weight, predecessors, s, t, k, theta, engine,
+                        routing_kernels::astar, timer);
+            } else if (name == "penalty") {
+                double p = 0.1, r = 0.1;
+                int max_nb_updates = 10, max_nb_steps = 100000;
+                arlib::penalty(G, weight, predecessors, s, t, k, theta, p, r,
+                            max_nb_updates, max_nb_steps, engine,
+                            routing_kernels::bidirectional_dijkstra, timer);
+            } else {
+                std::cerr << "Unknown algorithm '" << name << "'. Exiting...\n";
+                std::exit(1);
+            }
+        } catch (std::exception &e) {
+            std::cerr << "[ERROR]" << e.what() << "\n";
         }
     }
 
