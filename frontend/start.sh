@@ -69,4 +69,14 @@ while IFS=',' read -r source dest; do
   
   python3 clientCarlo.py
   echo "Processing complete for $SOURCE to $DEST"
+  unset SOURCE
+  unset DEST
+  unset START_LAT
+  unset START_LON
+  unset END_LAT
+  unset END_LON
+  unset SOURCE_BBOX
+  unset DEST_BBOX
+  unset MIDDLE_BBOX
+  rm -rf env_variables.txt
 done < destinazioni.txt
