@@ -26,7 +26,6 @@ void Engine::loop()
         }catch (std::exception& e) {
             std::cerr << "Connessione terminata dal client: " << e.what() << std::endl;
             m_netProvider.disconnect();
-            saveProfilingResults();
         }
     }
 }
@@ -101,71 +100,11 @@ void Engine::buildGraph(message& msg)
     }
 }
 
-void Engine::saveProfilingResults() {
-    std::string data_to_save = m_results.str();
-    std::ofstream output_file("output.csv");
-
-    if (output_file.is_open()) {
-        output_file << data_to_save;
-        output_file.close();
-        std::cout << "Dati salvati con successo su output.csv" << std::endl;
-    } else {
-        std::cerr << "Impossibile aprire il file per la scrittura!" << std::endl;
-    }
-}
-
-void Engine::sendResults() {
-    std::ifstream input_file("result.txt", std::ios::binary | std::ios::ate);
-
-    if (!input_file.is_open()) {
-        throw std::runtime_error("Could not open file");
-    }
-
-    // Get file size
-    std::streamsize size = input_file.tellg();
-    input_file.seekg(0, std::ios::beg);
-
-    // Create vector and read the data
-    std::vector<char> buffer(size);
-    if (!input_file.read(buffer.data(), size)) {
-        throw std::runtime_error("Could not read file");
-    }
-    message msg(buffer);
-    m_netProvider.send(msg);
-}
-
-void Engine::saveResults(const std::string& result) {
-    std::ofstream output_file("result.txt", std::ios::app);
-
-    if (output_file.is_open()) {
-        output_file << result << '\n';
-        output_file.close();
-    } else {
-        std::cerr << "Impossibile aprire il file per la scrittura!" << std::endl;
-    }
-}
-
 void Engine::get_alternative_routes(std::string_view alg)
 {
     auto predecessors = arlib::multi_predecessor_map<Vertex>{};
     auto weight = boost::get(boost::edge_weight, m_graph); // Get Edge WeightMap
     utils::run_alt_routing(alg, m_graph, weight, predecessors, m_source, m_dest, m_k, m_theta, this);
-    //auto result = arlib::to_paths(m_graph, predecessors, weight, m_source, m_dest);
-
-    //size_t count = 0;
-
-    /*for (auto const &route : result) {
-        std::cout << "[INFO]: " << std::string(alg)+ ", " + std::to_string(count) + ", Length: " << route.length() << "\n";
-        std::string path = std::string(alg)+ "," + std::to_string(count) + "," + utils::get_osmid_path(route, m_source);
-        message msg(std::vector<char>(path.begin(), path.end()));
-
-        m_resultsMutex.lock();
-        m_netProvider.send(msg);
-        m_resultsMutex.unlock();
-
-        ++count;
-    }*/
-
 }
 
 void Engine::runAlg() {
@@ -217,6 +156,6 @@ void Engine::savePath(const std::vector<Edge>& path, const int count, const std:
     }
 }
 
-Engine::~Engine(){
-    saveProfilingResults();
+Engine::~Engine() {
+    std::cout << "[INFO]: Engine shutdown completed\n";
 }

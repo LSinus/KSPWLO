@@ -23,9 +23,6 @@ private:
     void buildGraph(message& msg);
     void get_alternative_routes(std::string_view alg);
     void runAlg();
-    void saveResults(const std::string& result);
-    void saveProfilingResults();
-    void sendResults();
 
     NetworkProvider m_netProvider;
     Graph m_graph;

@@ -17,13 +17,6 @@ endif(NOT CMAKE_BUILD_TYPE)
 #                          Alternative Routing Library
 # ==-----------------------------------------------------------------------== #
 
-# Configure Boost for dynamic linking
-set(Boost_USE_STATIC_LIBS OFF)
-set(Boost_USE_MULTITHREADED ON)
-set(Boost_USE_STATIC_RUNTIME OFF)
-add_definitions(-DBOOST_ALL_DYN_LINK)
-
-# Find Boost dependencies
 find_package(Boost REQUIRED COMPONENTS graph)
 
 add_subdirectory(include/arlib)
