@@ -5,9 +5,17 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 #set(CMAKE_CXX_EXTENSIONS OFF)
 # Add ARLib directory
+find_package(Threads REQUIRED)
+find_package(Boost REQUIRED COMPONENTS system)
+
 add_subdirectory(external/arlib)
 
-add_executable(main main.cpp utils.cpp engine.cpp network.cpp message.cpp
+add_executable(main
+        main.cpp
+        utils.cpp
+        engine.cpp
+        network.cpp
+        message.cpp
 )
 target_link_libraries(main PUBLIC arlib)
 
