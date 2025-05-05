@@ -22,42 +22,42 @@ class HierarchicalGraphCarlo:
         # dest_graph = os.environ.get("DEST_GRAPH_PBF")
         # middle_graph = os.environ.get("MIDDLE_GRAPH_PBF")
         try:
-            print("Checking if OSM files exist...")
+            print("[INFO]: Checking if OSM files exist...")
             if not os.path.exists('files/sourceGraph.osm') or not os.path.exists('files/destGraph.osm') or not os.path.exists('files/middleGraph.osm'):
-                print("Error: One or more required OSM files don't exist or are empty.")
+                print("[ERROR]: One or more required OSM files don't exist or are empty.")
                 for filename in ['sourceGraph.osm', 'destGraph.osm', 'middleGraph.osm']:
                     if os.path.exists("files/" + filename):
                         size = os.path.getsize("files/" + filename)
-                        print(f"{filename} exists, size: {size} bytes")
+                        print(f"[INFO]: {filename} exists, size: {size} bytes")
                     else:
-                        print(f"{filename} does not exist")
+                        print(f"[INFO]: {filename} does not exist")
                 raise FileNotFoundError("Missing required OSM files: " + filename)
 
-            print("Loading source graph...")
+            print("[INFO]: Loading source graph...")
             source_graph = ox.graph_from_xml('files/sourceGraph.osm', simplify=True)
-            print("Source graph loaded successfully")
+            print("[INFO]: Source graph loaded successfully")
             
-            print("Loading destination graph...")
+            print("[INFO]: Loading destination graph...")
             dest_graph = ox.graph_from_xml('files/destGraph.osm', simplify=True)
-            print("Destination graph loaded successfully")
+            print("[INFO]: Destination graph loaded successfully")
             
-            print("Loading middle graph...")
+            print("[INFO]: Loading middle graph...")
             middle_graph = ox.graph_from_xml('files/middleGraph.osm', simplify=True)
-            print("Middle graph loaded successfully")
+            print("[INFO]: Middle graph loaded successfully")
             
-            print("Composing graphs...")
+            print("[INFO]: Composing graphs...")
             G_composed = nx.compose(source_graph, middle_graph)
             G_composed = nx.compose(G_composed, dest_graph)
             
             # Create directory if it doesn't exist
             os.makedirs(os.path.dirname(DEFAULT_PATH), exist_ok=True)
             
-            print("Saving combined graph...")
+            print("[INFO]: Saving combined graph...")
             ox.save_graphml(G_composed, DEFAULT_PATH)
             add_osmid(DEFAULT_PATH, DEFAULT_PATH)
-            print("Graph processing complete")
+            print("[INFO]: Graph processing complete")
         except Exception as e:
-            print(f"Error in graph processing: {e}")
+            print(f"[ERROR]: in graph processing: {e}")
             raise
 
 
@@ -76,7 +76,6 @@ class HierarchicalGraphCarlo:
 
 if __name__ == "__main__":
     G = HierarchicalGraphCarlo()
-    print("ciao")
     # G = HierarchicalGraph(path=DEFAULT_PATH)
 
 

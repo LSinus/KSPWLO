@@ -16,10 +16,10 @@ DEFAULT_PATH = "files/resultGraph.graphml"
 
 class carloClient:
     def __init__(self, host_server_ip, host_server_port):
-        print("connected1")
+        print("[INFO]: trying to connect...")
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.client_socket.connect((host_server_ip, host_server_port))
-        print("connected2")
+        print("[INFO]: connected")
         self.G = None
         self.theta = None
         self.k = None
@@ -45,7 +45,7 @@ class carloClient:
         print("[INFO]: Done...")
 
         print("[INFO]: Preparing data for server...")
-        print(source+dest+self.theta+self.k)
+        print("[INFO]: source OSMID: "+ str(source) + " dest OSMID: " +str(dest)+ " theta: " + str(self.theta)+ " k: " +str(self.k))
         source_dest_bytes = struct.pack("!QQfi", source, dest, self.theta, self.k)
         graph_size = self.G.get_graph_size()
 
@@ -80,7 +80,7 @@ class carloClient:
 
 if __name__ == "__main__":
 
-    host_server_ip = '188.218.186.195'
+    host_server_ip = '127.0.0.1'
     host_server_port = 40000
     local_map = False
 
