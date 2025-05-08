@@ -78,10 +78,12 @@ class AppIntegrata(QMainWindow):
         
         self.show_default_map()
 
+        self.notifier = None #inizializing the socket notifier for asynchronous data reception
+
 
     def show_default_map(self):
         m_default=folium.Map(location=[45.4642, 9.1900], zoom_start=12)
-        m_default.save("files/default_map.html")
+        m_default.save("files/milano.html")
         data_default=io.BytesIO()
         m_default.save(data_default, close_file=False)
         self.webview.setHtml(data_default.getvalue().decode())
@@ -178,13 +180,19 @@ class AppIntegrata(QMainWindow):
             icon=folium.Icon(color="green")).add_to(self.m)
 
         self.update_map()
+        if self.notifier is not None:
+            self.notifier.setEnabled(False)
+
+        self.notifier = QSocketNotifier(self.client_socket.fileno(), QSocketNotifier.Read)
+        self.notifier.activated.connect(self.receive_results)
+        self.notifier.setEnabled(True)
         #when the socket is ready to be read, the signal activated is given, so it is
         # linked to this signal the receive_results() function
         #fileno() methods for socket returns the id of the socket we are using, so we are
         # asking QSocketNotifier to track the activity of the socket of our connection
         ##self.notifier=QSocketNotifier(self.client_socket.fileno(), QSocketNotifier.Read)
         ##self.notifier.activated.connect(self.receive_results)
-        self.receive_results()
+        #self.receive_results()
         #self.result_timer=QTimer() #timer creation
         #self.result_timer.timeout.connect(self.receive_results)
         #self.result_timer.start(100) #check every 100ms
@@ -198,51 +206,55 @@ class AppIntegrata(QMainWindow):
 
     def receive_results(self):
         try:
+            self.notifier.setEnabled(False)
             results=receive_data(self.client_socket)
             if(results is None):
+                print("[INFO]: Received COMPUTATION_DONE or empty response")
                 #self.result_timer.stop()
                 return
             #print(results)
             for result in results:
                 #onepass+ esx penalty
-                if result.alg_name=="onepass_plus":
-
-                    route_coords=[(self.G.graph.nodes[node]['y'], self.G.graph.nodes[node]['x']) for node in result.list_osmid]
-                    folium.PolyLine(locations=route_coords, color=rgb_to_hex(255, (20*result.num_result)%255, 0), weight=6, opacity=1).add_to(self.m)
-                    folium.Marker(
-                        location=route_coords[len(route_coords)//2],
-                        popup=f"onePass risultato n° {result.num_result+1}",
-                        icon=folium.Icon(color="red"), icon_size=(40, 40)).add_to(self.m)
-
-                elif result.alg_name=="esx":
-
-                    route_coords=[(self.G.graph.nodes[node]['y'], self.G.graph.nodes[node]['x']) for node in result.list_osmid]
-                    folium.PolyLine(locations=route_coords, color=rgb_to_hex((20*result.num_result)%255, 0, 255-10*result.num_result), weight=4, opacity=1).add_to(self.m)
-                    folium.Marker(
-                        location=route_coords[len(route_coords)//2],
-                        popup=f"esx risultato n° {result.num_result+1}",
-                        icon=folium.Icon(color="blue"), icon_size=(40, 40)).add_to(self.m)
-
-                elif result.alg_name=="penalty":
-
-                    route_coords=[(self.G.graph.nodes[node]['y'], self.G.graph.nodes[node]['x']) for node in result.list_osmid]
-                    folium.PolyLine(locations=route_coords, color=rgb_to_hex(0, 255, (20*result.num_result)%255), weight=8, opacity=1).add_to(self.m)
-                    folium.Marker(
-                        location=route_coords[len(route_coords)//2],
-                        popup=f"penalty risultato n° {result.num_result+1}",
-                        icon=folium.Icon(color="green"), icon_size=(40, 40)).add_to(self.m)
-            self.update_map()
+                self.draw_path(result)
+                self.update_map()
+                
+            self.notifier.setEnabled(True)
 
 
         except BlockingIOError:
+            #No data available, re-enable notifier and continue
+            self.notifier.setEnabled(True)
             pass
-        self.receive_results()
+        except Exception as e:
+            print(f"[ERROR][CLIENT]: Error receiving data: {e}")
+            self.notifier.setEnabled(True)
+    def draw_path(self, result):
+        route_coords=[(self.G.graph.nodes[node]['y'], self.G.graph.nodes[node]['x']) for node in result.list_osmid]
+        if result.alg_name=="onepass_plus":
+            folium.PolyLine(locations=route_coords, color=rgb_to_hex(255, (20*result.num_result)%255, 0), weight=6, opacity=1).add_to(self.m)
+            folium.Marker(
+                location=route_coords[len(route_coords)//2],
+                popup=f"onePass risultato n° {result.num_result+1}",
+                icon=folium.Icon(color="red"), icon_size=(40, 40)).add_to(self.m)
 
+        elif result.alg_name=="esx":
+            folium.PolyLine(locations=route_coords, color=rgb_to_hex((20*result.num_result)%255, 0, 255-10*result.num_result), weight=4, opacity=1).add_to(self.m)
+            folium.Marker(
+                location=route_coords[len(route_coords)//2],
+                popup=f"esx risultato n° {result.num_result+1}",
+                icon=folium.Icon(color="blue"), icon_size=(40, 40)).add_to(self.m)
+
+        elif result.alg_name=="penalty":
+            folium.PolyLine(locations=route_coords, color=rgb_to_hex(0, 255, (20*result.num_result)%255), weight=8, opacity=1).add_to(self.m)
+            folium.Marker(
+                location=route_coords[len(route_coords)//2],
+                popup=f"penalty risultato n° {result.num_result+1}",
+                icon=folium.Icon(color="green"), icon_size=(40, 40)).add_to(self.m)
 
 
 if __name__ == "__main__":
     host_server_ip = '127.0.0.1'
-    host_server_port = 10714
+    host_server_port = 40000
     local_map = False
 
     parser=argparse.ArgumentParser()
