@@ -77,7 +77,8 @@ class AppIntegrata(QMainWindow):
         self.setCentralWidget(container)
         
         self.show_default_map()
-
+        #QSocketNotifier monitors socket activity and triggers 
+        # callbacks when a socket is ready for reading, writing, or has an exception.
         self.notifier = None #inizializing the socket notifier for asynchronous data reception
 
 
@@ -183,19 +184,11 @@ class AppIntegrata(QMainWindow):
         if self.notifier is not None:
             self.notifier.setEnabled(False)
 
-        self.notifier = QSocketNotifier(self.client_socket.fileno(), QSocketNotifier.Read)
-        self.notifier.activated.connect(self.receive_results)
-        self.notifier.setEnabled(True)
-        #when the socket is ready to be read, the signal activated is given, so it is
-        # linked to this signal the receive_results() function
         #fileno() methods for socket returns the id of the socket we are using, so we are
         # asking QSocketNotifier to track the activity of the socket of our connection
-        ##self.notifier=QSocketNotifier(self.client_socket.fileno(), QSocketNotifier.Read)
-        ##self.notifier.activated.connect(self.receive_results)
-        #self.receive_results()
-        #self.result_timer=QTimer() #timer creation
-        #self.result_timer.timeout.connect(self.receive_results)
-        #self.result_timer.start(100) #check every 100ms
+        self.notifier = QSocketNotifier(self.client_socket.fileno(), QSocketNotifier.Read) #QSocketNotifier.Read specifies that we want to be notified when data is available to read
+        self.notifier.activated.connect(self.receive_results) #receive_results will be called when there are message to be read
+        self.notifier.setEnabled(True)
 
 
     def update_map(self):
@@ -206,6 +199,7 @@ class AppIntegrata(QMainWindow):
 
     def receive_results(self):
         try:
+            #temporarily disabled to prevent callbacks while processing 
             self.notifier.setEnabled(False)
             results=receive_data(self.client_socket)
             if(results is None):
@@ -228,6 +222,7 @@ class AppIntegrata(QMainWindow):
         except Exception as e:
             print(f"[ERROR][CLIENT]: Error receiving data: {e}")
             self.notifier.setEnabled(True)
+
     def draw_path(self, result):
         route_coords=[(self.G.graph.nodes[node]['y'], self.G.graph.nodes[node]['x']) for node in result.list_osmid]
         if result.alg_name=="onepass_plus":
