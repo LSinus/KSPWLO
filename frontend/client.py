@@ -22,7 +22,7 @@ from PyQt5.QtCore import QTimer
 from hierarchicalGraphImpl import HierarchicalGraph
 
 
-class AppIntegrata(QMainWindow):
+class Client(QMainWindow):
     def __init__(self, host_server_ip, host_server_port, local_map):
         super().__init__()
         #opening the connection
@@ -54,9 +54,9 @@ class AppIntegrata(QMainWindow):
         layout.addWidget(self.end_input)
 
         #button for number of paths
-        button_number_path=QPushButton("Scegliere numero percorsi da calcolare")
-        button_number_path.clicked.connect(self.showNumberRange)
-        layout.addWidget(button_number_path)
+        self.button_number_path=QPushButton("Scegliere numero percorsi da calcolare")
+        self.button_number_path.clicked.connect(self.showNumberRange)
+        layout.addWidget(self.button_number_path)
 
         #button for overlap
         self.sovr_input=QLineEdit(self)
@@ -92,7 +92,9 @@ class AppIntegrata(QMainWindow):
     
     def showNumberRange(self):
         data, ok =QInputDialog.getInt(self, "Numero percorsi", "k", 5, 1, 15) #it returns a tuple: the first number is the value, the second one true or false
-        self.k=data #saved in class attribute in order to use it later
+        if ok:
+            self.button_number_path.setText(f"Numero percorsi: {data}")
+            self.k=data #saved in class attribute in order to use it later
         print(f"[INFO]: Number of path saved: {self.k}")
 
     def show_error(self, message):
@@ -176,9 +178,9 @@ class AppIntegrata(QMainWindow):
         self.m=folium.Map(location=[(start.latitude+end.latitude)/2, (start.longitude+end.longitude)/2], zoom_start=zoom_level)
         #adding marker for source and destination
         folium.Marker(location=[start.latitude, start.longitude], popup= "PARTENZA", 
-            icon=folium.Icon(color="green")).add_to(self.m)
+            icon=folium.Icon(color="purple")).add_to(self.m)
         folium.Marker(location=[end.latitude, end.longitude], popup= "ARRIVO",
-            icon=folium.Icon(color="green")).add_to(self.m)
+            icon=folium.Icon(color="purple")).add_to(self.m)
 
         self.update_map()
         if self.notifier is not None:
@@ -266,7 +268,7 @@ if __name__ == "__main__":
 
 
     app = QApplication(sys.argv)
-    window = AppIntegrata(host_server_ip, host_server_port, local_map)
+    window = Client(host_server_ip, host_server_port, local_map)
     window.show()
 
     sys.exit(app.exec_())
