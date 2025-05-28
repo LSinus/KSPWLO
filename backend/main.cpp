@@ -1,6 +1,6 @@
 #include "engine.hpp"
 int main() {
-    Engine engine(40000);
+    Engine engine(10714);
 
     while(true){
         engine.loop();
