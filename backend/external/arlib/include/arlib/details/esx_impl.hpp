@@ -608,12 +608,12 @@ void move_to_dnr(Edge e,
 //                             ESX implementation
 //===----------------------------------------------------------------------===//
 template <typename Graph, typename WeightMap, typename MultiPredecessorMap,
-          typename PriorityFunc, typename RoutingKernel, typename Terminator,
+          typename PriorityFunc, typename RoutingKernel, typename Engine, typename Terminator,
           typename Vertex = vertex_of_t<Graph>>
 void esx(const Graph &G, WeightMap const &weight,
          MultiPredecessorMap &predecessors, Vertex s, Vertex t, int k,
          double theta, PriorityFunc &&priority_fn,
-         RoutingKernel &routing_kernel, Terminator &&terminator) {
+         RoutingKernel &routing_kernel, Engine* engine ,Terminator &&terminator) {
   using namespace boost;
   using Edge = typename graph_traits<Graph>::edge_descriptor;
 
@@ -638,6 +638,9 @@ void esx(const Graph &G, WeightMap const &weight,
   }
 
   // P_LO <-- {shortest path p_0(s, t)};
+  if (engine != nullptr) {
+    engine->savePath(*sp, 0, "esx");
+  }
   resPathsEdges.push_back(*sp);
   resEdges.emplace_back(sp->begin(), sp->end());
 
@@ -739,6 +742,9 @@ void esx(const Graph &G, WeightMap const &weight,
       if (candidate_is_valid) {
         // Add p_tmp to P_LO
         resPathsEdges.emplace_back(*p_tmp);
+        if (engine != nullptr) {
+          engine->savePath(*p_tmp, resPathsEdges.size()-1, "esx");
+        }
         resEdges.emplace_back(p_tmp->begin(), p_tmp->end());
 
         // Set p_c overlap with itself to 1
@@ -759,11 +765,11 @@ void esx(const Graph &G, WeightMap const &weight,
 }
 
 template <typename Graph, typename WeightMap, typename MultiPredecessorMap,
-          typename PriorityFunc, typename Terminator,
+          typename Engine, typename PriorityFunc,  typename Terminator,
           typename Vertex = vertex_of_t<Graph>>
 void esx_dispatch2(const Graph &G, WeightMap const &weight,
                    MultiPredecessorMap &predecessors, Vertex s, Vertex t, int k,
-                   double theta, PriorityFunc &&priority_fn,
+                   double theta, Engine* engine, PriorityFunc &&priority_fn,
                    routing_kernels algorithm, Terminator &&terminator) {
   using Edge = edge_of_t<Graph>;
   using Length = length_of_t<Graph>;
@@ -771,25 +777,22 @@ void esx_dispatch2(const Graph &G, WeightMap const &weight,
   auto deleted_edges = std::unordered_set<Edge, boost::hash<Edge>>{};
   if (algorithm == routing_kernels::astar) {
     auto heuristic = details::distance_heuristic<Graph, Length>(G, t);
-    auto routing_kernel = details::build_shortest_path_fn(
-        algorithm, G, s, t, weight, heuristic, deleted_edges);
-    esx(G, weight, predecessors, s, t, k, theta,
-        std::forward<PriorityFunc>(priority_fn), routing_kernel,
-        std::forward<Terminator>(terminator));
+    auto routing_kernel = details::build_shortest_path_fn(algorithm, G, s, t, weight, heuristic, deleted_edges);
+    esx(G, weight, predecessors, s, t, k, theta,std::forward<PriorityFunc>(priority_fn), routing_kernel, engine,std::forward<Terminator>(terminator));
   } else {
     auto routing_kernel = details::build_shortest_path_fn(
         algorithm, G, s, t, weight, deleted_edges);
     esx(G, weight, predecessors, s, t, k, theta,
-        std::forward<PriorityFunc>(priority_fn), routing_kernel,
+        std::forward<PriorityFunc>(priority_fn), routing_kernel, engine,
         std::forward<Terminator>(terminator));
   }
 }
 
-template <typename Graph, typename WeightMap, typename MultiPredecessorMap,
+template <typename Graph, typename WeightMap, typename MultiPredecessorMap, typename Engine,
           typename Terminator, typename Vertex = vertex_of_t<Graph>>
 void esx_dispatch(const Graph &G, WeightMap const &weight,
                   MultiPredecessorMap &predecessors, Vertex s, Vertex t, int k,
-                  double theta, routing_kernels algorithm,
+                  double theta, Engine* engine, routing_kernels algorithm,
                   Terminator &&terminator) {
   auto priority_fn = [](auto const &alternative, auto &edge_priorities,
                         auto alt_index, auto const &G, auto const &weight,
@@ -797,7 +800,7 @@ void esx_dispatch(const Graph &G, WeightMap const &weight,
     init_edge_priorities(alternative, edge_priorities, alt_index, G, weight,
                          deleted_edges);
   };
-  esx_dispatch2(G, weight, predecessors, s, t, k, theta, std::move(priority_fn),
+  esx_dispatch2(G, weight, predecessors, s, t, k, theta, engine, std::move(priority_fn),
                 algorithm, std::forward<Terminator>(terminator));
 }
 

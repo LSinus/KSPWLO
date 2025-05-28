@@ -9,23 +9,25 @@ Engine::Engine(const int port)
 
 void Engine::loop()
 {
-    m_netProvider.connect();
-    try {
-        while(true){
-            //Clear result file
-            std::ofstream output_file("result.txt");
-            if (output_file.is_open()) {
-                output_file.close();
+
+    while (true) {
+        m_netProvider.connect();
+        try {
+            while(true){
+                //Clear result file
+                std::ofstream output_file("result.txt");
+                if (output_file.is_open()) {
+                    output_file.close();
+                }
+                message msg = m_netProvider.receive();
+                buildGraph(msg);
+                runAlg();
             }
-            message msg = m_netProvider.receive();
-            buildGraph(msg);
-            runAlg();
+        }catch (std::exception& e) {
+            std::cerr << "Connessione terminata dal client: " << e.what() << std::endl;
+            m_netProvider.disconnect();
         }
-    }catch (std::exception& e) {
-        std::cerr << "Connessione terminata dal client: " << e.what() << std::endl;
-        m_netProvider.disconnect();
-        saveProfilingResults();
-    } 
+    }
 }
 
 
@@ -98,71 +100,11 @@ void Engine::buildGraph(message& msg)
     }
 }
 
-void Engine::saveProfilingResults() {
-    std::string data_to_save = m_results.str();
-    std::ofstream output_file("output.csv");
-
-    if (output_file.is_open()) {
-        output_file << data_to_save;
-        output_file.close();
-        std::cout << "Dati salvati con successo su output.csv" << std::endl;
-    } else {
-        std::cerr << "Impossibile aprire il file per la scrittura!" << std::endl;
-    }
-}
-
-void Engine::sendResults() {
-    std::ifstream input_file("result.txt", std::ios::binary | std::ios::ate);
-
-    if (!input_file.is_open()) {
-        throw std::runtime_error("Could not open file");
-    }
-
-    // Get file size
-    std::streamsize size = input_file.tellg();
-    input_file.seekg(0, std::ios::beg);
-
-    // Create vector and read the data
-    std::vector<char> buffer(size);
-    if (!input_file.read(buffer.data(), size)) {
-        throw std::runtime_error("Could not read file");
-    }
-    message msg(buffer);
-    m_netProvider.send(msg);
-}
-
-void Engine::saveResults(const std::string& result) {
-    std::ofstream output_file("result.txt", std::ios::app);
-
-    if (output_file.is_open()) {
-        output_file << result << '\n';
-        output_file.close();
-    } else {
-        std::cerr << "Impossibile aprire il file per la scrittura!" << std::endl;
-    }
-}
-
-void Engine::get_alternative_routes(std::string_view alg, Graph const &G, Vertex s,Vertex t, int k, double theta)
+void Engine::get_alternative_routes(std::string_view alg)
 {
     auto predecessors = arlib::multi_predecessor_map<Vertex>{};
-    auto weight = boost::get(boost::edge_weight, G); // Get Edge WeightMap
-    utils::run_alt_routing(alg, G, weight, predecessors, s, t, k, theta);
-    auto result = arlib::to_paths(G, predecessors, weight, s, t);
-
-    size_t count = 0;
-
-    for (auto const &route : result) {
-        std::cout << "[INFO]: " << std::string(alg)+ ", " + std::to_string(count) + ", Length: " << route.length() << "\n";
-        std::string path = std::string(alg)+ "," + std::to_string(count) + "," + utils::get_osmid_path(route, s);
-        message msg(std::vector<char>(path.begin(), path.end()));
-
-        m_resultsMutex.lock();
-        m_netProvider.send(msg);
-        m_resultsMutex.unlock();
-
-        ++count;
-    }
-
+    auto weight = boost::get(boost::edge_weight, m_graph); // Get Edge WeightMap
+    utils::run_alt_routing(alg, m_graph, weight, predecessors, m_source, m_dest, m_k, m_theta, this);
 }
 
 void Engine::runAlg() {
@@ -170,15 +112,15 @@ void Engine::runAlg() {
     // auto weight = boost::get(boost::edge_weight, m_graph);
     // utils::Timer timer;
 
-    Vertex source = utils::find_vertex_by_osmid(m_graph, m_source);
-    Vertex dest = utils::find_vertex_by_osmid(m_graph, m_dest);
+    m_source = utils::find_vertex_by_osmid(m_graph, m_source);
+    m_dest = utils::find_vertex_by_osmid(m_graph, m_dest);
 
-    if (source != -1 && dest != -1) {
-        //get_alternative_routes("onepass_plus", m_graph, source, dest, m_k, m_theta);
+    if (m_source != -1 && m_dest != -1) {
+        //get_alternative_routes("onepass_plus", m_graph, m_source, dest, m_k, m_theta);
 
-        std::thread thread_opp([this, source, dest]() { this->get_alternative_routes("onepass_plus", m_graph, source, dest, m_k, m_theta);});
-        std::thread thread_esx([this, source, dest]() { this->get_alternative_routes("esx", m_graph, source, dest, m_k, m_theta);});
-        std::thread thread_penalty([this, source, dest]() { this->get_alternative_routes("penalty", m_graph, source, dest, m_k, m_theta);});
+        std::thread thread_opp([this]() { this->get_alternative_routes("onepass_plus");});
+        std::thread thread_esx([this]() { this->get_alternative_routes("esx");});
+        std::thread thread_penalty([this]() { this->get_alternative_routes("penalty");});
 
         thread_opp.join();
         thread_esx.join();
@@ -195,6 +137,25 @@ void Engine::runAlg() {
     }
 }
 
-Engine::~Engine(){
-    saveProfilingResults();
+void Engine::savePath(const std::vector<Edge>& path, const int count, const std::string& alg) {
+    auto predecessors = arlib::multi_predecessor_map<Vertex>{};
+    std::vector<std::vector<Edge>> paths;
+    paths.push_back(path);
+    arlib::details::fill_multi_predecessor(paths.begin(), paths.end(), m_graph, predecessors);
+    const auto weight = boost::get(boost::edge_weight, m_graph);
+    const auto results = arlib::to_paths(m_graph, predecessors, weight, m_source, m_dest);
+
+    for (auto const &route : results) {
+        std::cout << "[INFO][NEW FUNCTION]: " << std::string(alg)+ ", " + std::to_string(count) + ", Length: " << route.length() << "\n";
+        std::string res_path = std::string(alg)+ "," + std::to_string(count) + "," + std::to_string(route.length())+ ","+ utils::get_osmid_path(route, m_source);
+        message msg(std::vector<char>(res_path.begin(), res_path.end()));
+
+        m_resultsMutex.lock();
+        m_netProvider.send(msg);
+        m_resultsMutex.unlock();
+    }
+}
+
+Engine::~Engine() {
+    std::cout << "[INFO]: Engine shutdown completed\n";
 }

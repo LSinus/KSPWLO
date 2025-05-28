@@ -1,0 +1,121 @@
+Algorithm,Timestamp (s),Relative number path,length(m),source,dest
+esx,0.7341217994689941,0,1704.537,Via Giovanni Chiassi Mantova,Viale Oslavia Mantova
+onepass_plus,0.7679407596588135,0,1704.537,Via Giovanni Chiassi Mantova,Viale Oslavia Mantova
+penalty,0.83146071434021,0,1704.537,Via Giovanni Chiassi Mantova,Viale Oslavia Mantova
+esx,0.8956649303436279,1,2220.454,Via Giovanni Chiassi Mantova,Viale Oslavia Mantova
+onepass_plus,0.9597330093383789,1,2162.321,Via Giovanni Chiassi Mantova,Viale Oslavia Mantova
+penalty,1.023725986480713,1,2220.454,Via Giovanni Chiassi Mantova,Viale Oslavia Mantova
+esx,1.0855579376220703,2,2951.819,Via Giovanni Chiassi Mantova,Viale Oslavia Mantova
+onepass_plus,1.1491708755493164,2,2220.454,Via Giovanni Chiassi Mantova,Viale Oslavia Mantova
+onepass_plus,1.2120440006256104,3,2222.989,Via Giovanni Chiassi Mantova,Viale Oslavia Mantova
+esx,1.2754170894622803,3,6610.118,Via Giovanni Chiassi Mantova,Viale Oslavia Mantova
+penalty,1.3391869068145752,2,2200.609,Via Giovanni Chiassi Mantova,Viale Oslavia Mantova
+onepass_plus,1.4028847217559814,4,2533.077,Via Giovanni Chiassi Mantova,Viale Oslavia Mantova
+esx,1.4717659950256348,4,7529.953,Via Giovanni Chiassi Mantova,Viale Oslavia Mantova
+penalty,1.5338497161865234,3,2847.294,Via Giovanni Chiassi Mantova,Viale Oslavia Mantova
+onepass_plus,1.5982439517974854,5,2651.097,Via Giovanni Chiassi Mantova,Viale Oslavia Mantova
+esx,1.6618518829345703,5,19842.562,Via Giovanni Chiassi Mantova,Viale Oslavia Mantova
+onepass_plus,1.7251408100128174,6,2675.523,Via Giovanni Chiassi Mantova,Viale Oslavia Mantova
+onepass_plus,0.6665620803833008,0,6282.72,Via Milazzo Pavia,Via Vigentina Pavia
+penalty,0.6987357139587402,0,6282.72,Via Milazzo Pavia,Via Vigentina Pavia
+esx,0.7601840496063232,0,6282.72,Via Milazzo Pavia,Via Vigentina Pavia
+onepass_plus,0.8236889839172363,1,7253.825,Via Milazzo Pavia,Via Vigentina Pavia
+esx,0.8874900341033936,1,7253.825,Via Milazzo Pavia,Via Vigentina Pavia
+onepass_plus,0.951312780380249,2,9640.172,Via Milazzo Pavia,Via Vigentina Pavia
+esx,1.014488697052002,2,11057.995,Via Milazzo Pavia,Via Vigentina Pavia
+onepass_plus,1.0787179470062256,3,9991.986,Via Milazzo Pavia,Via Vigentina Pavia
+esx,1.1431188583374023,3,15106.942,Via Milazzo Pavia,Via Vigentina Pavia
+onepass_plus,1.2071747779846191,4,13996.552,Via Milazzo Pavia,Via Vigentina Pavia
+onepass_plus,6.686858892440796,0,14095.625,Via Francesco Petrarca Cernusco sul Naviglio,Via Melchiorre Gioia 51 Milano
+esx,6.752213001251221,0,14095.625,Via Francesco Petrarca Cernusco sul Naviglio,Via Melchiorre Gioia 51 Milano
+penalty,6.815412998199463,0,14095.625,Via Francesco Petrarca Cernusco sul Naviglio,Via Melchiorre Gioia 51 Milano
+onepass_plus,6.8778159618377686,1,14551.57,Via Francesco Petrarca Cernusco sul Naviglio,Via Melchiorre Gioia 51 Milano
+penalty,6.937283039093018,1,14564.114,Via Francesco Petrarca Cernusco sul Naviglio,Via Melchiorre Gioia 51 Milano
+esx,6.99930477142334,1,14551.57,Via Francesco Petrarca Cernusco sul Naviglio,Via Melchiorre Gioia 51 Milano
+onepass_plus,7.065834999084473,2,15237.145,Via Francesco Petrarca Cernusco sul Naviglio,Via Melchiorre Gioia 51 Milano
+penalty,7.128422021865845,2,15321.874,Via Francesco Petrarca Cernusco sul Naviglio,Via Melchiorre Gioia 51 Milano
+esx,7.191431045532227,2,15237.145,Via Francesco Petrarca Cernusco sul Naviglio,Via Melchiorre Gioia 51 Milano
+onepass_plus,7.249967098236084,3,15358.978,Via Francesco Petrarca Cernusco sul Naviglio,Via Melchiorre Gioia 51 Milano
+penalty,7.311928033828735,3,15060.029,Via Francesco Petrarca Cernusco sul Naviglio,Via Melchiorre Gioia 51 Milano
+esx,7.374541997909546,3,18403.763,Via Francesco Petrarca Cernusco sul Naviglio,Via Melchiorre Gioia 51 Milano
+onepass_plus,7.435381889343262,4,15607.677,Via Francesco Petrarca Cernusco sul Naviglio,Via Melchiorre Gioia 51 Milano
+penalty,7.496782064437866,4,17295.483,Via Francesco Petrarca Cernusco sul Naviglio,Via Melchiorre Gioia 51 Milano
+esx,7.558237075805664,4,21090.497,Via Francesco Petrarca Cernusco sul Naviglio,Via Melchiorre Gioia 51 Milano
+penalty,7.6199610233306885,5,19994.912,Via Francesco Petrarca Cernusco sul Naviglio,Via Melchiorre Gioia 51 Milano
+penalty,7.680254936218262,6,15971.517,Via Francesco Petrarca Cernusco sul Naviglio,Via Melchiorre Gioia 51 Milano
+esx,7.740540027618408,5,22018.107,Via Francesco Petrarca Cernusco sul Naviglio,Via Melchiorre Gioia 51 Milano
+onepass_plus,7.80203104019165,5,16155.679,Via Francesco Petrarca Cernusco sul Naviglio,Via Melchiorre Gioia 51 Milano
+esx,7.865954875946045,6,26833.425,Via Francesco Petrarca Cernusco sul Naviglio,Via Melchiorre Gioia 51 Milano
+onepass_plus,8.080023050308228,6,16255.471,Via Francesco Petrarca Cernusco sul Naviglio,Via Melchiorre Gioia 51 Milano
+onepass_plus,4.7704620361328125,0,138989.241992,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+esx,4.833993911743164,0,138989.241992,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+penalty,4.897125005722046,0,138989.241992,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+esx,4.960525989532471,1,166326.528296,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+penalty,5.322439193725586,1,159714.792099,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+onepass_plus,5.400443077087402,1,147342.402432,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+7,5.4025959968566895,595367599,1862658643.0,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+esx,5.43297004699707,2,171669.48278,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+penalty,5.465288877487183,2,163621.279953,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+penalty,5.496938943862915,3,170452.030372,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+penalty,5.529139280319214,4,188126.636434,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+esx,5.560720205307007,3,229752.29889,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+penalty,5.591614246368408,5,177886.008962,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+onepass_plus,7.200683116912842,2,155230.842352,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+onepass_plus,0.822113037109375,0,5132.192174,Viale Lodi 55 Pavia,Via Vigentina Pavia
+esx,0.8867688179016113,0,5132.192174,Viale Lodi 55 Pavia,Via Vigentina Pavia
+penalty,0.9526059627532959,0,5132.192174,Viale Lodi 55 Pavia,Via Vigentina Pavia
+onepass_plus,1.0150458812713623,1,9090.082315,Viale Lodi 55 Pavia,Via Vigentina Pavia
+esx,1.080108880996704,1,10153.337963,Viale Lodi 55 Pavia,Via Vigentina Pavia
+onepass_plus,1.1455819606781006,2,9952.501136,Viale Lodi 55 Pavia,Via Vigentina Pavia
+esx,1.2082250118255615,2,25493.990311,Viale Lodi 55 Pavia,Via Vigentina Pavia
+onepass_plus,1.2726268768310547,3,18828.438228,Viale Lodi 55 Pavia,Via Vigentina Pavia
+esx,1.3356060981750488,3,34531.838454,Viale Lodi 55 Pavia,Via Vigentina Pavia
+onepass_plus,1.3993279933929443,4,25493.990311,Viale Lodi 55 Pavia,Via Vigentina Pavia
+esx,1.4658560752868652,4,36890.092382,Viale Lodi 55 Pavia,Via Vigentina Pavia
+onepass_plus,1.5299510955810547,5,33123.799875,Viale Lodi 55 Pavia,Via Vigentina Pavia
+esx,1.5946450233459473,5,61028.316136,Viale Lodi 55 Pavia,Via Vigentina Pavia
+onepass_plus,1.656296968460083,6,33126.340765,Viale Lodi 55 Pavia,Via Vigentina Pavia
+esx,1.718843936920166,6,74090.782433,Viale Lodi 55 Pavia,Via Vigentina Pavia
+2,1.7200090885162354,429851391,472687681.0,Viale Lodi 55 Pavia,Via Vigentina Pavia
+onepass_plus,0.805182933807373,0,5132.192174,Viale Lodi 55 Pavia,Via Vigentina Pavia
+penalty,0.868649959564209,0,5132.192174,Viale Lodi 55 Pavia,Via Vigentina Pavia
+esx,0.9313299655914307,0,5132.192174,Viale Lodi 55 Pavia,Via Vigentina Pavia
+onepass_plus,0.9945909976959229,1,9090.082315,Viale Lodi 55 Pavia,Via Vigentina Pavia
+esx,1.0581271648406982,1,10153.337963,Viale Lodi 55 Pavia,Via Vigentina Pavia
+onepass_plus,1.1214079856872559,2,9952.501136,Viale Lodi 55 Pavia,Via Vigentina Pavia
+esx,1.1839311122894287,2,25493.990311,Viale Lodi 55 Pavia,Via Vigentina Pavia
+onepass_plus,1.2471132278442383,3,18828.438228,Viale Lodi 55 Pavia,Via Vigentina Pavia
+esx,1.3113269805908203,3,34531.838454,Viale Lodi 55 Pavia,Via Vigentina Pavia
+onepass_plus,1.374312162399292,4,25493.990311,Viale Lodi 55 Pavia,Via Vigentina Pavia
+esx,1.4410569667816162,4,36890.092382,Viale Lodi 55 Pavia,Via Vigentina Pavia
+onepass_plus,1.503974199295044,5,33123.799875,Viale Lodi 55 Pavia,Via Vigentina Pavia
+esx,1.5684070587158203,5,61028.316136,Viale Lodi 55 Pavia,Via Vigentina Pavia
+onepass_plus,1.6322460174560547,6,33126.340765,Viale Lodi 55 Pavia,Via Vigentina Pavia
+esx,1.6971471309661865,6,74090.782433,Viale Lodi 55 Pavia,Via Vigentina Pavia
+penalty,2.028771162033081,0,139378.111384,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+onepass_plus,2.0880730152130127,0,139378.111384,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+esx,2.1478888988494873,0,139378.111384,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+585202086,2.1491432189941406,573382366,293807081.0,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+penalty,2.1792168617248535,1,160103.661491,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+penalty,2.2079639434814453,2,161848.655097,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+esx,2.2386560440063477,1,166139.601801,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+penalty,2.269437074661255,3,178639.109638,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+penalty,2.2999141216278076,4,192059.27077,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+onepass_plus,2.3280630111694336,1,147731.271825,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+penalty,2.3627820014953613,5,168745.313675,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+esx,2.3925130367279053,2,180065.523204,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+penalty,2.4225571155548096,6,163457.856199,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+esx,2.4553940296173096,3,248650.392653,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+onepass_plus,4.469699144363403,2,155677.968279,Via Giovanni Chiassi Mantova,Via Vigentina Pavia
+penalty,6.452314138412476,0,159990.450227,Venaria Reale Torino,Viale Lodi 55 Pavia
+onepass_plus,6.486569881439209,0,159990.450227,Venaria Reale Torino,Viale Lodi 55 Pavia
+esx,6.549313068389893,0,159990.450227,Venaria Reale Torino,Viale Lodi 55 Pavia
+penalty,6.581691741943359,1,176673.307363,Venaria Reale Torino,Viale Lodi 55 Pavia
+esx,6.6657819747924805,1,169981.620782,Venaria Reale Torino,Viale Lodi 55 Pavia
+onepass_plus,6.726656913757324,1,168279.65331,Venaria Reale Torino,Viale Lodi 55 Pavia
+esx,7.327708005905151,0,159990.450227,Venaria Reale Torino,Viale Lodi 55 Pavia
+onepass_plus,7.19203782081604,0,159990.450227,Strada del Col San Carlo La Thuile,Via Gran Paradiso Cogne
+esx,7.256678819656372,0,159990.450227,Strada del Col San Carlo La Thuile,Via Gran Paradiso Cogne
+penalty,7.291347980499268,0,159990.450227,Strada del Col San Carlo La Thuile,Via Gran Paradiso Cogne
+esx,7.357808828353882,1,169981.620782,Strada del Col San Carlo La Thuile,Via Gran Paradiso Cogne
+6,7.360142946243286,9471927022,452409630.0,Strada del Col San Carlo La Thuile,Via Gran Paradiso Cogne
